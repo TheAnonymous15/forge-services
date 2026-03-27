@@ -1,0 +1,68 @@
+{% extends "layouts/base.html" %}
+
+{% block content %}
+<!-- 503 Service Unavailable Page - Minimal & Fun -->
+<section class="min-h-screen flex items-center justify-center bg-gradient-to-br from-yellow-600 via-orange-600 to-forgeforth-orange px-4">
+    <div class="max-w-2xl mx-auto text-center">
+        <!-- Error Code -->
+        <div class="mb-8">
+            <h1 class="font-display font-black text-[180px] md:text-[240px] leading-none text-white/20 select-none">
+                503
+            </h1>
+            <div class="relative -mt-32 md:-mt-40">
+                <div class="text-6xl md:text-8xl mb-4">🔧</div>
+                <h2 class="font-display font-bold text-4xl md:text-5xl text-white mb-4">
+                    Be Right Back
+                </h2>
+                <p class="text-xl md:text-2xl text-gray-100 mb-8">
+                    We're upgrading our systems.<br>
+                    <span class="text-yellow-200">Making things even better for you!</span>
+                </p>
+            </div>
+        </div>
+
+        <!-- Countdown (simple) -->
+        <div class="bg-white/20 backdrop-blur-md rounded-2xl p-6 mb-8 inline-block">
+            <p class="text-white font-semibold mb-2">Estimated Time</p>
+            <p class="text-4xl font-bold text-white">~15 minutes</p>
+        </div>
+
+        <!-- Actions -->
+        <div class="flex flex-col sm:flex-row gap-4 justify-center mb-8">
+            <button onclick="location.reload()" class="inline-flex items-center justify-center gap-2 bg-white text-forgeforth-orange px-8 py-4 rounded-xl font-bold text-lg hover:shadow-2xl hover:scale-105 transition-all">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
+                </svg>
+                Check Again
+            </button>
+            <button onclick="openRegistrationModal('individual')" class="inline-flex items-center justify-center gap-2 bg-emerald-500 text-white px-8 py-4 rounded-xl font-bold text-lg hover:shadow-2xl hover:scale-105 transition-all">
+                Get Notified
+            </button>
+        </div>
+
+        <!-- Help Link -->
+        <p class="text-gray-100 text-sm">
+            Follow us for updates:
+            <a href="#" class="text-yellow-200 hover:underline font-semibold">@ForgeForth Africa</a>
+        </p>
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+// Auto-refresh every 30 seconds
+setInterval(() => {
+    fetch('/')
+        .then(response => {
+            if (response.ok) {
+                location.reload();
+            }
+        })
+        .catch(() => {
+            // Ignore errors during status check
+        });
+}, 30000);
+</script>
+{% endblock %}
+

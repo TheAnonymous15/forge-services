@@ -1,0 +1,4 @@
+# Cache files
+*.json
+!.gitkeep
+

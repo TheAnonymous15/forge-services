@@ -1,0 +1,336 @@
+{% extends "website/layouts/portal_base.html" %}
+
+{% block title %}Skill Assessment - Talent Portal{% endblock %}
+
+{% block portal_content %}
+<div class="mb-8">
+    <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+        <div>
+            <h1 class="text-2xl md:text-3xl font-bold text-white mb-2 flex items-center gap-3">
+                <svg class="w-8 h-8 text-accent" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"/>
+                </svg>
+                Skill Assessment
+            </h1>
+            <p class="text-blue-200/70">Manage and showcase your professional skills</p>
+        </div>
+        <button onclick="openAddSkillModal()" class="px-4 py-2 rounded-xl bg-gradient-to-r from-secondary to-accent text-white font-semibold hover:opacity-90 transition flex items-center gap-2">
+            <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+            </svg>
+            Add Skill
+        </button>
+    </div>
+</div>
+
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+    <!-- Left Column - My Skills -->
+    <div class="lg:col-span-2 space-y-6">
+        <!-- Skills Overview -->
+        <div class="glass-card rounded-2xl p-6">
+            <h2 class="text-lg font-semibold text-white mb-6 flex items-center gap-3">
+                <svg class="w-6 h-6 text-accent" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
+                </svg>
+                My Skills
+            </h2>
+
+            {% if user_skills %}
+            <div class="space-y-4">
+                {% for ts in user_skills %}
+                <div class="flex items-center justify-between p-4 rounded-xl bg-white/5 group hover:bg-white/10 transition">
+                    <div class="flex items-center gap-4">
+                        <div class="w-10 h-10 rounded-lg bg-accent/20 flex items-center justify-center">
+                            <svg class="w-5 h-5 text-accent" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                            </svg>
+                        </div>
+                        <div>
+                            <h3 class="text-white font-medium">{{ ts.skill.name }}</h3>
+                            <p class="text-blue-200/60 text-sm">{{ ts.skill.category|default:"General" }}</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-4">
+                        <!-- Proficiency Level -->
+                        <div class="flex items-center gap-2">
+                            {% for i in "12345" %}
+                            <div class="w-2 h-6 rounded-full {% if forloop.counter <= ts.level %}bg-accent{% else %}bg-white/10{% endif %}"></div>
+                            {% endfor %}
+                            <span class="text-blue-200/60 text-sm ml-2">
+                                {% if ts.level == 5 %}Expert{% elif ts.level == 4 %}Advanced{% elif ts.level == 3 %}Intermediate{% elif ts.level == 2 %}Basic{% else %}Beginner{% endif %}
+                            </span>
+                        </div>
+                        <button onclick="removeSkill('{{ ts.skill.id }}')" class="opacity-0 group-hover:opacity-100 text-red-400 hover:text-red-300 transition" title="Remove">
+                            <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            {% else %}
+            <div class="text-center py-12">
+                <svg class="w-16 h-16 text-blue-200/30 mx-auto mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"/>
+                </svg>
+                <h3 class="text-white font-semibold text-lg mb-2">No Skills Added Yet</h3>
+                <p class="text-blue-200/60 mb-4">Add your skills to get better job matches and recommendations</p>
+                <button onclick="openAddSkillModal()" class="px-6 py-3 rounded-xl bg-gradient-to-r from-secondary to-accent text-white font-semibold hover:opacity-90 transition">
+                    Add Your First Skill
+                </button>
+            </div>
+            {% endif %}
+        </div>
+
+        <!-- Skill Assessment Tests -->
+        <div class="glass-card rounded-2xl p-6">
+            <h2 class="text-lg font-semibold text-white mb-4 flex items-center gap-3">
+                <svg class="w-6 h-6 text-secondary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/>
+                </svg>
+                Skill Assessments
+                <span class="px-2 py-0.5 text-xs bg-secondary/20 text-secondary rounded-full">Coming Soon</span>
+            </h2>
+            <p class="text-blue-200/70 mb-6">Take assessments to verify and showcase your skills to employers</p>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="p-4 rounded-xl bg-white/5 border border-white/10 opacity-60">
+                    <div class="flex items-center gap-3 mb-2">
+                        <div class="w-10 h-10 rounded-lg bg-blue-500/20 flex items-center justify-center">
+                            <svg class="w-5 h-5 text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/>
+                            </svg>
+                        </div>
+                        <div>
+                            <h3 class="text-white font-medium">Python Programming</h3>
+                            <p class="text-blue-200/60 text-xs">30 questions • 45 min</p>
+                        </div>
+                    </div>
+                    <button disabled class="w-full px-4 py-2 rounded-lg bg-white/5 text-blue-200/40 text-sm cursor-not-allowed">
+                        Start Assessment
+                    </button>
+                </div>
+                <div class="p-4 rounded-xl bg-white/5 border border-white/10 opacity-60">
+                    <div class="flex items-center gap-3 mb-2">
+                        <div class="w-10 h-10 rounded-lg bg-green-500/20 flex items-center justify-center">
+                            <svg class="w-5 h-5 text-green-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
+                            </svg>
+                        </div>
+                        <div>
+                            <h3 class="text-white font-medium">Data Analysis</h3>
+                            <p class="text-blue-200/60 text-xs">25 questions • 30 min</p>
+                        </div>
+                    </div>
+                    <button disabled class="w-full px-4 py-2 rounded-lg bg-white/5 text-blue-200/40 text-sm cursor-not-allowed">
+                        Start Assessment
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Right Column - Recommendations & Categories -->
+    <div class="space-y-6">
+        <!-- Recommended Skills -->
+        <div class="glass-card rounded-2xl p-6">
+            <h3 class="text-lg font-semibold text-white mb-4">Recommended Skills</h3>
+            <p class="text-blue-200/60 text-sm mb-4">Based on your profile and industry trends</p>
+            {% if recommended_skills %}
+            <div class="flex flex-wrap gap-2">
+                {% for skill in recommended_skills %}
+                <button onclick="addSkillQuick('{{ skill.id }}', '{{ skill.name }}')" class="px-3 py-1.5 rounded-full bg-white/5 border border-white/10 text-blue-200/80 text-sm hover:border-secondary/30 hover:text-secondary transition flex items-center gap-1">
+                    <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+                    </svg>
+                    {{ skill.name }}
+                </button>
+                {% endfor %}
+            </div>
+            {% else %}
+            <p class="text-blue-200/40 text-sm">No recommendations available</p>
+            {% endif %}
+        </div>
+
+        <!-- Skill Categories -->
+        <div class="glass-card rounded-2xl p-6">
+            <h3 class="text-lg font-semibold text-white mb-4">Browse by Category</h3>
+            <div class="space-y-2">
+                <button onclick="filterCategory('technology')" class="w-full text-left px-4 py-3 rounded-xl bg-white/5 hover:bg-white/10 transition flex items-center justify-between">
+                    <span class="text-white">Technology</span>
+                    <svg class="w-5 h-5 text-blue-200/40" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                    </svg>
+                </button>
+                <button onclick="filterCategory('business')" class="w-full text-left px-4 py-3 rounded-xl bg-white/5 hover:bg-white/10 transition flex items-center justify-between">
+                    <span class="text-white">Business</span>
+                    <svg class="w-5 h-5 text-blue-200/40" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                    </svg>
+                </button>
+                <button onclick="filterCategory('design')" class="w-full text-left px-4 py-3 rounded-xl bg-white/5 hover:bg-white/10 transition flex items-center justify-between">
+                    <span class="text-white">Design</span>
+                    <svg class="w-5 h-5 text-blue-200/40" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                    </svg>
+                </button>
+                <button onclick="filterCategory('marketing')" class="w-full text-left px-4 py-3 rounded-xl bg-white/5 hover:bg-white/10 transition flex items-center justify-between">
+                    <span class="text-white">Marketing</span>
+                    <svg class="w-5 h-5 text-blue-200/40" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                    </svg>
+                </button>
+                <button onclick="filterCategory('soft-skills')" class="w-full text-left px-4 py-3 rounded-xl bg-white/5 hover:bg-white/10 transition flex items-center justify-between">
+                    <span class="text-white">Soft Skills</span>
+                    <svg class="w-5 h-5 text-blue-200/40" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+
+        <!-- Stats -->
+        <div class="glass-card rounded-2xl p-6 border border-accent/20">
+            <h3 class="text-lg font-semibold text-white mb-4">Your Skill Stats</h3>
+            <div class="space-y-4">
+                <div class="flex justify-between items-center">
+                    <span class="text-blue-200/70">Total Skills</span>
+                    <span class="text-white font-semibold">{{ user_skills.count|default:0 }}</span>
+                </div>
+                <div class="flex justify-between items-center">
+                    <span class="text-blue-200/70">Verified Skills</span>
+                    <span class="text-white font-semibold">0</span>
+                </div>
+                <div class="flex justify-between items-center">
+                    <span class="text-blue-200/70">Assessments Taken</span>
+                    <span class="text-white font-semibold">0</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Add Skill Modal (hidden by default) -->
+<div id="addSkillModal" class="fixed inset-0 bg-black/70 flex items-center justify-center z-50 hidden">
+    <div class="glass-card rounded-2xl p-6 w-full max-w-md mx-4">
+        <div class="flex items-center justify-between mb-6">
+            <h3 class="text-xl font-semibold text-white">Add Skill</h3>
+            <button onclick="closeAddSkillModal()" class="text-blue-200/60 hover:text-white">
+                <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                </svg>
+            </button>
+        </div>
+        <form id="addSkillForm" onsubmit="submitAddSkill(event)">
+            <div class="mb-4">
+                <label class="block text-blue-200/70 text-sm mb-2">Select Skill</label>
+                <select name="skill_id" required class="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white focus:border-secondary focus:ring-1 focus:ring-secondary transition">
+                    <option value="">Choose a skill...</option>
+                    <!-- Skills will be populated -->
+                </select>
+            </div>
+            <div class="mb-6">
+                <label class="block text-blue-200/70 text-sm mb-2">Proficiency Level</label>
+                <select name="level" required class="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white focus:border-secondary focus:ring-1 focus:ring-secondary transition">
+                    <option value="1">Beginner</option>
+                    <option value="2">Basic</option>
+                    <option value="3" selected>Intermediate</option>
+                    <option value="4">Advanced</option>
+                    <option value="5">Expert</option>
+                </select>
+            </div>
+            <div class="flex gap-3">
+                <button type="button" onclick="closeAddSkillModal()" class="flex-1 px-4 py-3 rounded-xl bg-white/5 text-white hover:bg-white/10 transition">
+                    Cancel
+                </button>
+                <button type="submit" class="flex-1 px-4 py-3 rounded-xl bg-gradient-to-r from-secondary to-accent text-white font-semibold hover:opacity-90 transition">
+                    Add Skill
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+function openAddSkillModal() {
+    document.getElementById('addSkillModal').classList.remove('hidden');
+}
+
+function closeAddSkillModal() {
+    document.getElementById('addSkillModal').classList.add('hidden');
+}
+
+function submitAddSkill(e) {
+    e.preventDefault();
+    const form = e.target;
+    const formData = new FormData(form);
+
+    fetch('/portal/talent/api/skill/add/', {
+        method: 'POST',
+        headers: {
+            'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]')?.value || '',
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            skill_id: formData.get('skill_id'),
+            level: formData.get('level')
+        })
+    })
+    .then(res => res.json())
+    .then(data => {
+        if (data.success) {
+            location.reload();
+        } else {
+            alert(data.error || 'Failed to add skill');
+        }
+    });
+}
+
+function addSkillQuick(skillId, skillName) {
+    if (confirm(`Add "${skillName}" to your skills?`)) {
+        fetch('/portal/talent/api/skill/add/', {
+            method: 'POST',
+            headers: {
+                'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]')?.value || '',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                skill_id: skillId,
+                level: 3
+            })
+        })
+        .then(res => res.json())
+        .then(data => {
+            if (data.success) {
+                location.reload();
+            }
+        });
+    }
+}
+
+function removeSkill(skillId) {
+    if (confirm('Remove this skill from your profile?')) {
+        fetch(`/portal/talent/api/skill/remove/${skillId}/`, {
+            method: 'POST',
+            headers: {
+                'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]')?.value || '',
+            }
+        })
+        .then(res => res.json())
+        .then(data => {
+            if (data.success) {
+                location.reload();
+            }
+        });
+    }
+}
+
+function filterCategory(category) {
+    // TODO: Implement category filtering
+    console.log('Filter by:', category);
+}
+</script>
+{% endblock %}
+

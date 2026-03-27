@@ -1,0 +1,54 @@
+# ============================================================
+# ForgeForth Africa - .gitignore
+# ============================================================
+
+# Environment & Secrets
+.env
+.env.production
+*.env.local
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+*.egg-info/
+dist/
+build/
+*.egg
+
+# Django
+db.sqlite3
+db.sqlite3-journal
+*.sqlite3
+staticfiles/
+mediafiles/
+logs/
+*.log
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# OS
+Thumbs.db
+.DS_Store
+
+# Virtual environments
+venv/
+.venv/
+env/
+
+# Coverage
+htmlcov/
+.coverage
+.coverage.*
+
+# Distribution
+*.tar.gz
+*.whl
+

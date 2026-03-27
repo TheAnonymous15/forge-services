@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+
+{% block title %}Registration Successful{% endblock %}
+
+{% block body %}
+<div class="min-h-screen gradient-bg flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-md w-full">
+        <!-- Success Card -->
+        <div class="card text-center">
+            <!-- Success Icon -->
+            <div class="mx-auto w-16 h-16 bg-green-500/20 rounded-full flex items-center justify-center mb-6">
+                <svg class="w-8 h-8 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                </svg>
+            </div>
+
+            <h1 class="text-2xl font-bold text-white mb-2">Check Your Email</h1>
+            <p class="text-gray-400 mb-6">
+                We've sent a verification link to<br>
+                <span class="text-primary-400 font-medium">{{ email }}</span>
+            </p>
+
+            <!-- Instructions -->
+            <div class="bg-dark-900/50 rounded-lg p-4 mb-6 text-left">
+                <h3 class="text-sm font-medium text-white mb-2">Next Steps:</h3>
+                <ol class="text-sm text-gray-400 space-y-2">
+                    <li class="flex items-start">
+                        <span class="flex-shrink-0 w-5 h-5 bg-primary-600 rounded-full text-xs text-white flex items-center justify-center mr-2 mt-0.5">1</span>
+                        Open your email inbox
+                    </li>
+                    <li class="flex items-start">
+                        <span class="flex-shrink-0 w-5 h-5 bg-primary-600 rounded-full text-xs text-white flex items-center justify-center mr-2 mt-0.5">2</span>
+                        Click the verification link
+                    </li>
+                    <li class="flex items-start">
+                        <span class="flex-shrink-0 w-5 h-5 bg-primary-600 rounded-full text-xs text-white flex items-center justify-center mr-2 mt-0.5">3</span>
+                        Return here to sign in
+                    </li>
+                </ol>
+            </div>
+
+            <!-- Didn't receive email -->
+            <p class="text-sm text-gray-500 mb-4">
+                Didn't receive the email? Check your spam folder.
+            </p>
+
+            <a href="/auth/login" class="btn-primary inline-block w-full">
+                Continue to Sign In
+            </a>
+
+            <div class="mt-4">
+                <a href="{{ main_site_url }}" class="text-sm text-gray-400 hover:text-primary-400">
+                    ← Back to ForgeForth Africa
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+

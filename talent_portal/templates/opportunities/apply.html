@@ -1,0 +1,187 @@
+{% extends "base.html" %}
+
+{% block title %}{{ page_title }}{% endblock %}
+
+{% block content %}
+<div class="max-w-3xl mx-auto">
+    <!-- Back Link -->
+    <div class="mb-6">
+        <a href="/opportunities/{{ opportunity.id }}" class="text-gray-400 hover:text-white flex items-center gap-2">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+            </svg>
+            Back to Opportunity
+        </a>
+    </div>
+
+    <!-- Header -->
+    <div class="card mb-6">
+        <div class="flex items-start gap-4">
+            <div class="w-16 h-16 bg-primary-600/20 rounded-xl flex items-center justify-center">
+                <svg class="w-8 h-8 text-primary-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+                </svg>
+            </div>
+            <div class="flex-1">
+                <h1 class="text-xl font-bold text-white">{{ opportunity.title }}</h1>
+                <p class="text-primary-400">{{ opportunity.organization.name if opportunity.organization else '' }}</p>
+                <div class="flex flex-wrap gap-4 mt-2 text-sm text-gray-400">
+                    <span>{{ opportunity.location }}</span>
+                    <span>{{ opportunity.opportunity_type }}</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {% if error %}
+    <div class="mb-6 p-4 bg-red-500/10 border border-red-500/30 rounded-lg">
+        <p class="text-sm text-red-400">{{ error }}</p>
+    </div>
+    {% endif %}
+
+    <!-- Application Form -->
+    <form method="post" enctype="multipart/form-data" class="space-y-6">
+        <!-- Profile Preview -->
+        <div class="card">
+            <h2 class="text-lg font-semibold text-white mb-4">Your Profile</h2>
+            {% if profile %}
+            <div class="flex items-center gap-4 p-4 bg-dark-900/50 rounded-lg">
+                <div class="w-12 h-12 rounded-full bg-primary-600/20 flex items-center justify-center">
+                    {% if profile.photo_url %}
+                    <img src="{{ profile.photo_url }}" alt="" class="w-12 h-12 rounded-full object-cover">
+                    {% else %}
+                    <span class="text-lg text-primary-400">{{ profile.first_name[0] if profile.first_name else '?' }}</span>
+                    {% endif %}
+                </div>
+                <div class="flex-1">
+                    <p class="text-white font-medium">{{ profile.first_name }} {{ profile.last_name }}</p>
+                    <p class="text-gray-400 text-sm">{{ profile.headline or 'No headline set' }}</p>
+                </div>
+                <a href="/profile/edit" class="text-sm text-primary-400 hover:underline">Edit Profile</a>
+            </div>
+            {% else %}
+            <p class="text-gray-400">Please complete your profile before applying.</p>
+            {% endif %}
+        </div>
+
+        <!-- Cover Letter -->
+        <div class="card">
+            <h2 class="text-lg font-semibold text-white mb-4">Cover Letter</h2>
+            <p class="text-gray-400 text-sm mb-4">Tell the employer why you're a great fit for this role.</p>
+            <textarea name="cover_letter" rows="8" class="input-field"
+                      placeholder="Write your cover letter here...">{{ cover_letter if cover_letter else '' }}</textarea>
+        </div>
+
+        <!-- Resume Upload -->
+        <div class="card">
+            <h2 class="text-lg font-semibold text-white mb-4">Resume / CV</h2>
+            <p class="text-gray-400 text-sm mb-4">Upload your latest resume (PDF preferred, max 5MB).</p>
+            <label class="block cursor-pointer">
+                <div class="border-2 border-dashed border-gray-600 rounded-lg p-8 text-center hover:border-primary-500 transition-colors">
+                    <svg class="w-12 h-12 mx-auto text-gray-500 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path>
+                    </svg>
+                    <p class="text-white mb-1">Click to upload or drag and drop</p>
+                    <p class="text-gray-500 text-sm">PDF, DOC, DOCX (max 5MB)</p>
+                </div>
+                <input type="file" name="resume" accept=".pdf,.doc,.docx" class="hidden" id="resume-input">
+            </label>
+            <p id="resume-filename" class="mt-2 text-sm text-primary-400"></p>
+        </div>
+
+        <!-- Screening Questions -->
+        {% if opportunity.screening_questions %}
+        <div class="card">
+            <h2 class="text-lg font-semibold text-white mb-4">Screening Questions</h2>
+            <div class="space-y-6">
+                {% for question in opportunity.screening_questions %}
+                <div>
+                    <label class="block text-sm font-medium text-gray-300 mb-2">
+                        {{ question.text }}
+                        {% if question.required %}<span class="text-red-400">*</span>{% endif %}
+                    </label>
+                    {% if question.type == 'text' %}
+                    <input type="text" name="q_{{ question.id }}" class="input-field"
+                           {% if question.required %}required{% endif %}>
+                    {% elif question.type == 'textarea' %}
+                    <textarea name="q_{{ question.id }}" rows="3" class="input-field"
+                              {% if question.required %}required{% endif %}></textarea>
+                    {% elif question.type == 'select' %}
+                    <select name="q_{{ question.id }}" class="input-field"
+                            {% if question.required %}required{% endif %}>
+                        <option value="">Select an option</option>
+                        {% for option in question.options %}
+                        <option value="{{ option }}">{{ option }}</option>
+                        {% endfor %}
+                    </select>
+                    {% elif question.type == 'yesno' %}
+                    <div class="flex gap-4">
+                        <label class="flex items-center gap-2">
+                            <input type="radio" name="q_{{ question.id }}" value="yes"
+                                   class="w-4 h-4" {% if question.required %}required{% endif %}>
+                            <span class="text-gray-300">Yes</span>
+                        </label>
+                        <label class="flex items-center gap-2">
+                            <input type="radio" name="q_{{ question.id }}" value="no" class="w-4 h-4">
+                            <span class="text-gray-300">No</span>
+                        </label>
+                    </div>
+                    {% endif %}
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
+
+        <!-- Submit -->
+        <div class="flex items-center justify-between p-6 bg-dark-800 rounded-xl border border-gray-700">
+            <div>
+                <p class="text-sm text-gray-400">By submitting, you agree to our terms and allow the employer to review your profile.</p>
+            </div>
+            <div class="flex gap-4">
+                <a href="/opportunities/{{ opportunity.id }}" class="btn-secondary">Cancel</a>
+                <button type="submit" class="btn-primary">
+                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path>
+                    </svg>
+                    Submit Application
+                </button>
+            </div>
+        </div>
+    </form>
+</div>
+
+<script>
+document.getElementById('resume-input').addEventListener('change', function(e) {
+    const filename = e.target.files[0]?.name;
+    if (filename) {
+        document.getElementById('resume-filename').textContent = 'Selected: ' + filename;
+    }
+});
+
+// Collect screening question answers into JSON
+document.querySelector('form').addEventListener('submit', function(e) {
+    const questions = document.querySelectorAll('[name^="q_"]');
+    const answers = {};
+    questions.forEach(q => {
+        const id = q.name.replace('q_', '');
+        if (q.type === 'radio') {
+            if (q.checked) answers[id] = q.value;
+        } else {
+            answers[id] = q.value;
+        }
+    });
+
+    // Add hidden field with JSON answers
+    let hidden = document.querySelector('[name="answers"]');
+    if (!hidden) {
+        hidden = document.createElement('input');
+        hidden.type = 'hidden';
+        hidden.name = 'answers';
+        this.appendChild(hidden);
+    }
+    hidden.value = JSON.stringify(answers);
+});
+</script>
+{% endblock %}
+

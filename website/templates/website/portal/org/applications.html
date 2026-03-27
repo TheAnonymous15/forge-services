@@ -1,0 +1,128 @@
+{% extends "website/layouts/portal_base.html" %}
+
+{% block title %}Applications - Organization Portal{% endblock %}
+
+{% block portal_content %}
+<div class="mb-8">
+    <h1 class="text-2xl md:text-3xl font-bold text-white mb-2">Applications</h1>
+    <p class="text-blue-200/70">Review and manage candidate applications</p>
+</div>
+
+<!-- Filters -->
+<div class="glass-card rounded-2xl p-4 mb-8">
+    <div class="flex flex-wrap gap-2">
+        <a href="/portal/org/applications/"
+           class="px-4 py-2 rounded-lg text-sm font-medium transition {% if not status_filter %}bg-forgeforth-blue-light/20 text-forgeforth-blue-light{% else %}text-slate-400 hover:bg-white/5{% endif %}">
+            All
+        </a>
+        <a href="/portal/org/applications/?status=pending"
+           class="px-4 py-2 rounded-lg text-sm font-medium transition {% if status_filter == 'pending' %}bg-secondary/20 text-secondary{% else %}text-slate-400 hover:bg-white/5{% endif %}">
+            Pending
+        </a>
+        <a href="/portal/org/applications/?status=review"
+           class="px-4 py-2 rounded-lg text-sm font-medium transition {% if status_filter == 'review' %}bg-forgeforth-blue-light/20 text-forgeforth-blue-light{% else %}text-slate-400 hover:bg-white/5{% endif %}">
+            In Review
+        </a>
+        <a href="/portal/org/applications/?status=interview"
+           class="px-4 py-2 rounded-lg text-sm font-medium transition {% if status_filter == 'interview' %}bg-accent/20 text-accent{% else %}text-slate-400 hover:bg-white/5{% endif %}">
+            Interview
+        </a>
+        <a href="/portal/org/applications/?status=accepted"
+           class="px-4 py-2 rounded-lg text-sm font-medium transition {% if status_filter == 'accepted' %}bg-forgeforth-green/20 text-forgeforth-green{% else %}text-slate-400 hover:bg-white/5{% endif %}">
+            Accepted
+        </a>
+        <a href="/portal/org/applications/?status=rejected"
+           class="px-4 py-2 rounded-lg text-sm font-medium transition {% if status_filter == 'rejected' %}bg-red-500/20 text-red-400{% else %}text-slate-400 hover:bg-white/5{% endif %}">
+            Rejected
+        </a>
+    </div>
+</div>
+
+<!-- Applications Table -->
+{% if applications %}
+<div class="glass-card rounded-2xl overflow-hidden">
+    <div class="overflow-x-auto">
+        <table class="w-full">
+            <thead>
+                <tr class="text-left text-blue-200/50 text-sm border-b border-white/10 bg-white/5">
+                    <th class="px-6 py-4 font-medium">Candidate</th>
+                    <th class="px-6 py-4 font-medium">Position</th>
+                    <th class="px-6 py-4 font-medium">Status</th>
+                    <th class="px-6 py-4 font-medium">Applied</th>
+                    <th class="px-6 py-4 font-medium">Actions</th>
+                </tr>
+            </thead>
+            <tbody class="text-blue-100">
+                {% for app in applications %}
+                <tr class="border-b border-white/5 hover:bg-white/5 transition">
+                    <td class="px-6 py-4">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-full bg-gradient-to-br from-primary to-forgeforth-blue-light flex items-center justify-center flex-shrink-0">
+                                <span class="text-white font-semibold text-sm">{{ app.applicant.first_name|slice:":1"|upper }}</span>
+                            </div>
+                            <div>
+                                <p class="font-medium text-white">{{ app.applicant.get_full_name|default:app.applicant.email }}</p>
+                                <p class="text-slate-500 text-sm">{{ app.applicant.email }}</p>
+                            </div>
+                        </div>
+                    </td>
+                    <td class="px-6 py-4">
+                        <p class="font-medium">{{ app.opportunity.title }}</p>
+                        <p class="text-blue-200/50 text-sm">{{ app.opportunity.opportunity_type|title }}</p>
+                    </td>
+                    <td class="px-6 py-4">
+                        <span class="px-2.5 py-1 rounded-full text-xs font-medium
+                            {% if app.status == 'pending' %}bg-secondary/20 text-secondary
+                            {% elif app.status == 'review' %}bg-forgeforth-blue-light/20 text-forgeforth-blue-light
+                            {% elif app.status == 'interview' %}bg-accent/20 text-accent
+                            {% elif app.status == 'accepted' %}bg-forgeforth-green/20 text-forgeforth-green
+                            {% elif app.status == 'rejected' %}bg-red-500/20 text-red-400
+                            {% else %}bg-slate-500/20 text-slate-400{% endif %}">
+                            {{ app.status|title }}
+                        </span>
+                    </td>
+                    <td class="px-6 py-4 text-blue-200/60 text-sm">
+                        {{ app.created_at|date:"M d, Y" }}
+                    </td>
+                    <td class="px-6 py-4">
+                        <div class="flex items-center gap-2">
+                            <button class="p-2 rounded-lg hover:bg-white/10 transition text-forgeforth-blue-light" title="View Details">
+                                <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+                                </svg>
+                            </button>
+                            {% if app.status == 'pending' %}
+                            <button class="p-2 rounded-lg hover:bg-accent/20 transition text-accent" title="Move to Review">
+                                <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                                </svg>
+                            </button>
+                            {% endif %}
+                        </div>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% else %}
+<div class="text-center py-16">
+    <div class="w-20 h-20 rounded-full bg-primary/20 flex items-center justify-center mx-auto mb-6">
+        <svg class="w-10 h-10 text-forgeforth-blue-light/50" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+        </svg>
+    </div>
+    <h3 class="text-xl font-semibold text-white mb-2">No Applications Yet</h3>
+    <p class="text-slate-500 mb-6">Applications will appear here once candidates apply to your opportunities</p>
+    <a href="/portal/org/opportunities/" class="inline-flex items-center gap-2 text-secondary hover:text-secondary/80 font-medium">
+        View Opportunities
+        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+        </svg>
+    </a>
+</div>
+{% endif %}
+{% endblock %}
+

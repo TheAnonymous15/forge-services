@@ -1,0 +1,17 @@
+{% extends "emails/base.html" %}
+{% block title %}Welcome - {{ site_name }}{% endblock %}
+
+{% block content %}
+<p class="greeting">Welcome, {{ user.first_name|default:"there" }}!</p>
+
+<p class="message">
+    Your account is verified and ready. Start exploring opportunities across Africa.
+</p>
+
+<a href="{{ site_url }}/portal/talent/dashboard" class="cta-btn" style="background: linear-gradient(135deg, #10b981, #059669);">Go to Dashboard</a>
+
+<p class="note">
+    Complete your profile to get matched with the best opportunities. Need help? Just reply to this email.
+</p>
+{% endblock %}
+

@@ -1,0 +1,308 @@
+{% extends "base.html" %}
+
+{% block title %}Edit Profile{% endblock %}
+
+{% block content %}
+<div class="max-w-4xl mx-auto">
+    <!-- Header -->
+    <div class="mb-8">
+        <div class="flex items-center justify-between">
+            <div>
+                <h1 class="text-2xl font-bold text-white">Edit Profile</h1>
+                <p class="text-gray-400 mt-1">Update your professional information</p>
+            </div>
+            <a href="/profile" class="btn-secondary">
+                ← Back to Profile
+            </a>
+        </div>
+    </div>
+
+    {% if error %}
+    <div class="mb-6 p-4 bg-red-500/10 border border-red-500/30 rounded-lg">
+        <p class="text-sm text-red-400">{{ error }}</p>
+    </div>
+    {% endif %}
+
+    {% if request.query_params.get('updated') %}
+    <div class="mb-6 p-4 bg-green-500/10 border border-green-500/30 rounded-lg">
+        <p class="text-sm text-green-400">Profile updated successfully!</p>
+    </div>
+    {% endif %}
+
+    <!-- Profile Form -->
+    <form method="post" action="/profile/edit" enctype="multipart/form-data" class="space-y-6">
+        <!-- Photo Section -->
+        <div class="card">
+            <h2 class="text-lg font-semibold text-white mb-4">Profile Photo</h2>
+            <div class="flex items-center space-x-6">
+                <div class="relative">
+                    {% if profile and profile.photo_url %}
+                    <img src="{{ profile.photo_url }}" alt="Profile" class="w-24 h-24 rounded-full object-cover">
+                    {% else %}
+                    <div class="w-24 h-24 rounded-full bg-primary-600 flex items-center justify-center">
+                        <span class="text-2xl font-bold text-white">
+                            {{ user.first_name[0] if user.first_name else 'U' }}
+                        </span>
+                    </div>
+                    {% endif %}
+                </div>
+                <div>
+                    <label class="btn-secondary cursor-pointer">
+                        <span>Change Photo</span>
+                        <input type="file" name="photo" accept="image/*" class="hidden" id="photo-input">
+                    </label>
+                    <p class="mt-2 text-sm text-gray-500">JPG, PNG. Max 5MB.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Basic Info -->
+        <div class="card">
+            <h2 class="text-lg font-semibold text-white mb-4">Basic Information</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-300 mb-2">First Name</label>
+                    <input type="text" name="first_name" value="{{ profile.first_name if profile else '' }}" class="input-field">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-300 mb-2">Last Name</label>
+                    <input type="text" name="last_name" value="{{ profile.last_name if profile else '' }}" class="input-field">
+                </div>
+                <div class="md:col-span-2">
+                    <label class="block text-sm font-medium text-gray-300 mb-2">Headline</label>
+                    <input type="text" name="headline" value="{{ profile.headline if profile else '' }}" class="input-field" placeholder="e.g., Software Developer | Full Stack | Python Enthusiast">
+                </div>
+                <div class="md:col-span-2">
+                    <label class="block text-sm font-medium text-gray-300 mb-2">Bio</label>
+                    <textarea name="bio" rows="4" class="input-field" placeholder="Tell us about yourself...">{{ profile.bio if profile else '' }}</textarea>
+                </div>
+            </div>
+        </div>
+
+        <!-- Location & Availability -->
+        <div class="card">
+            <h2 class="text-lg font-semibold text-white mb-4">Location & Availability</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-300 mb-2">City</label>
+                    <input type="text" name="city" value="{{ profile.city if profile else '' }}" class="input-field" placeholder="e.g., Cape Town">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-300 mb-2">Country</label>
+                    <input type="text" name="country" value="{{ profile.country if profile else '' }}" class="input-field" placeholder="e.g., South Africa">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-300 mb-2">Availability</label>
+                    <select name="availability" class="input-field">
+                        <option value="available" {% if profile and profile.availability == 'available' %}selected{% endif %}>Available Now</option>
+                        <option value="open" {% if profile and profile.availability == 'open' %}selected{% endif %}>Open to Opportunities</option>
+                        <option value="not_looking" {% if profile and profile.availability == 'not_looking' %}selected{% endif %}>Not Looking</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-300 mb-2">Remote Preference</label>
+                    <select name="remote_preference" class="input-field">
+                        <option value="remote" {% if profile and profile.remote_preference == 'remote' %}selected{% endif %}>Remote Only</option>
+                        <option value="hybrid" {% if profile and profile.remote_preference == 'hybrid' %}selected{% endif %}>Hybrid</option>
+                        <option value="onsite" {% if profile and profile.remote_preference == 'onsite' %}selected{% endif %}>On-site Only</option>
+                        <option value="flexible" {% if profile and profile.remote_preference == 'flexible' %}selected{% endif %}>Flexible</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <!-- Social Links -->
+        <div class="card">
+            <h2 class="text-lg font-semibold text-white mb-4">Social Links</h2>
+            <div class="space-y-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-300 mb-2">Website</label>
+                    <input type="url" name="website" value="{{ profile.website if profile else '' }}" class="input-field" placeholder="https://yourwebsite.com">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-300 mb-2">LinkedIn</label>
+                    <input type="url" name="linkedin" value="{{ profile.linkedin if profile else '' }}" class="input-field" placeholder="https://linkedin.com/in/yourprofile">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-300 mb-2">GitHub</label>
+                    <input type="url" name="github" value="{{ profile.github if profile else '' }}" class="input-field" placeholder="https://github.com/yourusername">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-300 mb-2">Twitter/X</label>
+                    <input type="url" name="twitter" value="{{ profile.twitter if profile else '' }}" class="input-field" placeholder="https://twitter.com/yourhandle">
+                </div>
+            </div>
+        </div>
+
+        <!-- Submit -->
+        <div class="flex justify-end space-x-4">
+            <a href="/profile" class="btn-secondary">Cancel</a>
+            <button type="submit" class="btn-primary">Save Changes</button>
+        </div>
+    </form>
+
+    <!-- Skills Section -->
+    <div class="card mt-6">
+        <div class="flex items-center justify-between mb-4">
+            <h2 class="text-lg font-semibold text-white">Skills</h2>
+            <button onclick="openSkillModal()" class="text-sm text-primary-400 hover:underline">+ Add Skill</button>
+        </div>
+        <div id="skills-list" class="flex flex-wrap gap-2">
+            {% if skills %}
+                {% for skill in skills %}
+                <div class="skill-tag bg-primary-600/20 text-primary-300 px-3 py-1 rounded-full text-sm flex items-center space-x-2">
+                    <span>{{ skill.name }}</span>
+                    <button onclick="deleteSkill('{{ skill.id }}')" class="hover:text-red-400">×</button>
+                </div>
+                {% endfor %}
+            {% else %}
+                <p class="text-gray-500 text-sm">No skills added yet</p>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Experience Section -->
+    <div class="card mt-6">
+        <div class="flex items-center justify-between mb-4">
+            <h2 class="text-lg font-semibold text-white">Work Experience</h2>
+            <a href="/profile/experience/add" class="text-sm text-primary-400 hover:underline">+ Add Experience</a>
+        </div>
+        {% if experience %}
+            <div class="space-y-4">
+                {% for exp in experience %}
+                <div class="p-4 bg-dark-900/50 rounded-lg">
+                    <div class="flex justify-between">
+                        <div>
+                            <h3 class="font-medium text-white">{{ exp.title }}</h3>
+                            <p class="text-gray-400">{{ exp.company }}</p>
+                            <p class="text-sm text-gray-500">{{ exp.start_date }} - {{ exp.end_date or 'Present' }}</p>
+                        </div>
+                        <div class="flex space-x-2">
+                            <a href="/profile/experience/{{ exp.id }}/edit" class="text-gray-400 hover:text-white">Edit</a>
+                            <button onclick="deleteExperience('{{ exp.id }}')" class="text-gray-400 hover:text-red-400">Delete</button>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p class="text-gray-500 text-sm">No experience added yet</p>
+        {% endif %}
+    </div>
+
+    <!-- Education Section -->
+    <div class="card mt-6">
+        <div class="flex items-center justify-between mb-4">
+            <h2 class="text-lg font-semibold text-white">Education</h2>
+            <a href="/profile/education/add" class="text-sm text-primary-400 hover:underline">+ Add Education</a>
+        </div>
+        {% if education %}
+            <div class="space-y-4">
+                {% for edu in education %}
+                <div class="p-4 bg-dark-900/50 rounded-lg">
+                    <div class="flex justify-between">
+                        <div>
+                            <h3 class="font-medium text-white">{{ edu.degree }} in {{ edu.field_of_study }}</h3>
+                            <p class="text-gray-400">{{ edu.institution }}</p>
+                            <p class="text-sm text-gray-500">{{ edu.start_year }} - {{ edu.end_year or 'Present' }}</p>
+                        </div>
+                        <div class="flex space-x-2">
+                            <a href="/profile/education/{{ edu.id }}/edit" class="text-gray-400 hover:text-white">Edit</a>
+                            <button onclick="deleteEducation('{{ edu.id }}')" class="text-gray-400 hover:text-red-400">Delete</button>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p class="text-gray-500 text-sm">No education added yet</p>
+        {% endif %}
+    </div>
+</div>
+
+<!-- Skill Modal -->
+<div id="skill-modal" class="fixed inset-0 bg-black/50 flex items-center justify-center hidden z-50">
+    <div class="bg-dark-800 rounded-xl p-6 w-full max-w-md mx-4">
+        <h3 class="text-lg font-semibold text-white mb-4">Add Skill</h3>
+        <form id="skill-form" class="space-y-4">
+            <div>
+                <label class="block text-sm font-medium text-gray-300 mb-2">Skill Name</label>
+                <input type="text" id="skill-name" class="input-field" placeholder="e.g., Python" required>
+            </div>
+            <div>
+                <label class="block text-sm font-medium text-gray-300 mb-2">Proficiency</label>
+                <select id="skill-level" class="input-field">
+                    <option value="beginner">Beginner</option>
+                    <option value="intermediate">Intermediate</option>
+                    <option value="advanced">Advanced</option>
+                    <option value="expert">Expert</option>
+                </select>
+            </div>
+            <div class="flex justify-end space-x-3">
+                <button type="button" onclick="closeSkillModal()" class="btn-secondary">Cancel</button>
+                <button type="submit" class="btn-primary">Add Skill</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+function openSkillModal() {
+    document.getElementById('skill-modal').classList.remove('hidden');
+}
+
+function closeSkillModal() {
+    document.getElementById('skill-modal').classList.add('hidden');
+}
+
+document.getElementById('skill-form').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const name = document.getElementById('skill-name').value;
+    const level = document.getElementById('skill-level').value;
+
+    try {
+        const response = await fetch('/api/profile/skills', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({name, level})
+        });
+        if (response.ok) {
+            location.reload();
+        }
+    } catch (err) {
+        console.error(err);
+    }
+});
+
+async function deleteSkill(skillId) {
+    if (!confirm('Remove this skill?')) return;
+    try {
+        await fetch(`/api/profile/skills/${skillId}`, {method: 'DELETE'});
+        location.reload();
+    } catch (err) {
+        console.error(err);
+    }
+}
+
+async function deleteExperience(expId) {
+    if (!confirm('Delete this experience?')) return;
+    try {
+        await fetch(`/api/profile/experience/${expId}`, {method: 'DELETE'});
+        location.reload();
+    } catch (err) {
+        console.error(err);
+    }
+}
+
+async function deleteEducation(eduId) {
+    if (!confirm('Delete this education entry?')) return;
+    try {
+        await fetch(`/api/profile/education/${eduId}`, {method: 'DELETE'});
+        location.reload();
+    } catch (err) {
+        console.error(err);
+    }
+}
+</script>
+{% endblock %}
+

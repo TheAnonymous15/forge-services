@@ -1,0 +1,194 @@
+{% extends "layouts/base.html" %}
+
+{% block content %}
+<!-- ═══════════════════════════════════════════════════════════════════════════
+     HERO SECTION
+═══════════════════════════════════════════════════════════════════════════ -->
+<section class="relative min-h-screen flex items-center overflow-hidden">
+    <!-- Background -->
+    <div class="absolute inset-0 z-0">
+        <img src="{{ static('images/lop.jpg') }}" alt="" class="w-full h-full object-cover opacity-40">
+        <div class="absolute inset-0 bg-gradient-to-b from-[#0a0a0f]/70 via-[#0a0a0f]/60 to-[#0a0a0f]"></div>
+    </div>
+
+    <!-- Content -->
+    <div class="relative z-10 w-full max-w-7xl mx-auto px-6 lg:px-8 py-32">
+        <div class="max-w-2xl" data-aos="fade-up">
+            <span class="inline-flex items-center gap-2 px-4 py-2 rounded-full glass text-xs font-medium text-slate-300 mb-6">
+                <svg class="w-4 h-4 text-pink-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/>
+                </svg>
+                The Foundation
+            </span>
+
+            <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6">
+                Life of Purpose
+            </h1>
+
+            <p class="text-2xl md:text-3xl font-light text-slate-300 mb-4">
+                Rebuilding Lives, Restoring Hope
+            </p>
+
+            <p class="text-slate-400 text-lg mb-8 max-w-lg">
+                A ForgeForth Africa initiative dedicated to empowering African youth through
+                career guidance, mentorship, and community support.
+            </p>
+
+            <div class="flex flex-wrap gap-4">
+                <a href="https://lifeofpurpose.forgeforthafrica.com" target="_blank" rel="noopener"
+                   class="inline-flex items-center gap-2 px-8 py-3 rounded-xl bg-gradient-to-r from-pink-600 to-purple-600 text-white font-medium hover:shadow-lg hover:shadow-pink-500/25 transition-all">
+                    Visit Life of Purpose
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/>
+                    </svg>
+                </a>
+                <a href="/contact" class="inline-flex items-center gap-2 px-8 py-3 rounded-xl glass text-slate-300 hover:text-white transition-all">
+                    Get Involved
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════════════════
+     ABOUT THE INITIATIVE
+═══════════════════════════════════════════════════════════════════════════ -->
+<section class="py-20 px-6 lg:px-8">
+    <div class="max-w-7xl mx-auto">
+        <div class="gradient-border p-8 lg:p-12 rounded-2xl" data-aos="fade-up">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+                <!-- Content -->
+                <div>
+                    <h2 class="text-2xl lg:text-3xl font-bold text-white mb-4">
+                        More Than Just Opportunity
+                    </h2>
+                    <p class="text-slate-400 mb-6">
+                        Life of Purpose is the heart of ForgeForth Africa's commitment to giving back.
+                        We believe that every young African deserves guidance, mentorship, and the chance
+                        to discover their purpose.
+                    </p>
+                    <p class="text-slate-400 mb-6">
+                        Through career guidance workshops, school visits, and community programs,
+                        we're helping the next generation find their path — regardless of their circumstances.
+                    </p>
+                    <div class="flex flex-wrap gap-3">
+                        <span class="px-3 py-1 rounded-full glass text-xs text-pink-300">Career Guidance</span>
+                        <span class="px-3 py-1 rounded-full glass text-xs text-purple-300">Mentorship</span>
+                        <span class="px-3 py-1 rounded-full glass text-xs text-cyan-300">Community</span>
+                        <span class="px-3 py-1 rounded-full glass text-xs text-emerald-300">Empowerment</span>
+                    </div>
+                </div>
+
+                <!-- Stats/Impact -->
+                <div class="grid grid-cols-2 gap-4">
+                    <div class="glass rounded-xl p-6 text-center">
+                        <p class="text-3xl font-bold text-pink-400 mb-2">500+</p>
+                        <p class="text-slate-400 text-sm">Students Reached</p>
+                    </div>
+                    <div class="glass rounded-xl p-6 text-center">
+                        <p class="text-3xl font-bold text-purple-400 mb-2">20+</p>
+                        <p class="text-slate-400 text-sm">Schools Visited</p>
+                    </div>
+                    <div class="glass rounded-xl p-6 text-center">
+                        <p class="text-3xl font-bold text-cyan-400 mb-2">50+</p>
+                        <p class="text-slate-400 text-sm">Volunteers</p>
+                    </div>
+                    <div class="glass rounded-xl p-6 text-center">
+                        <p class="text-3xl font-bold text-emerald-400 mb-2">5</p>
+                        <p class="text-slate-400 text-sm">Countries</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════════════════
+     WHAT WE DO
+═══════════════════════════════════════════════════════════════════════════ -->
+<section class="py-20 px-6 lg:px-8">
+    <div class="max-w-7xl mx-auto">
+        <div class="text-center mb-12" data-aos="fade-up">
+            <h2 class="text-3xl font-bold text-white mb-4">What We Do</h2>
+            <p class="text-slate-400 max-w-2xl mx-auto">
+                Our programs focus on equipping young Africans with the knowledge, skills,
+                and confidence to pursue their dreams.
+            </p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <!-- Career Guidance -->
+            <div class="glass rounded-2xl p-8 card-hover" data-aos="fade-up" data-aos-delay="100">
+                <div class="w-14 h-14 rounded-xl bg-pink-500/20 flex items-center justify-center mb-6">
+                    <svg class="w-7 h-7 text-pink-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/>
+                    </svg>
+                </div>
+                <h3 class="text-xl font-bold text-white mb-3">Career Guidance</h3>
+                <p class="text-slate-400 text-sm">
+                    We visit schools and communities to share career insights, helping young people
+                    understand the vast opportunities available to them.
+                </p>
+            </div>
+
+            <!-- Mentorship -->
+            <div class="glass rounded-2xl p-8 card-hover" data-aos="fade-up" data-aos-delay="200">
+                <div class="w-14 h-14 rounded-xl bg-purple-500/20 flex items-center justify-center mb-6">
+                    <svg class="w-7 h-7 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
+                    </svg>
+                </div>
+                <h3 class="text-xl font-bold text-white mb-3">Mentorship Programs</h3>
+                <p class="text-slate-400 text-sm">
+                    Connecting young people with experienced professionals who can guide them
+                    on their journey to success.
+                </p>
+            </div>
+
+            <!-- Community Events -->
+            <div class="glass rounded-2xl p-8 card-hover" data-aos="fade-up" data-aos-delay="300">
+                <div class="w-14 h-14 rounded-xl bg-cyan-500/20 flex items-center justify-center mb-6">
+                    <svg class="w-7 h-7 text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                    </svg>
+                </div>
+                <h3 class="text-xl font-bold text-white mb-3">Community Events</h3>
+                <p class="text-slate-400 text-sm">
+                    Organizing workshops, seminars, and networking events that bring together
+                    young people and industry leaders.
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════════════════
+     CTA
+═══════════════════════════════════════════════════════════════════════════ -->
+<section class="py-20 px-6 lg:px-8">
+    <div class="max-w-4xl mx-auto">
+        <div class="glass rounded-2xl p-8 lg:p-12 text-center" data-aos="fade-up">
+            <h2 class="text-2xl lg:text-3xl font-bold text-white mb-4">
+                Join the Movement
+            </h2>
+            <p class="text-slate-400 mb-8 max-w-xl mx-auto">
+                Whether you want to volunteer, mentor, or support our programs,
+                there's a place for you in the Life of Purpose family.
+            </p>
+            <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+                <a href="https://lifeofpurpose.forgeforthafrica.com" target="_blank" rel="noopener"
+                   class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-3 rounded-xl bg-gradient-to-r from-pink-600 to-purple-600 text-white font-medium hover:shadow-lg hover:shadow-pink-500/25 transition-all">
+                    Explore Life of Purpose
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/>
+                    </svg>
+                </a>
+                <a href="/contact" class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-3 rounded-xl glass text-slate-300 hover:text-white transition-all">
+                    Contact Us
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+

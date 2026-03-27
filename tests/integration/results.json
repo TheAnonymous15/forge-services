@@ -1,0 +1,165 @@
+{
+  "timestamp": "2026-03-13T21:33:55.764698",
+  "tests": [
+    {
+      "name": "Django System Check",
+      "status": "PASS",
+      "duration": 0.7914779186248779,
+      "error": null
+    },
+    {
+      "name": "Database Migrations",
+      "status": "PASS",
+      "duration": 0.6928949356079102,
+      "error": null
+    },
+    {
+      "name": "Static Files Collection",
+      "status": "PASS",
+      "duration": 0.44181084632873535,
+      "error": null
+    },
+    {
+      "name": "Website Imports",
+      "status": "PASS",
+      "duration": 0.014545917510986328,
+      "error": null
+    },
+    {
+      "name": "Accounts Imports",
+      "status": "PASS",
+      "duration": 0.06426596641540527,
+      "error": null
+    },
+    {
+      "name": "Profiles Imports",
+      "status": "PASS",
+      "duration": 0.018440961837768555,
+      "error": null
+    },
+    {
+      "name": "Organizations Imports",
+      "status": "PASS",
+      "duration": 0.001230001449584961,
+      "error": null
+    },
+    {
+      "name": "Applications Imports",
+      "status": "PASS",
+      "duration": 0.0009527206420898438,
+      "error": null
+    },
+    {
+      "name": "Matching Imports",
+      "status": "PASS",
+      "duration": 0.0011310577392578125,
+      "error": null
+    },
+    {
+      "name": "Communications Imports",
+      "status": "PASS",
+      "duration": 0.0002617835998535156,
+      "error": null
+    },
+    {
+      "name": "Storage Service Imports",
+      "status": "PASS",
+      "duration": 0.0009098052978515625,
+      "error": null
+    },
+    {
+      "name": "Media Processor Imports",
+      "status": "PASS",
+      "duration": 0.0020911693572998047,
+      "error": null
+    },
+    {
+      "name": "Talent Portal Imports",
+      "status": "PASS",
+      "duration": 0.31652092933654785,
+      "error": null
+    },
+    {
+      "name": "Org Portal Imports",
+      "status": "PASS",
+      "duration": 0.015908241271972656,
+      "error": null
+    },
+    {
+      "name": "Auth Service Imports",
+      "status": "PASS",
+      "duration": 0.24335098266601562,
+      "error": null
+    },
+    {
+      "name": "URL Resolution",
+      "status": "PASS",
+      "duration": 0.023747682571411133,
+      "error": null
+    },
+    {
+      "name": "API Schema Generation",
+      "status": "PASS",
+      "duration": 1.7881393432617188e-05,
+      "error": null
+    },
+    {
+      "name": "Serializer Instantiation",
+      "status": "PASS",
+      "duration": 4.76837158203125e-06,
+      "error": null
+    },
+    {
+      "name": "Website Templates",
+      "status": "PASS",
+      "duration": 0.0001392364501953125,
+      "error": null
+    },
+    {
+      "name": "Talent Portal Templates",
+      "status": "PASS",
+      "duration": 6.29425048828125e-05,
+      "error": null
+    },
+    {
+      "name": "Org Portal Templates",
+      "status": "PASS",
+      "duration": 4.00543212890625e-05,
+      "error": null
+    },
+    {
+      "name": "Environment File",
+      "status": "PASS",
+      "duration": 3.504753112792969e-05,
+      "error": null
+    },
+    {
+      "name": "Config JSON",
+      "status": "PASS",
+      "duration": 0.0004558563232421875,
+      "error": null
+    },
+    {
+      "name": "Security Settings",
+      "status": "PASS",
+      "duration": 1.0013580322265625e-05,
+      "error": null
+    },
+    {
+      "name": "Database Connection",
+      "status": "PASS",
+      "duration": 0.002167224884033203,
+      "error": null
+    },
+    {
+      "name": "Model Queries",
+      "status": "PASS",
+      "duration": 0.002553224563598633,
+      "error": null
+    }
+  ],
+  "passed": 26,
+  "failed": 0,
+  "skipped": 0,
+  "duration": 2.6356348991394043
+}

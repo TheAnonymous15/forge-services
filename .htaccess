@@ -1,0 +1,21 @@
+# forgeforth/.htaccess
+# ==========================================================
+# App-level protection for the Django project directory
+# HTTPS/www redirects and security headers are in public_html/.htaccess
+# ==========================================================
+
+# Deny direct browser access to all sensitive files
+<FilesMatch "\.(env|json|log|sqlite3|py|pyc)$">
+    Order Allow,Deny
+    Deny from all
+</FilesMatch>
+
+# Block dotfiles
+<FilesMatch "^\.(?!htaccess)">
+    Order Allow,Deny
+    Deny from all
+</FilesMatch>
+
+# Block directory listing
+Options -Indexes
+

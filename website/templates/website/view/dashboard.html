@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - ForgeForth Africa</title>
+    <meta name="robots" content="noindex, nofollow">
+    <link rel="icon" type="image/x-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>&#x1F6E1;</text></svg>">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>tailwind.config={theme:{extend:{fontFamily:{display:['Inter','sans-serif']}}}}</script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+        body{font-family:'Inter',sans-serif;background:#060b16;color:#e2e8f0;min-height:100vh;overflow:hidden}
+        .no-scroll::-webkit-scrollbar{display:none} .no-scroll{scrollbar-width:none}
+        .glass{background:rgba(10,16,30,0.65);backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,0.05)}
+        .row-hover:hover{background:rgba(255,255,255,0.025)}
+        .nav-item{transition:all .2s ease} .nav-item:hover{background:rgba(255,255,255,0.04)}
+        .nav-active{background:rgba(56,189,248,0.08)!important;color:#7dd3fc!important;border-right:2px solid #38bdf8}
+        @keyframes fade-up{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+        .anim{animation:fade-up .4s ease-out forwards}
+    </style>
+</head>
+<body>
+<div class="flex h-screen overflow-hidden">
+
+    <!-- Mobile overlay -->
+    <div id="sidebar-overlay" class="fixed inset-0 bg-black/60 z-40 hidden lg:hidden" onclick="toggleSidebar()"></div>
+
+    <!-- Sidebar -->
+    <aside id="sidebar" class="fixed lg:static inset-y-0 left-0 z-50 w-56 flex flex-col border-r border-white/[0.05] -translate-x-full lg:translate-x-0 transition-transform duration-200"
+           style="background:rgba(8,12,24,0.95);backdrop-filter:blur(24px)">
+
+        <!-- Brand -->
+        <div class="px-5 pt-5 pb-4 border-b border-white/[0.04]">
+            <div class="flex items-center gap-2.5">
+                <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-sky-500 to-indigo-600 flex items-center justify-center flex-shrink-0">
+                    <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+                </div>
+                <div class="min-w-0">
+                    <p class="text-white font-bold text-xs truncate">ForgeForth Africa</p>
+                    <p class="text-slate-600 text-[9px]">Admin Panel</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Nav -->
+        <nav class="flex-1 px-3 py-4 space-y-1 overflow-y-auto no-scroll">
+            <p class="px-2 mb-2 text-slate-600 text-[9px] font-semibold uppercase tracking-widest">Data</p>
+
+            <button onclick="switchTab('registrations')" id="nav-registrations"
+                    class="nav-item nav-active w-full flex items-center gap-2.5 px-3 py-2.5 rounded-lg text-[11px] font-medium text-slate-400">
+                <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                <span class="flex-1 text-left">Talent Waitlist</span>
+                <span class="px-1.5 py-0.5 rounded-full bg-emerald-500/15 text-emerald-400 text-[9px] font-bold">{{ stats.registrations }}</span>
+            </button>
+
+            <button onclick="switchTab('partners')" id="nav-partners"
+                    class="nav-item w-full flex items-center gap-2.5 px-3 py-2.5 rounded-lg text-[11px] font-medium text-slate-400">
+                <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/></svg>
+                <span class="flex-1 text-left">Partners</span>
+                <span class="px-1.5 py-0.5 rounded-full bg-indigo-500/15 text-indigo-400 text-[9px] font-bold">{{ stats.partners }}</span>
+            </button>
+
+            <button onclick="switchTab('messages')" id="nav-messages"
+                    class="nav-item w-full flex items-center gap-2.5 px-3 py-2.5 rounded-lg text-[11px] font-medium text-slate-400">
+                <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+                <span class="flex-1 text-left">Messages</span>
+                {% if stats.unread > 0 %}
+                <span class="px-1.5 py-0.5 rounded-full bg-amber-500/15 text-amber-400 text-[9px] font-bold">{{ stats.unread }}</span>
+                {% else %}
+                <span class="px-1.5 py-0.5 rounded-full bg-sky-500/10 text-sky-400/70 text-[9px] font-bold">{{ stats.messages }}</span>
+                {% endif %}
+            </button>
+
+            <div class="pt-4 pb-1"><p class="px-2 text-slate-600 text-[9px] font-semibold uppercase tracking-widest">Export</p></div>
+
+            <a href="{% url 'website:export_registrations_csv' %}" class="nav-item flex items-center gap-2.5 px-3 py-2.5 rounded-lg text-[11px] font-medium text-slate-400 no-underline">
+                <svg class="w-4 h-4 flex-shrink-0 text-emerald-400/70" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+                <span class="flex-1 text-left">Talent CSV</span>
+            </a>
+
+            <a href="{% url 'website:export_partners_csv' %}" class="nav-item flex items-center gap-2.5 px-3 py-2.5 rounded-lg text-[11px] font-medium text-slate-400 no-underline">
+                <svg class="w-4 h-4 flex-shrink-0 text-indigo-400/70" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+                <span class="flex-1 text-left">Partners CSV</span>
+            </a>
+
+            <a href="{% url 'website:export_messages_csv' %}" class="nav-item flex items-center gap-2.5 px-3 py-2.5 rounded-lg text-[11px] font-medium text-slate-400 no-underline">
+                <svg class="w-4 h-4 flex-shrink-0 text-amber-400/70" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+                <span class="flex-1 text-left">Messages CSV</span>
+            </a>
+        </nav>
+
+        <!-- Sidebar footer -->
+        <div class="px-3 pb-4 pt-2 border-t border-white/[0.04] space-y-2">
+            <a href="/" class="nav-item flex items-center gap-2.5 px-3 py-2 rounded-lg text-[11px] font-medium text-slate-500 no-underline">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M10 19l-7-7m0 0l7-7m-7 7h18"/></svg>
+                Back to Site
+            </a>
+            <div class="flex items-center gap-2.5 px-3 py-2">
+                <div class="w-7 h-7 rounded-full bg-gradient-to-br from-sky-500 to-indigo-500 flex items-center justify-center flex-shrink-0">
+                    <svg class="w-3.5 h-3.5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
+                </div>
+                <div class="min-w-0 flex-1">
+                    <p class="text-white text-[11px] font-medium truncate">{{ request.user.email }}</p>
+                    <p class="text-slate-600 text-[9px]">Admin</p>
+                </div>
+            </div>
+            <a href="?action=logout" class="nav-item flex items-center gap-2.5 px-3 py-2 rounded-lg text-[11px] font-medium text-red-400/80 no-underline hover:text-red-400 hover:bg-red-500/[0.06]">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/></svg>
+                Logout
+            </a>
+        </div>
+    </aside>
+
+    <!-- Main content -->
+    <div class="flex-1 flex flex-col min-w-0 overflow-hidden">
+
+        <!-- Top bar -->
+        <header class="flex items-center gap-3 px-4 sm:px-6 py-3 border-b border-white/[0.04] flex-shrink-0" style="background:rgba(8,12,24,0.7);backdrop-filter:blur(12px)">
+            <button onclick="toggleSidebar()" class="lg:hidden w-8 h-8 rounded-lg bg-white/[0.04] border border-white/[0.07] flex items-center justify-center text-slate-400 hover:text-white transition-colors">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+            </button>
+            <div class="flex-1 min-w-0">
+                <h1 id="page-title" class="text-white font-semibold text-sm">Talent Waitlist</h1>
+                <p id="page-subtitle" class="text-slate-600 text-[10px]">{{ stats.registrations }} early access signups</p>
+            </div>
+            <!-- Quick stats -->
+            <div class="hidden sm:flex items-center gap-4">
+                <div class="text-center">
+                    <p class="text-white font-bold text-lg leading-none">{{ stats.registrations }}</p>
+                    <p class="text-slate-600 text-[9px] mt-0.5">Talent</p>
+                </div>
+                <div class="w-px h-8 bg-white/[0.06]"></div>
+                <div class="text-center">
+                    <p class="text-indigo-400 font-bold text-lg leading-none">{{ stats.partners }}</p>
+                    <p class="text-slate-600 text-[9px] mt-0.5">Partners</p>
+                </div>
+                <div class="w-px h-8 bg-white/[0.06]"></div>
+                <div class="text-center">
+                    <p class="text-amber-400 font-bold text-lg leading-none">{{ stats.unread }}</p>
+                    <p class="text-slate-600 text-[9px] mt-0.5">Unread</p>
+                </div>
+            </div>
+        </header>
+
+        <!-- Scrollable content -->
+        <main class="flex-1 overflow-y-auto p-4 sm:p-6 no-scroll">
+
+            <!-- ═══ Talent Registrations Panel ═══ -->
+            <div id="panel-registrations" class="anim">
+                {% if registrations %}
+                <div class="glass rounded-xl overflow-hidden">
+                    <div class="overflow-x-auto no-scroll">
+                        <table class="w-full text-xs">
+                            <thead>
+                                <tr class="border-b border-white/[0.06]">
+                                    <th class="text-left px-4 py-3 text-slate-500 font-semibold text-[10px] uppercase tracking-widest">#</th>
+                                    <th class="text-left px-4 py-3 text-slate-500 font-semibold text-[10px] uppercase tracking-widest">Name</th>
+                                    <th class="text-left px-4 py-3 text-slate-500 font-semibold text-[10px] uppercase tracking-widest">Email</th>
+                                    <th class="text-left px-4 py-3 text-slate-500 font-semibold text-[10px] uppercase tracking-widest">Phone</th>
+                                    <th class="text-left px-4 py-3 text-slate-500 font-semibold text-[10px] uppercase tracking-widest">Country</th>
+                                    <th class="text-left px-4 py-3 text-slate-500 font-semibold text-[10px] uppercase tracking-widest">Opportunities</th>
+                                    <th class="text-left px-4 py-3 text-slate-500 font-semibold text-[10px] uppercase tracking-widest">Skills</th>
+                                    <th class="text-left px-4 py-3 text-slate-500 font-semibold text-[10px] uppercase tracking-widest">Date</th>
+                                    <th class="text-left px-4 py-3 text-slate-500 font-semibold text-[10px] uppercase tracking-widest">Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for reg in registrations %}
+                                <tr class="border-b border-white/[0.03] row-hover cursor-pointer" onclick="showRegistrationModal({{ reg.id }})">
+                                    <td class="px-4 py-3 text-slate-600">{{ reg.id }}</td>
+                                    <td class="px-4 py-3 text-white font-medium">{{ reg.full_name }}</td>
+                                    <td class="px-4 py-3 text-sky-400">{{ reg.email }}</td>
+                                    <td class="px-4 py-3 text-slate-400">{{ reg.phone|default:"-" }}</td>
+                                    <td class="px-4 py-3 text-slate-400">{{ reg.country|default:"-" }}</td>
+                                    <td class="px-4 py-3 text-slate-400">{{ reg.opportunity_types|join:", "|default:"-" }}</td>
+                                    <td class="px-4 py-3 text-slate-400">{{ reg.skills|join:", "|default:"-" }}</td>
+                                    <td class="px-4 py-3 text-slate-500">{{ reg.created_at|date:"Y-m-d H:i" }}</td>
+                                    <td class="px-4 py-3">
+                                        {% if reg.is_contacted %}
+                                        <span class="px-2 py-1 rounded-full bg-emerald-500/15 text-emerald-400 text-[9px] font-semibold">Contacted</span>
+                                        {% else %}
+                                        <span class="px-2 py-1 rounded-full bg-amber-500/15 text-amber-400 text-[9px] font-semibold">Pending</span>
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                {% else %}
+                <div class="glass rounded-xl p-16 text-center">
+                    <div class="w-14 h-14 mx-auto mb-4 rounded-xl bg-white/[0.03] border border-white/[0.06] flex items-center justify-center">
+                        <svg class="w-7 h-7 text-slate-700" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                    </div>
+                    <p class="text-slate-500 text-sm">No registrations yet</p>
+                    <p class="text-slate-700 text-xs mt-1">Early access signups will appear here</p>
+                </div>
+                {% endif %}
+            </div>
+
+            <!-- ═══ Partners Panel ═══ -->
+            <div id="panel-partners" class="anim hidden">
+                {% if partners %}
+                <div class="glass rounded-xl overflow-hidden">
+                    <div class="overflow-x-auto no-scroll">
+                        <table class="w-full text-xs">
+                            <thead>
+                                <tr class="border-b border-white/[0.06]">
+                                    <th class="text-left px-4 py-3 text-slate-500 font-semibold text-[10px] uppercase tracking-widest">#</th>
+                                    <th class="text-left px-4 py-3 text-slate-500 font-semibold text-[10px] uppercase tracking-widest">Organization</th>
+                                    <th class="text-left px-4 py-3 text-slate-500 font-semibold text-[10px] uppercase tracking-widest">Industry</th>
+                                    <th class="text-left px-4 py-3 text-slate-500 font-semibold text-[10px] uppercase tracking-widest">Contact</th>
+                                    <th class="text-left px-4 py-3 text-slate-500 font-semibold text-[10px] uppercase tracking-widest">Email</th>
+                                    <th class="text-left px-4 py-3 text-slate-500 font-semibold text-[10px] uppercase tracking-widest">Country</th>
+                                    <th class="text-left px-4 py-3 text-slate-500 font-semibold text-[10px] uppercase tracking-widest">Interests</th>
+                                    <th class="text-left px-4 py-3 text-slate-500 font-semibold text-[10px] uppercase tracking-widest">Date</th>
+                                    <th class="text-left px-4 py-3 text-slate-500 font-semibold text-[10px] uppercase tracking-widest">Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for partner in partners %}
+                                <tr class="border-b border-white/[0.03] row-hover cursor-pointer" onclick="showPartnerModal({{ partner.id }})">
+                                    <td class="px-4 py-3 text-slate-600">{{ partner.id }}</td>
+                                    <td class="px-4 py-3 text-white font-medium">{{ partner.organization_name }}</td>
+                                    <td class="px-4 py-3 text-slate-400">{{ partner.industry }}</td>
+                                    <td class="px-4 py-3 text-slate-300">{{ partner.full_name }}</td>
+                                    <td class="px-4 py-3 text-indigo-400">{{ partner.email }}</td>
+                                    <td class="px-4 py-3 text-slate-400">{{ partner.country }}</td>
+                                    <td class="px-4 py-3 text-slate-400">{{ partner.interest_types|join:", "|default:"-" }}</td>
+                                    <td class="px-4 py-3 text-slate-500">{{ partner.created_at|date:"Y-m-d H:i" }}</td>
+                                    <td class="px-4 py-3">
+                                        {% if partner.is_contacted %}
+                                        <span class="px-2 py-1 rounded-full bg-emerald-500/15 text-emerald-400 text-[9px] font-semibold">Contacted</span>
+                                        {% else %}
+                                        <span class="px-2 py-1 rounded-full bg-amber-500/15 text-amber-400 text-[9px] font-semibold">Pending</span>
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                {% else %}
+                <div class="glass rounded-xl p-16 text-center">
+                    <div class="w-14 h-14 mx-auto mb-4 rounded-xl bg-white/[0.03] border border-white/[0.06] flex items-center justify-center">
+                        <svg class="w-7 h-7 text-slate-700" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/></svg>
+                    </div>
+                    <p class="text-slate-500 text-sm">No partner registrations yet</p>
+                    <p class="text-slate-700 text-xs mt-1">Partner/employer signups will appear here</p>
+                </div>
+                {% endif %}
+            </div>
+
+            <!-- ═══ Messages Panel ═══ -->
+            <div id="panel-messages" class="anim hidden">
+                {% if messages %}
+                <div class="glass rounded-xl overflow-hidden">
+                    <div class="overflow-x-auto no-scroll">
+                        <table class="w-full text-xs">
+                            <thead>
+                                <tr class="border-b border-white/[0.06]">
+                                    <th class="text-left px-4 py-3 text-slate-500 font-semibold text-[10px] uppercase tracking-widest">#</th>
+                                    <th class="text-left px-4 py-3 text-slate-500 font-semibold text-[10px] uppercase tracking-widest">Name</th>
+                                    <th class="text-left px-4 py-3 text-slate-500 font-semibold text-[10px] uppercase tracking-widest">Email</th>
+                                    <th class="text-left px-4 py-3 text-slate-500 font-semibold text-[10px] uppercase tracking-widest">Phone</th>
+                                    <th class="text-left px-4 py-3 text-slate-500 font-semibold text-[10px] uppercase tracking-widest">Message</th>
+                                    <th class="text-left px-4 py-3 text-slate-500 font-semibold text-[10px] uppercase tracking-widest">Date</th>
+                                    <th class="text-left px-4 py-3 text-slate-500 font-semibold text-[10px] uppercase tracking-widest">Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for msg in messages %}
+                                <tr class="border-b border-white/[0.03] row-hover cursor-pointer {% if not msg.is_read %}border-l-2 border-l-sky-400{% endif %}" onclick="showMessageModal({{ msg.id }})">
+                                    <td class="px-4 py-3 text-slate-600">{{ msg.id }}</td>
+                                    <td class="px-4 py-3 text-white font-medium">{{ msg.full_name }}</td>
+                                    <td class="px-4 py-3 text-sky-400">{{ msg.email }}</td>
+                                    <td class="px-4 py-3 text-slate-400">{{ msg.phone|default:"-" }}</td>
+                                    <td class="px-4 py-3 text-slate-400 max-w-xs truncate">{{ msg.message|truncatechars:50 }}</td>
+                                    <td class="px-4 py-3 text-slate-500">{{ msg.created_at|date:"Y-m-d H:i" }}</td>
+                                    <td class="px-4 py-3">
+                                        {% if msg.is_read %}
+                                        <span class="px-2 py-1 rounded-full bg-slate-500/15 text-slate-400 text-[9px] font-semibold">Read</span>
+                                        {% else %}
+                                        <span class="px-2 py-1 rounded-full bg-sky-500/15 text-sky-400 text-[9px] font-semibold">New</span>
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                {% else %}
+                <div class="glass rounded-xl p-16 text-center">
+                    <div class="w-14 h-14 mx-auto mb-4 rounded-xl bg-white/[0.03] border border-white/[0.06] flex items-center justify-center">
+                        <svg class="w-7 h-7 text-slate-700" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+                    </div>
+                    <p class="text-slate-500 text-sm">No messages yet</p>
+                    <p class="text-slate-700 text-xs mt-1">Contact messages will appear here</p>
+                </div>
+                {% endif %}
+            </div>
+
+        </main>
+    </div>
+</div>
+
+<!-- Store data for modals -->
+<script>
+// Data will be loaded via AJAX when modals are opened
+const registrationsCount = {{ stats.registrations }};
+const partnersCount = {{ stats.partners }};
+const messagesCount = {{ stats.messages }};
+const unreadCount = {{ stats.unread }};
+</script>
+
+<script>
+// Tab switching
+function switchTab(tab) {
+    // Hide all panels
+    document.querySelectorAll('[id^="panel-"]').forEach(p => p.classList.add('hidden'));
+    // Remove active from all nav items
+    document.querySelectorAll('[id^="nav-"]').forEach(n => n.classList.remove('nav-active'));
+
+    // Show selected panel and activate nav
+    document.getElementById('panel-' + tab).classList.remove('hidden');
+    document.getElementById('nav-' + tab).classList.add('nav-active');
+
+    // Update header
+    const titles = {
+        'registrations': ['Talent Waitlist', '{{ stats.registrations }} early access signups'],
+        'partners': ['Partner Registrations', '{{ stats.partners }} employer/partner signups'],
+        'messages': ['Contact Messages', '{{ stats.messages }} messages ({{ stats.unread }} unread)']
+    };
+    document.getElementById('page-title').textContent = titles[tab][0];
+    document.getElementById('page-subtitle').textContent = titles[tab][1];
+}
+
+// Toggle sidebar (mobile)
+function toggleSidebar() {
+    const sidebar = document.getElementById('sidebar');
+    const overlay = document.getElementById('sidebar-overlay');
+    sidebar.classList.toggle('-translate-x-full');
+    overlay.classList.toggle('hidden');
+}
+
+// Modal functions (placeholder - would need full implementation)
+function showRegistrationModal(id) {
+    console.log('Show registration:', id);
+    // TODO: Implement modal
+}
+
+function showPartnerModal(id) {
+    console.log('Show partner:', id);
+    // TODO: Implement modal
+}
+
+function showMessageModal(id) {
+    console.log('Show message:', id);
+    // TODO: Implement modal
+}
+</script>
+</body>
+</html>
+

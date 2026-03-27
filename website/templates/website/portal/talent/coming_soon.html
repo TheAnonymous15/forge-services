@@ -1,0 +1,133 @@
+{% extends "website/layouts/portal_base.html" %}
+
+{% block title %}{{ page_title }} - Talent Portal{% endblock %}
+
+{% block portal_content %}
+<div class="flex flex-col items-center justify-center min-h-[60vh] text-center px-4">
+    <!-- Animated Icon -->
+    <div class="relative mb-8">
+        <div class="w-24 h-24 rounded-full bg-gradient-to-br from-secondary/20 to-accent/20 flex items-center justify-center animate-pulse">
+            <svg class="w-12 h-12 text-secondary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"/>
+            </svg>
+        </div>
+        <div class="absolute -top-2 -right-2 w-8 h-8 rounded-full bg-secondary flex items-center justify-center">
+            <svg class="w-4 h-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
+            </svg>
+        </div>
+    </div>
+
+    <!-- Content -->
+    <h1 class="text-3xl md:text-4xl font-bold text-white mb-4">{{ page_title }}</h1>
+    <h2 class="text-xl md:text-2xl text-secondary mb-4">Coming Soon</h2>
+    <p class="text-blue-200/70 max-w-md mb-8">
+        {% if feature_description %}
+        {{ feature_description }}
+        {% else %}
+        We're working hard to bring you this exciting feature. Stay tuned for updates!
+        {% endif %}
+    </p>
+
+    <!-- Features Preview -->
+    <div class="glass-card rounded-2xl p-6 max-w-lg w-full mb-8">
+        <h3 class="text-white font-semibold mb-4">What to expect:</h3>
+        <ul class="text-left space-y-3">
+            {% if page_title == "Learning Hub" %}
+            <li class="flex items-start gap-3 text-blue-200/80">
+                <svg class="w-5 h-5 text-accent flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                </svg>
+                Access to curated learning resources and courses
+            </li>
+            <li class="flex items-start gap-3 text-blue-200/80">
+                <svg class="w-5 h-5 text-accent flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                </svg>
+                Personalized learning paths based on your goals
+            </li>
+            <li class="flex items-start gap-3 text-blue-200/80">
+                <svg class="w-5 h-5 text-accent flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                </svg>
+                Track your progress and earn certificates
+            </li>
+            {% elif page_title == "My Network" %}
+            <li class="flex items-start gap-3 text-blue-200/80">
+                <svg class="w-5 h-5 text-accent flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                </svg>
+                Connect with other professionals in your field
+            </li>
+            <li class="flex items-start gap-3 text-blue-200/80">
+                <svg class="w-5 h-5 text-accent flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                </svg>
+                Build meaningful professional relationships
+            </li>
+            <li class="flex items-start gap-3 text-blue-200/80">
+                <svg class="w-5 h-5 text-accent flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                </svg>
+                Receive referrals and job recommendations
+            </li>
+            {% elif page_title == "Find Mentors" %}
+            <li class="flex items-start gap-3 text-blue-200/80">
+                <svg class="w-5 h-5 text-accent flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                </svg>
+                Get matched with experienced mentors
+            </li>
+            <li class="flex items-start gap-3 text-blue-200/80">
+                <svg class="w-5 h-5 text-accent flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                </svg>
+                Schedule 1-on-1 mentoring sessions
+            </li>
+            <li class="flex items-start gap-3 text-blue-200/80">
+                <svg class="w-5 h-5 text-accent flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                </svg>
+                Accelerate your career growth with guidance
+            </li>
+            {% else %}
+            <li class="flex items-start gap-3 text-blue-200/80">
+                <svg class="w-5 h-5 text-accent flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                </svg>
+                New features and capabilities
+            </li>
+            <li class="flex items-start gap-3 text-blue-200/80">
+                <svg class="w-5 h-5 text-accent flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                </svg>
+                Enhanced user experience
+            </li>
+            <li class="flex items-start gap-3 text-blue-200/80">
+                <svg class="w-5 h-5 text-accent flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                </svg>
+                More opportunities to grow
+            </li>
+            {% endif %}
+        </ul>
+    </div>
+
+    <!-- Actions -->
+    <div class="flex flex-col sm:flex-row gap-4">
+        <a href="/portal/talent/dashboard/" class="px-6 py-3 rounded-xl bg-gradient-to-r from-secondary to-accent text-white font-semibold hover:opacity-90 transition flex items-center gap-2">
+            <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
+            </svg>
+            Back to Dashboard
+        </a>
+        <a href="/portal/talent/opportunities/" class="px-6 py-3 rounded-xl bg-white/10 text-white font-semibold hover:bg-white/20 transition flex items-center gap-2">
+            <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+            </svg>
+            Browse Opportunities
+        </a>
+    </div>
+</div>
+{% endblock %}
+

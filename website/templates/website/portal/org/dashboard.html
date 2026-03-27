@@ -1,0 +1,172 @@
+{% extends "website/layouts/portal_base.html" %}
+
+{% block title %}Dashboard - Organization Portal{% endblock %}
+
+{% block portal_content %}
+<!-- Welcome Section -->
+<div class="mb-8">
+    <h1 class="text-2xl md:text-3xl font-bold text-white mb-2">
+        Welcome, {{ organization.name }}
+    </h1>
+    <p class="text-blue-200/70">Manage your opportunities and review applications</p>
+</div>
+
+<!-- Stats Grid -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+    <!-- Active Opportunities -->
+    <div class="glass-card rounded-2xl p-6">
+        <div class="flex items-center justify-between mb-4">
+            <div class="w-12 h-12 rounded-xl bg-blue-500/20 flex items-center justify-center">
+                <svg class="w-6 h-6 text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/>
+                </svg>
+            </div>
+            <span class="text-3xl font-bold text-white">{{ stats.active_opportunities }}</span>
+        </div>
+        <h3 class="text-blue-200/70 text-sm font-medium">Active Opportunities</h3>
+    </div>
+
+    <!-- Total Applications -->
+    <div class="glass-card rounded-2xl p-6">
+        <div class="flex items-center justify-between mb-4">
+            <div class="w-12 h-12 rounded-xl bg-green-500/20 flex items-center justify-center">
+                <svg class="w-6 h-6 text-green-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                </svg>
+            </div>
+            <span class="text-3xl font-bold text-white">{{ stats.total_applications }}</span>
+        </div>
+        <h3 class="text-blue-200/70 text-sm font-medium">Total Applications</h3>
+    </div>
+
+    <!-- Pending Review -->
+    <div class="glass-card rounded-2xl p-6">
+        <div class="flex items-center justify-between mb-4">
+            <div class="w-12 h-12 rounded-xl bg-yellow-500/20 flex items-center justify-center">
+                <svg class="w-6 h-6 text-yellow-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                </svg>
+            </div>
+            <span class="text-3xl font-bold text-white">{{ stats.pending_review }}</span>
+        </div>
+        <h3 class="text-blue-200/70 text-sm font-medium">Pending Review</h3>
+    </div>
+</div>
+
+<!-- Recent Applications -->
+<div class="glass-card rounded-2xl p-6 mb-8">
+    <div class="flex items-center justify-between mb-6">
+        <h2 class="text-lg font-semibold text-white">Recent Applications</h2>
+        <a href="/portal/org/applications/" class="text-blue-400 hover:text-blue-300 text-sm font-medium">View All</a>
+    </div>
+
+    {% if recent_applications %}
+    <div class="overflow-x-auto">
+        <table class="w-full">
+            <thead>
+                <tr class="text-left text-blue-200/50 text-sm border-b border-white/10">
+                    <th class="pb-3 font-medium">Applicant</th>
+                    <th class="pb-3 font-medium">Position</th>
+                    <th class="pb-3 font-medium">Status</th>
+                    <th class="pb-3 font-medium">Applied</th>
+                    <th class="pb-3 font-medium"></th>
+                </tr>
+            </thead>
+            <tbody class="text-blue-100">
+                {% for app in recent_applications %}
+                <tr class="border-b border-white/5 hover:bg-white/5">
+                    <td class="py-4">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-full bg-gradient-to-br from-blue-500 to-purple-500 flex items-center justify-center flex-shrink-0">
+                                <span class="text-white font-semibold text-sm">{{ app.applicant.first_name[:1].upper() }}</span>
+                            </div>
+                            <div>
+                                <p class="font-medium">{{ app.applicant.full_name }}</p>
+                                <p class="text-blue-200/50 text-sm">{{ app.applicant.email }}</p>
+                            </div>
+                        </div>
+                    </td>
+                    <td class="py-4">{{ app.opportunity.title }}</td>
+                    <td class="py-4">
+                        <span class="px-2.5 py-1 rounded-full text-xs font-medium
+                            {% if app.status == 'pending' %}bg-yellow-500/20 text-yellow-300
+                            {% elif app.status == 'interview' %}bg-green-500/20 text-green-300
+                            {% elif app.status == 'accepted' %}bg-blue-500/20 text-blue-300
+                            {% elif app.status == 'rejected' %}bg-red-500/20 text-red-300
+                            {% else %}bg-gray-500/20 text-gray-300{% endif %}">
+                            {{ app.status|title }}
+                        </span>
+                    </td>
+                    <td class="py-4 text-blue-200/60 text-sm">{{ app.created_at|date:"M d, Y" }}</td>
+                    <td class="py-4">
+                        <a href="/portal/org/applications/?id={{ app.id }}" class="text-blue-400 hover:text-blue-300 text-sm">
+                            Review
+                        </a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% else %}
+    <div class="text-center py-12">
+        <div class="w-16 h-16 rounded-full bg-blue-500/10 flex items-center justify-center mx-auto mb-4">
+            <svg class="w-8 h-8 text-blue-400/50" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+            </svg>
+        </div>
+        <p class="text-blue-200/50 mb-4">No applications received yet</p>
+        <a href="/portal/org/opportunities/" class="inline-flex items-center gap-2 text-blue-400 hover:text-blue-300 font-medium">
+            Post an Opportunity
+            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+            </svg>
+        </a>
+    </div>
+    {% endif %}
+</div>
+
+<!-- Quick Actions -->
+<div class="glass-card rounded-2xl p-6">
+    <h2 class="text-lg font-semibold text-white mb-6">Quick Actions</h2>
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <a href="/portal/org/opportunities/?action=create" class="flex flex-col items-center p-4 rounded-xl bg-white/5 hover:bg-white/10 transition text-center">
+            <div class="w-12 h-12 rounded-xl bg-blue-500/20 flex items-center justify-center mb-3">
+                <svg class="w-6 h-6 text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
+                </svg>
+            </div>
+            <span class="text-white text-sm font-medium">Post Opportunity</span>
+        </a>
+
+        <a href="/portal/org/applications/?status=pending" class="flex flex-col items-center p-4 rounded-xl bg-white/5 hover:bg-white/10 transition text-center">
+            <div class="w-12 h-12 rounded-xl bg-yellow-500/20 flex items-center justify-center mb-3">
+                <svg class="w-6 h-6 text-yellow-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
+                </svg>
+            </div>
+            <span class="text-white text-sm font-medium">Review Pending</span>
+        </a>
+
+        <a href="/portal/org/team/" class="flex flex-col items-center p-4 rounded-xl bg-white/5 hover:bg-white/10 transition text-center">
+            <div class="w-12 h-12 rounded-xl bg-green-500/20 flex items-center justify-center mb-3">
+                <svg class="w-6 h-6 text-green-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/>
+                </svg>
+            </div>
+            <span class="text-white text-sm font-medium">Manage Team</span>
+        </a>
+
+        <a href="/portal/org/settings/" class="flex flex-col items-center p-4 rounded-xl bg-white/5 hover:bg-white/10 transition text-center">
+            <div class="w-12 h-12 rounded-xl bg-purple-500/20 flex items-center justify-center mb-3">
+                <svg class="w-6 h-6 text-purple-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/>
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                </svg>
+            </div>
+            <span class="text-white text-sm font-medium">Settings</span>
+        </a>
+    </div>
+</div>
+{% endblock %}
+

@@ -1,0 +1,421 @@
+{% extends "layouts/base.html" %}
+
+{% block content %}
+<!-- ═══════════════════════════════════════════════════════════════════════════
+     HERO SECTION
+═══════════════════════════════════════════════════════════════════════════ -->
+<section class="relative min-h-screen flex items-center overflow-hidden">
+    <!-- Background Image -->
+    <div class="absolute inset-0 z-0">
+        <img src="{{ static('images/one.jpg') }}" alt="" class="w-full h-full object-cover opacity-40">
+        <div class="absolute inset-0 bg-gradient-to-b from-[#0a0a0f]/80 via-[#0a0a0f]/70 to-[#0a0a0f]"></div>
+    </div>
+
+    <!-- Animated Particles -->
+    <div class="absolute inset-0 z-[1] overflow-hidden pointer-events-none">
+        <div class="absolute top-20 left-20 w-2 h-2 rounded-full bg-purple-400/30 animate-float" style="animation-delay: 0s;"></div>
+        <div class="absolute top-40 right-40 w-3 h-3 rounded-full bg-cyan-400/20 animate-float" style="animation-delay: 1s;"></div>
+        <div class="absolute bottom-40 left-1/3 w-2 h-2 rounded-full bg-emerald-400/25 animate-float" style="animation-delay: 2s;"></div>
+    </div>
+
+    <!-- Content -->
+    <div class="relative z-10 w-full max-w-7xl mx-auto px-6 lg:px-8 py-20 lg:py-0">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center min-h-screen py-20">
+
+            <!-- Left: Content -->
+            <div class="flex flex-col gap-6" data-aos="fade-right">
+                <!-- Status Badge -->
+                <div class="inline-flex">
+                    <span class="inline-flex items-center gap-2 px-4 py-2 rounded-full glass text-xs font-medium text-slate-300">
+                        <span class="relative flex h-2 w-2">
+                            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                            <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-400"></span>
+                        </span>
+                        Platform Live · Free Forever
+                    </span>
+                </div>
+
+                <!-- Title -->
+                <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold text-white leading-tight">
+                    <span class="gradient-text">ForgeForth</span>
+                    <span class="text-white">Africa</span>
+                </h1>
+
+                <!-- Subtitle -->
+                <p class="text-xl md:text-2xl text-slate-300 font-light max-w-lg">
+                    Where African talent meets global opportunity.
+                </p>
+
+                <!-- Description -->
+                <p class="text-slate-400 leading-relaxed max-w-md">
+                    Whether you're a developer, nurse, teacher, or any professional — we help you grow,
+                    connect, and transform your career across Africa.
+                </p>
+
+                <!-- Quote -->
+                <p class="text-slate-500 text-sm italic border-l-2 border-purple-500/50 pl-4">
+                    "There is power beyond a poor résumé."
+                </p>
+
+                <!-- CTA Buttons -->
+                <div class="flex flex-wrap items-center gap-4 pt-4">
+                    <button onclick="openRegistrationModal('individual')"
+                            class="group inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-gradient-to-r from-purple-600 to-cyan-600 text-white font-medium hover:shadow-lg hover:shadow-purple-500/25 transition-all">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"/>
+                        </svg>
+                        Create Free Account
+                        <svg class="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
+                        </svg>
+                    </button>
+                    <a href="/platform" class="inline-flex items-center gap-2 px-6 py-3 rounded-xl glass text-slate-300 hover:text-white hover:bg-white/10 transition-all">
+                        <svg class="w-5 h-5 text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"/>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                        </svg>
+                        How It Works
+                    </a>
+                </div>
+
+                <!-- Stats -->
+                <div class="flex items-center gap-8 pt-6 text-sm">
+                    <div class="text-center">
+                        <p class="text-2xl font-bold gradient-text">5K+</p>
+                        <p class="text-slate-500 text-xs">Members</p>
+                    </div>
+                    <div class="w-px h-8 bg-white/10"></div>
+                    <div class="text-center">
+                        <p class="text-2xl font-bold gradient-text">54</p>
+                        <p class="text-slate-500 text-xs">Countries</p>
+                    </div>
+                    <div class="w-px h-8 bg-white/10"></div>
+                    <div class="text-center">
+                        <p class="text-2xl font-bold gradient-text">100%</p>
+                        <p class="text-slate-500 text-xs">Free</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right: Visual Element -->
+            <div class="hidden lg:flex items-center justify-center" data-aos="fade-left">
+                <div class="relative w-80 h-80">
+                    <!-- Orbiting Rings -->
+                    <div class="absolute inset-0 rounded-full border border-purple-500/20 animate-spin" style="animation-duration: 20s;"></div>
+                    <div class="absolute inset-6 rounded-full border border-cyan-500/20 animate-spin" style="animation-duration: 15s; animation-direction: reverse;"></div>
+                    <div class="absolute inset-12 rounded-full border border-emerald-500/20 animate-spin" style="animation-duration: 25s;"></div>
+
+                    <!-- Orbiting Dots -->
+                    <div class="absolute inset-0 rounded-full animate-spin" style="animation-duration: 18s;">
+                        <div class="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 w-3 h-3 rounded-full bg-purple-400 shadow-lg shadow-purple-400/50"></div>
+                    </div>
+                    <div class="absolute inset-6 rounded-full animate-spin" style="animation-duration: 14s; animation-direction: reverse;">
+                        <div class="absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-1/2 w-2 h-2 rounded-full bg-cyan-400 shadow-lg shadow-cyan-400/50"></div>
+                    </div>
+
+                    <!-- Center Card -->
+                    <div class="absolute inset-20 rounded-full glass flex flex-col items-center justify-center text-center animate-pulse-glow">
+                        <p class="text-white font-semibold text-sm">Your skills</p>
+                        <p class="gradient-text-cyan font-bold text-xs mt-1">deserve to be seen</p>
+                        <div class="w-12 h-px bg-gradient-to-r from-transparent via-purple-400/50 to-transparent my-3"></div>
+                        <p class="text-slate-400 text-[10px]">54 African countries</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scroll Indicator -->
+    <div class="absolute bottom-8 left-1/2 -translate-x-1/2 z-10 hidden lg:flex flex-col items-center gap-2">
+        <span class="text-slate-500 text-xs">Scroll to explore</span>
+        <div class="w-6 h-10 rounded-full border border-white/10 flex justify-center pt-2">
+            <div class="w-1 h-2 rounded-full bg-white/30 animate-bounce"></div>
+        </div>
+    </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════════════════
+     CHANGING AFRICA SECTION
+═══════════════════════════════════════════════════════════════════════════ -->
+<section class="py-20 px-6 lg:px-8">
+    <div class="max-w-7xl mx-auto">
+        <div class="gradient-border p-8 lg:p-12 rounded-2xl" data-aos="fade-up">
+            <div class="flex flex-col lg:flex-row items-center gap-8">
+                <!-- Icon -->
+                <div class="w-20 h-20 rounded-2xl bg-gradient-to-br from-purple-500/20 to-cyan-500/20 flex items-center justify-center flex-shrink-0">
+                    <svg class="w-10 h-10 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                    </svg>
+                </div>
+                <!-- Content -->
+                <div class="text-center lg:text-left">
+                    <h2 class="text-2xl lg:text-3xl font-bold text-white mb-3">
+                        We are changing how Africa
+                        <span class="gradient-text">works, thinks, and becomes</span>
+                    </h2>
+                    <p class="text-slate-400 max-w-2xl">
+                        From Cairo to Cape Town, we're building the infrastructure that connects Africa's
+                        brightest minds with opportunities that matter. This isn't just recruitment —
+                        it's transformation.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════════════════
+     PROBLEM & SOLUTION
+═══════════════════════════════════════════════════════════════════════════ -->
+<section class="py-20 px-6 lg:px-8">
+    <div class="max-w-7xl mx-auto">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+
+            <!-- The Problem -->
+            <div class="glass rounded-2xl p-8 card-hover" data-aos="fade-right">
+                <div class="flex items-center gap-3 mb-6">
+                    <div class="w-12 h-12 rounded-xl bg-red-500/20 flex items-center justify-center">
+                        <svg class="w-6 h-6 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold text-white">The Problem</h3>
+                </div>
+
+                <p class="text-slate-300 mb-4">
+                    Millions of talented Africans are overlooked because they don't have a "perfect" CV.
+                    The traditional hiring system values format over substance, connections over competence.
+                </p>
+
+                <ul class="space-y-3 text-slate-400 text-sm">
+                    <li class="flex items-start gap-3">
+                        <svg class="w-5 h-5 text-red-400 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                        </svg>
+                        <span>Employers judge CVs in 6 seconds, missing real talent</span>
+                    </li>
+                    <li class="flex items-start gap-3">
+                        <svg class="w-5 h-5 text-red-400 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                        </svg>
+                        <span>Skills and potential go unnoticed behind formatting</span>
+                    </li>
+                    <li class="flex items-start gap-3">
+                        <svg class="w-5 h-5 text-red-400 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                        </svg>
+                        <span>Geographic barriers limit access to opportunities</span>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- The Solution -->
+            <div class="glass rounded-2xl p-8 card-hover" data-aos="fade-left">
+                <div class="flex items-center gap-3 mb-6">
+                    <div class="w-12 h-12 rounded-xl bg-emerald-500/20 flex items-center justify-center">
+                        <svg class="w-6 h-6 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold text-white">Our Solution</h3>
+                </div>
+
+                <p class="text-slate-300 mb-4">
+                    We use AI to understand your real skills, not just your resume formatting.
+                    We connect talent with opportunity based on what you can actually do.
+                </p>
+
+                <ul class="space-y-3 text-slate-400 text-sm">
+                    <li class="flex items-start gap-3">
+                        <svg class="w-5 h-5 text-emerald-400 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                        </svg>
+                        <span>AI-powered skill extraction beyond the CV</span>
+                    </li>
+                    <li class="flex items-start gap-3">
+                        <svg class="w-5 h-5 text-emerald-400 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                        </svg>
+                        <span>Smart matching based on verified competencies</span>
+                    </li>
+                    <li class="flex items-start gap-3">
+                        <svg class="w-5 h-5 text-emerald-400 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                        </svg>
+                        <span>Pan-African network spanning 54 countries</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════════════════
+     WHAT IF AFRICA SECTION
+═══════════════════════════════════════════════════════════════════════════ -->
+<section class="py-20 px-6 lg:px-8 relative overflow-hidden">
+    <div class="max-w-7xl mx-auto">
+        <!-- Section Header -->
+        <div class="text-center mb-12" data-aos="fade-up">
+            <h2 class="text-3xl lg:text-4xl font-bold text-white mb-4">
+                What if I told you <span class="gradient-text">Africa is rich?</span>
+            </h2>
+            <p class="text-slate-400 max-w-2xl mx-auto">
+                From Cairo, Egypt to Cape Town, South Africa — we are transforming how Africa works, thinks, and becomes.
+            </p>
+        </div>
+
+        <!-- Cards Grid -->
+        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
+            <!-- Minerals -->
+            <div class="glass rounded-xl p-6 text-center card-hover" data-aos="fade-up" data-aos-delay="100">
+                <div class="w-14 h-14 mx-auto rounded-xl bg-amber-500/20 flex items-center justify-center mb-4">
+                    <svg class="w-7 h-7 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/>
+                    </svg>
+                </div>
+                <h3 class="text-white font-semibold mb-1">Minerals</h3>
+                <p class="text-slate-500 text-xs">30% of world's reserves</p>
+            </div>
+
+            <!-- Resources -->
+            <div class="glass rounded-xl p-6 text-center card-hover" data-aos="fade-up" data-aos-delay="150">
+                <div class="w-14 h-14 mx-auto rounded-xl bg-emerald-500/20 flex items-center justify-center mb-4">
+                    <svg class="w-7 h-7 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064"/>
+                    </svg>
+                </div>
+                <h3 class="text-white font-semibold mb-1">Resources</h3>
+                <p class="text-slate-500 text-xs">Abundant natural wealth</p>
+            </div>
+
+            <!-- TALENT (Highlighted) -->
+            <div class="relative glass rounded-xl p-6 text-center card-hover border-purple-500/30" data-aos="fade-up" data-aos-delay="200">
+                <div class="absolute -top-2 -right-2 px-2 py-1 bg-gradient-to-r from-purple-500 to-cyan-500 rounded-full text-[10px] font-bold text-white">OUR FOCUS</div>
+                <div class="w-14 h-14 mx-auto rounded-xl bg-gradient-to-br from-purple-500/30 to-cyan-500/30 flex items-center justify-center mb-4">
+                    <svg class="w-7 h-7 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/>
+                    </svg>
+                </div>
+                <h3 class="gradient-text font-bold mb-1">Talent</h3>
+                <p class="text-slate-400 text-xs">1.4B brilliant minds</p>
+            </div>
+
+            <!-- Culture -->
+            <div class="glass rounded-xl p-6 text-center card-hover" data-aos="fade-up" data-aos-delay="250">
+                <div class="w-14 h-14 mx-auto rounded-xl bg-pink-500/20 flex items-center justify-center mb-4">
+                    <svg class="w-7 h-7 text-pink-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/>
+                    </svg>
+                </div>
+                <h3 class="text-white font-semibold mb-1">Culture</h3>
+                <p class="text-slate-500 text-xs">Rich diverse heritage</p>
+            </div>
+
+            <!-- Innovation -->
+            <div class="glass rounded-xl p-6 text-center card-hover" data-aos="fade-up" data-aos-delay="300">
+                <div class="w-14 h-14 mx-auto rounded-xl bg-cyan-500/20 flex items-center justify-center mb-4">
+                    <svg class="w-7 h-7 text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/>
+                    </svg>
+                </div>
+                <h3 class="text-white font-semibold mb-1">Innovation</h3>
+                <p class="text-slate-500 text-xs">Growing tech ecosystem</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════════════════
+     OUR MISSION
+═══════════════════════════════════════════════════════════════════════════ -->
+<section class="py-20 px-6 lg:px-8">
+    <div class="max-w-7xl mx-auto">
+        <!-- Section Header -->
+        <div class="text-center mb-12" data-aos="fade-up">
+            <h2 class="text-3xl lg:text-4xl font-bold text-white mb-4">Our Mission</h2>
+            <p class="text-slate-400 max-w-2xl mx-auto">
+                Empowering African talent through technology, connection, and opportunity.
+            </p>
+        </div>
+
+        <!-- Cards -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <!-- Empower -->
+            <div class="glass rounded-2xl p-8 card-hover" data-aos="fade-up" data-aos-delay="100">
+                <div class="w-14 h-14 rounded-xl bg-purple-500/20 flex items-center justify-center mb-6">
+                    <svg class="w-7 h-7 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+                    </svg>
+                </div>
+                <h3 class="text-xl font-bold text-white mb-3">Empower</h3>
+                <p class="text-slate-400 text-sm">
+                    Give every African professional the tools to showcase their true potential,
+                    regardless of their background or resources.
+                </p>
+            </div>
+
+            <!-- Connect -->
+            <div class="glass rounded-2xl p-8 card-hover" data-aos="fade-up" data-aos-delay="200">
+                <div class="w-14 h-14 rounded-xl bg-cyan-500/20 flex items-center justify-center mb-6">
+                    <svg class="w-7 h-7 text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
+                    </svg>
+                </div>
+                <h3 class="text-xl font-bold text-white mb-3">Connect</h3>
+                <p class="text-slate-400 text-sm">
+                    Bridge the gap between talent and opportunity across Africa's 54 nations,
+                    creating a unified professional ecosystem.
+                </p>
+            </div>
+
+            <!-- Transform -->
+            <div class="glass rounded-2xl p-8 card-hover" data-aos="fade-up" data-aos-delay="300">
+                <div class="w-14 h-14 rounded-xl bg-emerald-500/20 flex items-center justify-center mb-6">
+                    <svg class="w-7 h-7 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
+                    </svg>
+                </div>
+                <h3 class="text-xl font-bold text-white mb-3">Transform</h3>
+                <p class="text-slate-400 text-sm">
+                    Change how Africa works by replacing outdated hiring practices with
+                    intelligent, fair, skills-based matching.
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════════════════
+     CTA SECTION
+═══════════════════════════════════════════════════════════════════════════ -->
+<section class="py-20 px-6 lg:px-8">
+    <div class="max-w-4xl mx-auto">
+        <div class="gradient-border p-8 lg:p-12 rounded-2xl text-center" data-aos="fade-up">
+            <h2 class="text-2xl lg:text-3xl font-bold text-white mb-4">
+                Ready to Transform Your Future?
+            </h2>
+            <p class="text-slate-400 mb-8 max-w-xl mx-auto">
+                Join thousands of African professionals who are already showcasing their true potential
+                and connecting with opportunities that matter.
+            </p>
+            <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+                <button onclick="openRegistrationModal('individual')"
+                        class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-3 rounded-xl bg-gradient-to-r from-purple-600 to-cyan-600 text-white font-medium hover:shadow-lg hover:shadow-purple-500/25 transition-all">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"/>
+                    </svg>
+                    Get Started Free
+                </button>
+                <a href="/for-employers" class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-3 rounded-xl glass text-slate-300 hover:text-white transition-all">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/>
+                    </svg>
+                    Partner With Us
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+

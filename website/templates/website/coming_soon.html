@@ -1,0 +1,800 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Coming Soon - ForgeForth Africa</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#0F4C81',
+                        'forgeforth-blue-light': '#1E88E5',
+                        secondary: '#F7A600',
+                        accent: '#4CAF50',
+                    },
+                    fontFamily: {
+                        display: ['Inter', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background: #050a12; overflow-x: hidden; }
+
+        /* ── Animated mesh canvas ── */
+        #mesh-canvas { position: fixed; inset: 0; z-index: 0; opacity: 0.35; }
+
+        /* ── Orb ── */
+        /* ── Central content area ── */
+        .orb-center {
+            width: 280px; height: 280px;
+            border-radius: 50%;
+            background: radial-gradient(circle at 40% 40%,
+                rgba(56,189,248,0.12) 0%,
+                rgba(99,102,241,0.08) 40%,
+                rgba(15,20,40,0.95) 70%,
+                rgba(10,14,30,0.98) 100%);
+            position: relative;
+            z-index: 10;
+        }
+
+        /* ── Rotating rings container ── */
+        .orbit-system { position: relative; width: 440px; height: 440px; }
+
+        .orbit-ring {
+            position: absolute;
+            border-radius: 50%;
+            border: 1px solid transparent;
+            top: 50%; left: 50%;
+            transform-origin: center;
+        }
+
+        /* Ring 1 — closest, fast */
+        .orbit-ring-1 {
+            width: 320px; height: 320px;
+            margin-top: -160px; margin-left: -160px;
+            border-color: rgba(56,189,248,0.15);
+            border-top-color: rgba(56,189,248,0.5);
+            border-right-color: rgba(56,189,248,0.3);
+            animation: spin-cw 10s linear infinite;
+        }
+
+        /* Ring 2 — medium */
+        .orbit-ring-2 {
+            width: 370px; height: 370px;
+            margin-top: -185px; margin-left: -185px;
+            border-color: rgba(139,92,246,0.1);
+            border-bottom-color: rgba(139,92,246,0.45);
+            border-left-color: rgba(139,92,246,0.25);
+            animation: spin-ccw 14s linear infinite;
+        }
+
+        /* Ring 3 — outer, slow */
+        .orbit-ring-3 {
+            width: 420px; height: 420px;
+            margin-top: -210px; margin-left: -210px;
+            border-color: rgba(99,102,241,0.06);
+            border-top-color: rgba(99,102,241,0.35);
+            border-left-color: rgba(99,102,241,0.18);
+            animation: spin-cw 20s linear infinite;
+        }
+
+        /* Ring 4 — dashed accent */
+        .orbit-ring-4 {
+            width: 348px; height: 348px;
+            margin-top: -174px; margin-left: -174px;
+            border: none;
+            border-top: 1px dashed rgba(56,189,248,0.2);
+            border-bottom: 1px dashed rgba(139,92,246,0.2);
+            animation: spin-ccw 18s linear infinite;
+        }
+
+        /* Orbit dots — small glowing dots on rings */
+        .orbit-dot {
+            position: absolute;
+            width: 6px; height: 6px;
+            border-radius: 50%;
+            top: -3px; left: 50%; margin-left: -3px;
+        }
+        .orbit-dot-2 {
+            position: absolute;
+            width: 5px; height: 5px;
+            border-radius: 50%;
+            bottom: -2.5px; left: 25%; margin-left: -2.5px;
+        }
+        .orbit-dot-3 {
+            position: absolute;
+            width: 4px; height: 4px;
+            border-radius: 50%;
+            top: 50%; right: -2px; margin-top: -2px;
+        }
+
+        @keyframes spin-cw {
+            from { transform: rotate(0deg); }
+            to   { transform: rotate(360deg); }
+        }
+        @keyframes spin-ccw {
+            from { transform: rotate(0deg); }
+            to   { transform: rotate(-360deg); }
+        }
+        @keyframes dot-pulse {
+            0%, 100% { opacity: 0.5; box-shadow: 0 0 4px currentColor; }
+            50%      { opacity: 1; box-shadow: 0 0 12px currentColor, 0 0 24px currentColor; }
+        }
+
+        /* ── Text reveal ── */
+        .reveal-text { opacity: 0; transform: translateY(24px); animation: reveal 0.8s cubic-bezier(0.16,1,0.3,1) forwards; }
+        .reveal-d1 { animation-delay: 0.15s; }
+        .reveal-d2 { animation-delay: 0.3s; }
+        .reveal-d3 { animation-delay: 0.45s; }
+        .reveal-d4 { animation-delay: 0.6s; }
+        .reveal-d5 { animation-delay: 0.75s; }
+        .reveal-d6 { animation-delay: 0.9s; }
+        .reveal-d7 { animation-delay: 1.05s; }
+        @keyframes reveal {
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ── Gradient underline on hover ── */
+        .glow-btn {
+            position: relative;
+            overflow: hidden;
+        }
+        .glow-btn::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.12), transparent);
+            transform: translateX(-100%);
+            transition: transform 0.6s ease;
+        }
+        .glow-btn:hover::before { transform: translateX(100%); }
+
+        /* ── Stat counter ── */
+        .stat-value {
+            background: linear-gradient(135deg, #e2e8f0, #94a3b8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* ── Scrollbar hide for modal ── */
+        .hide-scroll::-webkit-scrollbar { display: none; }
+        .hide-scroll { scrollbar-width: none; }
+
+        /* ── Waitlist modal pill styles (unchanged) ── */
+        .opp-pill.opp-active-volunteer  { border-color: #34d399 !important; background-color: rgba(16,185,129,0.18) !important; box-shadow: 0 0 0 1px rgba(52,211,153,0.3), 0 2px 10px rgba(16,185,129,0.2) !important; }
+        .opp-pill.opp-active-volunteer .opp-label { color: #6ee7b7 !important; }
+        .opp-pill.opp-active-internship { border-color: #38bdf8 !important; background-color: rgba(14,165,233,0.18) !important; box-shadow: 0 0 0 1px rgba(56,189,248,0.3), 0 2px 10px rgba(14,165,233,0.2) !important; }
+        .opp-pill.opp-active-internship .opp-label { color: #7dd3fc !important; }
+        .opp-pill.opp-active-job        { border-color: #fbbf24 !important; background-color: rgba(245,158,11,0.18) !important; box-shadow: 0 0 0 1px rgba(251,191,36,0.3), 0 2px 10px rgba(245,158,11,0.2) !important; }
+        .opp-pill.opp-active-job .opp-label { color: #fcd34d !important; }
+        .opp-pill.opp-active-skillup    { border-color: #a78bfa !important; background-color: rgba(139,92,246,0.18) !important; box-shadow: 0 0 0 1px rgba(167,139,250,0.3), 0 2px 10px rgba(139,92,246,0.2) !important; }
+        .opp-pill.opp-active-skillup .opp-label { color: #c4b5fd !important; }
+        .skill-pill.active-pill { border-color: #a78bfa !important; background-color: rgba(139,92,246,0.18) !important; color: #c4b5fd !important; box-shadow: 0 0 0 1px rgba(167,139,250,0.3), 0 2px 8px rgba(139,92,246,0.2) !important; }
+        .field-pill.active-pill { border-color: #f472b6 !important; background-color: rgba(236,72,153,0.18) !important; color: #f9a8d4 !important; box-shadow: 0 0 0 1px rgba(244,114,182,0.3), 0 2px 8px rgba(236,72,153,0.2) !important; }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col">
+
+    <!-- ── Background image ── -->
+    <div class="fixed inset-0 z-0">
+        <img src="/static/images/one.jpg" alt="" class="w-full h-full object-cover" />
+        <div class="absolute inset-0 bg-[#050a12]/85"></div>
+    </div>
+
+    <!-- ── Animated geometric mesh background ── -->
+    <canvas id="mesh-canvas"></canvas>
+
+    <!-- ── Ambient gradient orbs (fixed, behind everything) ── -->
+    <div class="fixed inset-0 z-[1] pointer-events-none overflow-hidden">
+        <div class="absolute -top-40 -left-40 w-[600px] h-[600px] rounded-full bg-sky-600/[0.04] blur-3xl"></div>
+        <div class="absolute -bottom-40 -right-40 w-[500px] h-[500px] rounded-full bg-indigo-600/[0.05] blur-3xl"></div>
+    </div>
+
+    <!-- ══════════════════════════════════════════
+         MAIN CONTENT
+    ══════════════════════════════════════════ -->
+    <main class="relative z-10 flex-1 flex items-center min-h-screen">
+        <div class="w-full max-w-7xl mx-auto px-6 sm:px-10 py-16 lg:py-0">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-6 items-center min-h-screen lg:min-h-0">
+
+                <!-- ── LEFT : 7 cols ── -->
+                <div class="lg:col-span-7 flex flex-col gap-6 py-10 lg:py-20">
+
+                    <!-- Status pill -->
+                    <div class="reveal-text reveal-d1">
+                        <span class="inline-flex items-center gap-2.5 px-4 py-2 rounded-full
+                                     bg-white/[0.04] border border-white/[0.08] backdrop-blur-md">
+                            <span class="relative flex h-2 w-2">
+                                <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-sky-400 opacity-75"></span>
+                                <span class="relative inline-flex rounded-full h-2 w-2 bg-sky-400"></span>
+                            </span>
+                            <span class="text-slate-400 text-[11px] font-semibold tracking-[0.2em] uppercase">Launching Soon</span>
+                        </span>
+                    </div>
+
+                    <!-- Title -->
+                    <div class="reveal-text reveal-d2">
+                        <h1 class="font-display font-black tracking-tight leading-[1.02]"
+                            style="font-size: clamp(2.6rem, 5.5vw, 5rem);">
+                            <span class="text-white">ForgeForth</span><br>
+                            <span class="bg-gradient-to-r from-sky-400 via-cyan-300 to-indigo-400 bg-clip-text text-transparent">Africa</span>
+                        </h1>
+                    </div>
+
+                    <!-- Separator -->
+                    <div class="reveal-text reveal-d3">
+                        <div class="w-16 h-[2px] bg-gradient-to-r from-sky-500/60 to-transparent rounded-full"></div>
+                    </div>
+
+                    <!-- Tagline -->
+                    <div class="reveal-text reveal-d3">
+                        <p class="text-slate-300/90 font-medium tracking-tight max-w-lg"
+                           style="font-size: clamp(1rem, 1.8vw, 1.3rem); line-height: 1.5;">
+                            Forging Africa's Future Through Talents.
+                        </p>
+                    </div>
+
+                    <!-- Quote -->
+                    <div class="reveal-text reveal-d4">
+                        <p class="text-slate-500 text-sm italic pl-4 border-l border-sky-500/20">
+                            "There is power beyond a poor resume."
+                        </p>
+                    </div>
+
+                    <!-- Copy -->
+                    <div class="reveal-text reveal-d4">
+                        <p class="text-slate-500 text-sm leading-relaxed max-w-xl">
+                            Africa's AI-powered talent infrastructure is on the way. We're building something
+                            extraordinary &mdash; connecting every kind of talent across every industry with
+                            global opportunities that recognise real skills, not just paper credentials.
+                        </p>
+                    </div>
+
+                    <!-- CTAs -->
+                    <div class="reveal-text reveal-d5 flex flex-col sm:flex-row items-start sm:items-center gap-3 pt-1">
+                        <button onclick="openWaitlistModal()"
+                                class="glow-btn group inline-flex items-center gap-2.5 px-8 py-4 rounded-2xl
+                                       font-semibold text-white text-sm
+                                       bg-gradient-to-r from-sky-500 to-indigo-500
+                                       shadow-[0_0_0_1px_rgba(56,189,248,0.2),0_8px_40px_-8px_rgba(56,189,248,0.3)]
+                                       hover:shadow-[0_0_0_1px_rgba(56,189,248,0.35),0_12px_50px_-8px_rgba(56,189,248,0.45)]
+                                       hover:-translate-y-0.5 active:translate-y-0 transition-all duration-300">
+                            <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+                            </svg>
+                            <span>Early Signup &mdash; Free</span>
+                        </button>
+
+                        <a href="mailto:hello@forgeforthafrica.com"
+                           class="inline-flex items-center gap-2 px-5 py-4 rounded-2xl text-sm font-medium
+                                  text-slate-500 hover:text-slate-300 transition-colors duration-200">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+                            </svg>
+                            Contact Us
+                        </a>
+                    </div>
+
+                    <!-- Stats row -->
+                    <div class="reveal-text reveal-d6 flex items-center gap-6 pt-4">
+                        <div>
+                            <div class="stat-value font-extrabold text-2xl leading-none" data-count="54">0</div>
+                            <div class="text-slate-600 text-[10px] font-medium tracking-widest uppercase mt-1">Countries</div>
+                        </div>
+                        <div class="w-px h-8 bg-white/[0.06]"></div>
+                        <div>
+                            <div class="text-slate-300 font-extrabold text-2xl leading-none">All</div>
+                            <div class="text-slate-600 text-[10px] font-medium tracking-widest uppercase mt-1">Industries</div>
+                        </div>
+                        <div class="w-px h-8 bg-white/[0.06]"></div>
+                        <div>
+                            <div class="text-slate-300 font-extrabold text-2xl leading-none">AI</div>
+                            <div class="text-slate-600 text-[10px] font-medium tracking-widest uppercase mt-1">Powered</div>
+                        </div>
+                        <div class="w-px h-8 bg-white/[0.06]"></div>
+                        <div>
+                            <div class="stat-value font-extrabold text-2xl leading-none">Free</div>
+                            <div class="text-slate-600 text-[10px] font-medium tracking-widest uppercase mt-1">Forever</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ── RIGHT : 5 cols ── -->
+                <div class="lg:col-span-5 hidden lg:flex items-center justify-center relative">
+                    <div class="reveal-text reveal-d5 relative flex items-center justify-center">
+
+                        <!-- Orbit system -->
+                        <div class="orbit-system relative flex items-center justify-center">
+
+                            <!-- Rotating ring 1 -->
+                            <div class="orbit-ring orbit-ring-1">
+                                <div class="orbit-dot bg-sky-400" style="animation: dot-pulse 2s ease-in-out infinite; color: #38bdf8;"></div>
+                                <div class="orbit-dot-2 bg-sky-300" style="animation: dot-pulse 2s ease-in-out infinite 0.8s; color: #7dd3fc;"></div>
+                            </div>
+
+                            <!-- Rotating ring 2 -->
+                            <div class="orbit-ring orbit-ring-2">
+                                <div class="orbit-dot bg-violet-400" style="animation: dot-pulse 2.5s ease-in-out infinite 0.4s; color: #a78bfa;"></div>
+                                <div class="orbit-dot-3 bg-violet-300" style="animation: dot-pulse 2.5s ease-in-out infinite 1.2s; color: #c4b5fd;"></div>
+                            </div>
+
+                            <!-- Rotating ring 3 -->
+                            <div class="orbit-ring orbit-ring-3">
+                                <div class="orbit-dot bg-indigo-400" style="animation: dot-pulse 3s ease-in-out infinite 0.6s; color: #818cf8;"></div>
+                            </div>
+
+                            <!-- Rotating ring 4 (dashed) -->
+                            <div class="orbit-ring orbit-ring-4"></div>
+
+                            <!-- Center content — crisp, no blur -->
+                            <div class="orb-center absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2
+                                        flex flex-col items-center justify-center text-center px-8
+                                        border border-white/[0.06]
+                                        shadow-[0_0_60px_rgba(56,189,248,0.06),0_0_120px_rgba(99,102,241,0.04)]">
+                                <p class="font-display font-bold text-white leading-snug tracking-tight text-[1.35rem]">
+                                    We promise you,
+                                </p>
+                                <p class="font-display font-black leading-snug tracking-tight text-[1.55rem] mt-1
+                                          bg-gradient-to-r from-sky-300 via-cyan-200 to-indigo-400 bg-clip-text text-transparent">
+                                    something big
+                                </p>
+                                <p class="font-display font-bold text-white leading-snug tracking-tight text-[1.35rem] mt-0.5">
+                                    is coming.
+                                </p>
+                                <div class="w-10 h-px mx-auto mt-4 mb-3 bg-gradient-to-r from-transparent via-sky-400/30 to-transparent"></div>
+                                <p class="text-slate-400 text-xs font-medium tracking-wide leading-relaxed">
+                                    Are you ready to<br>transform Africa?
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </main>
+
+    <!-- ── Minimal Footer ── -->
+    <footer class="relative z-10 pb-5 pt-2 text-center">
+        <p class="text-slate-700 text-[11px] tracking-wide">
+            &copy; 2026 ForgeForth Africa &middot; <span class="text-slate-800">SynaVue Technologies</span>
+        </p>
+    </footer>
+
+
+    <!-- ══════════════════════════════════════════
+         WAITLIST MODAL
+    ══════════════════════════════════════════ -->
+    <div id="waitlist-modal"
+         class="fixed inset-0 z-[9999] hidden items-center justify-center p-4 opacity-0 transition-opacity duration-500">
+
+        <div class="absolute inset-0 bg-black/75 backdrop-blur-lg"></div>
+
+        <div class="absolute inset-0 pointer-events-none overflow-hidden">
+            <div class="absolute top-1/4 left-1/4 w-96 h-96 bg-purple-700/20 rounded-full blur-3xl"></div>
+            <div class="absolute bottom-1/4 right-1/4 w-96 h-96 bg-pink-700/15 rounded-full blur-3xl"></div>
+        </div>
+
+        <div id="modal-content"
+             class="relative w-full max-w-4xl max-h-[94vh] overflow-y-auto hide-scroll
+                    transform-gpu scale-75 opacity-0 transition-all duration-500"
+             style="transform-style:preserve-3d;">
+
+            <div class="relative rounded-3xl overflow-hidden flex flex-col
+                        shadow-[0_40px_100px_rgba(0,0,0,0.7),0_0_0_1px_rgba(255,255,255,0.07)]">
+
+                <!-- TOP BANNER -->
+                <div class="relative px-8 pt-7 pb-6 border-b border-white/[0.06]"
+                     style="background: linear-gradient(135deg, #1a0933 0%, #130826 50%, #0d1424 100%);">
+                    <div class="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-purple-500 via-pink-400 to-indigo-500"></div>
+                    <div class="absolute right-0 top-0 h-full w-64 bg-gradient-to-l from-purple-600/10 to-transparent pointer-events-none"></div>
+
+                    <button onclick="closeWaitlistModal()"
+                            class="absolute top-4 right-4 z-20 w-8 h-8 flex items-center justify-center
+                                   rounded-lg bg-white/[0.08] border border-white/[0.15]
+                                   hover:bg-red-500/70 hover:border-red-400/50 hover:rotate-90
+                                   transition-all duration-300">
+                        <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"/>
+                        </svg>
+                    </button>
+
+                    <div class="flex items-center gap-4 relative z-10">
+                        <div class="w-11 h-11 rounded-2xl flex-shrink-0
+                                    bg-gradient-to-br from-purple-500 to-pink-600
+                                    flex items-center justify-center
+                                    shadow-[0_0_20px_rgba(139,92,246,0.5)]">
+                            <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+                            </svg>
+                        </div>
+                        <div>
+                            <div class="flex items-center gap-2 mb-0.5">
+                                <span class="text-white font-bold text-base">ForgeForth Africa</span>
+                                <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full
+                                             bg-purple-500/20 border border-purple-400/30 text-purple-300 text-[10px] font-semibold uppercase tracking-widest">
+                                    <span class="w-1.5 h-1.5 rounded-full bg-purple-400 animate-pulse inline-block"></span>
+                                    Early Access
+                                </span>
+                            </div>
+                            <p class="text-slate-400 text-xs">Join Africa's skills-first talent platform &mdash; free, always.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- BODY -->
+                <div class="bg-[#0d1424] px-8 py-6">
+
+                    <div id="modal-success-message" class="hidden text-center py-14">
+                        <div class="relative inline-flex items-center justify-center w-20 h-20 mb-6">
+                            <div class="absolute inset-0 rounded-2xl bg-emerald-500/20 blur-2xl"></div>
+                            <div class="relative w-20 h-20 rounded-2xl bg-emerald-500/15 border border-emerald-400/30 flex items-center justify-center">
+                                <svg class="w-10 h-10 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/>
+                                </svg>
+                            </div>
+                        </div>
+                        <h3 class="font-bold text-2xl text-white mb-2">You're on the list!</h3>
+                        <p class="text-slate-400 text-sm max-w-xs mx-auto">Check your email to confirm your spot. We'll be in touch very soon.</p>
+                    </div>
+
+                    <form id="modal-waitlist-form">
+                        <div id="modal-grid" class="grid gap-6 relative"
+                             style="grid-template-columns: repeat(2, minmax(0, 1fr));">
+
+                            <div class="absolute top-0 bottom-0 w-px bg-white/[0.05] pointer-events-none" style="left:50%"></div>
+                            <div id="divider-23" class="absolute top-0 bottom-0 w-px bg-white/[0.05] pointer-events-none" style="left:66.666%;display:none;"></div>
+
+                            <!-- LEFT COL -->
+                            <div class="space-y-4 pr-3">
+                                <div>
+                                    <p class="text-slate-400 text-[10px] font-semibold uppercase tracking-widest mb-2">I'm looking for *</p>
+                                    <div class="grid grid-cols-2 gap-2">
+                                        <label class="cursor-pointer">
+                                            <input type="checkbox" name="opportunity_type" value="volunteer" class="peer sr-only">
+                                            <div class="opp-pill flex items-center gap-2 px-3 py-2.5 rounded-xl bg-white/[0.04] border border-white/[0.07] text-slate-400 hover:bg-white/[0.08] hover:border-white/[0.15] transition-all duration-200 select-none">
+                                                <span class="text-base leading-none flex-shrink-0">&#x1F91D;</span>
+                                                <span class="opp-label text-xs font-semibold">Volunteer</span>
+                                            </div>
+                                        </label>
+                                        <label class="cursor-pointer">
+                                            <input type="checkbox" name="opportunity_type" value="internship" class="peer sr-only">
+                                            <div class="opp-pill flex items-center gap-2 px-3 py-2.5 rounded-xl bg-white/[0.04] border border-white/[0.07] text-slate-400 hover:bg-white/[0.08] hover:border-white/[0.15] transition-all duration-200 select-none">
+                                                <span class="text-base leading-none flex-shrink-0">&#x1F393;</span>
+                                                <span class="opp-label text-xs font-semibold">Internship</span>
+                                            </div>
+                                        </label>
+                                        <label class="cursor-pointer">
+                                            <input type="checkbox" name="opportunity_type" value="job" class="peer sr-only">
+                                            <div class="opp-pill flex items-center gap-2 px-3 py-2.5 rounded-xl bg-white/[0.04] border border-white/[0.07] text-slate-400 hover:bg-white/[0.08] hover:border-white/[0.15] transition-all duration-200 select-none">
+                                                <span class="text-base leading-none flex-shrink-0">&#x1F4BC;</span>
+                                                <span class="opp-label text-xs font-semibold">Job</span>
+                                            </div>
+                                        </label>
+                                        <label class="cursor-pointer">
+                                            <input type="checkbox" name="opportunity_type" value="skillup" class="peer sr-only">
+                                            <div class="opp-pill flex items-center gap-2 px-3 py-2.5 rounded-xl bg-white/[0.04] border border-white/[0.07] text-slate-400 hover:bg-white/[0.08] hover:border-white/[0.15] transition-all duration-200 select-none">
+                                                <span class="text-base leading-none flex-shrink-0">&#x1F4C8;</span>
+                                                <span class="opp-label text-xs font-semibold">SkillUp</span>
+                                            </div>
+                                        </label>
+                                    </div>
+                                </div>
+
+                                <div class="grid grid-cols-2 gap-3">
+                                    <div>
+                                        <label class="block text-slate-500 text-[10px] font-semibold uppercase tracking-widest mb-1.5">First *</label>
+                                        <input type="text" name="first_name" required placeholder="First name"
+                                               class="w-full px-3 py-2.5 rounded-xl bg-white/[0.05] border border-white/[0.07] text-white placeholder-slate-600 text-xs focus:outline-none focus:border-purple-400/60 focus:bg-white/[0.08] transition-all duration-200"/>
+                                    </div>
+                                    <div>
+                                        <label class="block text-slate-500 text-[10px] font-semibold uppercase tracking-widest mb-1.5">Last *</label>
+                                        <input type="text" name="last_name" required placeholder="Last name"
+                                               class="w-full px-3 py-2.5 rounded-xl bg-white/[0.05] border border-white/[0.07] text-white placeholder-slate-600 text-xs focus:outline-none focus:border-purple-400/60 focus:bg-white/[0.08] transition-all duration-200"/>
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <label class="block text-slate-500 text-[10px] font-semibold uppercase tracking-widest mb-1.5">Email *</label>
+                                    <div class="relative">
+                                        <svg class="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-slate-600 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+                                        </svg>
+                                        <input type="email" name="email" required placeholder="you@example.com"
+                                               class="w-full pl-9 pr-3 py-2.5 rounded-xl bg-white/[0.05] border border-white/[0.07] text-white placeholder-slate-600 text-xs focus:outline-none focus:border-purple-400/60 focus:bg-white/[0.08] transition-all duration-200"/>
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <label class="block text-slate-500 text-[10px] font-semibold uppercase tracking-widest mb-1.5">Phone <span class="text-slate-700 normal-case tracking-normal font-normal">- optional</span></label>
+                                    <div class="relative">
+                                        <svg class="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-slate-600 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/>
+                                        </svg>
+                                        <input type="tel" name="phone" placeholder="+27 000 000 0000"
+                                               class="w-full pl-9 pr-3 py-2.5 rounded-xl bg-white/[0.05] border border-white/[0.07] text-white placeholder-slate-600 text-xs focus:outline-none focus:border-purple-400/60 focus:bg-white/[0.08] transition-all duration-200"/>
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <label class="block text-slate-500 text-[10px] font-semibold uppercase tracking-widest mb-1.5">Country *</label>
+                                    <select name="country" required
+                                            class="w-full px-3 py-2.5 rounded-xl bg-white/[0.05] border border-white/[0.07] text-slate-300 text-xs focus:outline-none focus:border-purple-400/60 transition-all duration-200 [&>option]:bg-[#0d1424] [&>option]:text-white">
+                                        <option value="">Select country</option>
+                                        <option>Nigeria</option><option>Kenya</option><option>South Africa</option>
+                                        <option>Ghana</option><option>Egypt</option><option>Ethiopia</option>
+                                        <option>Tanzania</option><option>Uganda</option><option>Rwanda</option>
+                                        <option>Other African Country</option>
+                                    </select>
+                                </div>
+
+                                <div>
+                                    <label class="block text-slate-500 text-[10px] font-semibold uppercase tracking-widest mb-1.5">How did you hear about us?</label>
+                                    <select name="referral_source"
+                                            class="w-full px-3 py-2.5 rounded-xl bg-white/[0.05] border border-white/[0.07] text-slate-300 text-xs focus:outline-none focus:border-purple-400/60 transition-all duration-200 [&>option]:bg-[#0d1424] [&>option]:text-white">
+                                        <option value="">Select one</option>
+                                        <option value="social_media">Social Media</option>
+                                        <option value="friend">Friend / Colleague</option>
+                                        <option value="google">Google Search</option>
+                                        <option value="linkedin">LinkedIn</option>
+                                        <option value="event">Event / Meetup</option>
+                                        <option value="news">News / Article</option>
+                                        <option value="other">Other</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <!-- RIGHT COL -->
+                            <div class="space-y-4 pl-3">
+                                <div>
+                                    <div class="flex items-center justify-between mb-1">
+                                        <p class="text-slate-400 text-[10px] font-semibold uppercase tracking-widest">Your Skills *</p>
+                                        <span id="skills-count" class="text-[10px] text-purple-300 font-semibold px-2 py-0.5 rounded-full bg-purple-500/15 border border-purple-400/25" style="display:none;"></span>
+                                    </div>
+                                    <p class="text-slate-600 text-[10px] mb-2">Tap to select, pick all that apply</p>
+                                    <div id="skills-hidden-inputs"></div>
+                                    <div class="flex flex-wrap gap-1.5 max-h-[190px] overflow-y-auto hide-scroll">
+                                        <button type="button" data-skill="Software Dev" class="skill-pill px-2.5 py-1 rounded-lg text-[10px] font-medium bg-white/[0.04] border border-white/[0.07] text-slate-500 hover:border-purple-400/50 hover:text-slate-200 hover:bg-purple-500/10 transition-all duration-150 select-none">Software Dev</button>
+                                        <button type="button" data-skill="Data Science" class="skill-pill px-2.5 py-1 rounded-lg text-[10px] font-medium bg-white/[0.04] border border-white/[0.07] text-slate-500 hover:border-purple-400/50 hover:text-slate-200 hover:bg-purple-500/10 transition-all duration-150 select-none">Data Science</button>
+                                        <button type="button" data-skill="AI / ML" class="skill-pill px-2.5 py-1 rounded-lg text-[10px] font-medium bg-white/[0.04] border border-white/[0.07] text-slate-500 hover:border-purple-400/50 hover:text-slate-200 hover:bg-purple-500/10 transition-all duration-150 select-none">AI / ML</button>
+                                        <button type="button" data-skill="Cybersecurity" class="skill-pill px-2.5 py-1 rounded-lg text-[10px] font-medium bg-white/[0.04] border border-white/[0.07] text-slate-500 hover:border-purple-400/50 hover:text-slate-200 hover:bg-purple-500/10 transition-all duration-150 select-none">Cybersecurity</button>
+                                        <button type="button" data-skill="Cloud / DevOps" class="skill-pill px-2.5 py-1 rounded-lg text-[10px] font-medium bg-white/[0.04] border border-white/[0.07] text-slate-500 hover:border-purple-400/50 hover:text-slate-200 hover:bg-purple-500/10 transition-all duration-150 select-none">Cloud / DevOps</button>
+                                        <button type="button" data-skill="Design / UX" class="skill-pill px-2.5 py-1 rounded-lg text-[10px] font-medium bg-white/[0.04] border border-white/[0.07] text-slate-500 hover:border-purple-400/50 hover:text-slate-200 hover:bg-purple-500/10 transition-all duration-150 select-none">Design / UX</button>
+                                        <button type="button" data-skill="Product Mgmt" class="skill-pill px-2.5 py-1 rounded-lg text-[10px] font-medium bg-white/[0.04] border border-white/[0.07] text-slate-500 hover:border-purple-400/50 hover:text-slate-200 hover:bg-purple-500/10 transition-all duration-150 select-none">Product Mgmt</button>
+                                        <button type="button" data-skill="Marketing" class="skill-pill px-2.5 py-1 rounded-lg text-[10px] font-medium bg-white/[0.04] border border-white/[0.07] text-slate-500 hover:border-purple-400/50 hover:text-slate-200 hover:bg-purple-500/10 transition-all duration-150 select-none">Marketing</button>
+                                        <button type="button" data-skill="Finance" class="skill-pill px-2.5 py-1 rounded-lg text-[10px] font-medium bg-white/[0.04] border border-white/[0.07] text-slate-500 hover:border-purple-400/50 hover:text-slate-200 hover:bg-purple-500/10 transition-all duration-150 select-none">Finance</button>
+                                        <button type="button" data-skill="Accounting" class="skill-pill px-2.5 py-1 rounded-lg text-[10px] font-medium bg-white/[0.04] border border-white/[0.07] text-slate-500 hover:border-purple-400/50 hover:text-slate-200 hover:bg-purple-500/10 transition-all duration-150 select-none">Accounting</button>
+                                        <button type="button" data-skill="Healthcare" class="skill-pill px-2.5 py-1 rounded-lg text-[10px] font-medium bg-white/[0.04] border border-white/[0.07] text-slate-500 hover:border-purple-400/50 hover:text-slate-200 hover:bg-purple-500/10 transition-all duration-150 select-none">Healthcare</button>
+                                        <button type="button" data-skill="Nursing" class="skill-pill px-2.5 py-1 rounded-lg text-[10px] font-medium bg-white/[0.04] border border-white/[0.07] text-slate-500 hover:border-purple-400/50 hover:text-slate-200 hover:bg-purple-500/10 transition-all duration-150 select-none">Nursing</button>
+                                        <button type="button" data-skill="Teaching" class="skill-pill px-2.5 py-1 rounded-lg text-[10px] font-medium bg-white/[0.04] border border-white/[0.07] text-slate-500 hover:border-purple-400/50 hover:text-slate-200 hover:bg-purple-500/10 transition-all duration-150 select-none">Teaching</button>
+                                        <button type="button" data-skill="Legal" class="skill-pill px-2.5 py-1 rounded-lg text-[10px] font-medium bg-white/[0.04] border border-white/[0.07] text-slate-500 hover:border-purple-400/50 hover:text-slate-200 hover:bg-purple-500/10 transition-all duration-150 select-none">Legal</button>
+                                        <button type="button" data-skill="HR" class="skill-pill px-2.5 py-1 rounded-lg text-[10px] font-medium bg-white/[0.04] border border-white/[0.07] text-slate-500 hover:border-purple-400/50 hover:text-slate-200 hover:bg-purple-500/10 transition-all duration-150 select-none">HR</button>
+                                        <button type="button" data-skill="Engineering" class="skill-pill px-2.5 py-1 rounded-lg text-[10px] font-medium bg-white/[0.04] border border-white/[0.07] text-slate-500 hover:border-purple-400/50 hover:text-slate-200 hover:bg-purple-500/10 transition-all duration-150 select-none">Engineering</button>
+                                        <button type="button" data-skill="Agriculture" class="skill-pill px-2.5 py-1 rounded-lg text-[10px] font-medium bg-white/[0.04] border border-white/[0.07] text-slate-500 hover:border-purple-400/50 hover:text-slate-200 hover:bg-purple-500/10 transition-all duration-150 select-none">Agriculture</button>
+                                        <button type="button" data-skill="Media" class="skill-pill px-2.5 py-1 rounded-lg text-[10px] font-medium bg-white/[0.04] border border-white/[0.07] text-slate-500 hover:border-purple-400/50 hover:text-slate-200 hover:bg-purple-500/10 transition-all duration-150 select-none">Media</button>
+                                        <button type="button" data-skill="Customer Service" class="skill-pill px-2.5 py-1 rounded-lg text-[10px] font-medium bg-white/[0.04] border border-white/[0.07] text-slate-500 hover:border-purple-400/50 hover:text-slate-200 hover:bg-purple-500/10 transition-all duration-150 select-none">Customer Service</button>
+                                        <button type="button" data-skill="Operations" class="skill-pill px-2.5 py-1 rounded-lg text-[10px] font-medium bg-white/[0.04] border border-white/[0.07] text-slate-500 hover:border-purple-400/50 hover:text-slate-200 hover:bg-purple-500/10 transition-all duration-150 select-none">Operations</button>
+                                        <button type="button" data-skill="Sales" class="skill-pill px-2.5 py-1 rounded-lg text-[10px] font-medium bg-white/[0.04] border border-white/[0.07] text-slate-500 hover:border-purple-400/50 hover:text-slate-200 hover:bg-purple-500/10 transition-all duration-150 select-none">Sales</button>
+                                        <button type="button" data-skill="Research" class="skill-pill px-2.5 py-1 rounded-lg text-[10px] font-medium bg-white/[0.04] border border-white/[0.07] text-slate-500 hover:border-purple-400/50 hover:text-slate-200 hover:bg-purple-500/10 transition-all duration-150 select-none">Research</button>
+                                        <button type="button" data-skill="Architecture" class="skill-pill px-2.5 py-1 rounded-lg text-[10px] font-medium bg-white/[0.04] border border-white/[0.07] text-slate-500 hover:border-purple-400/50 hover:text-slate-200 hover:bg-purple-500/10 transition-all duration-150 select-none">Architecture</button>
+                                        <button type="button" data-skill="Logistics" class="skill-pill px-2.5 py-1 rounded-lg text-[10px] font-medium bg-white/[0.04] border border-white/[0.07] text-slate-500 hover:border-purple-400/50 hover:text-slate-200 hover:bg-purple-500/10 transition-all duration-150 select-none">Logistics</button>
+                                        <button type="button" data-skill="Other" class="skill-pill px-2.5 py-1 rounded-lg text-[10px] font-medium bg-white/[0.04] border border-white/[0.07] text-slate-500 hover:border-purple-400/50 hover:text-slate-200 hover:bg-purple-500/10 transition-all duration-150 select-none">Other</button>
+                                    </div>
+                                    <div id="skill-other-wrap" style="display:none;" class="mt-2">
+                                        <input type="text" id="skill-other-input" placeholder="Describe your skill..."
+                                               class="w-full px-3 py-2 rounded-lg bg-purple-500/10 border border-purple-400/30 text-white placeholder-slate-500 text-xs focus:outline-none focus:border-purple-400/60 transition-all duration-200"/>
+                                    </div>
+                                </div>
+
+                                <div class="h-px bg-white/[0.05] mt-2"></div>
+
+                                <div class="pt-1">
+                                    <div class="flex items-center justify-between mb-1">
+                                        <p class="text-slate-400 text-[10px] font-semibold uppercase tracking-widest">Preferred Fields *</p>
+                                        <span id="fields-count" class="text-[10px] text-pink-300 font-semibold px-2 py-0.5 rounded-full bg-pink-500/15 border border-pink-400/25" style="display:none;"></span>
+                                    </div>
+                                    <p class="text-slate-600 text-[10px] mb-2">Tap to select, pick all that apply</p>
+                                    <div id="fields-hidden-inputs"></div>
+                                    <div class="flex flex-wrap gap-1.5 max-h-[130px] overflow-y-auto hide-scroll">
+                                        <button type="button" data-field="technology" class="field-pill px-2.5 py-1 rounded-lg text-[10px] font-medium bg-white/[0.04] border border-white/[0.07] text-slate-500 hover:border-pink-400/50 hover:text-slate-200 hover:bg-pink-500/10 transition-all duration-150 select-none">Technology</button>
+                                        <button type="button" data-field="healthcare" class="field-pill px-2.5 py-1 rounded-lg text-[10px] font-medium bg-white/[0.04] border border-white/[0.07] text-slate-500 hover:border-pink-400/50 hover:text-slate-200 hover:bg-pink-500/10 transition-all duration-150 select-none">Healthcare</button>
+                                        <button type="button" data-field="education" class="field-pill px-2.5 py-1 rounded-lg text-[10px] font-medium bg-white/[0.04] border border-white/[0.07] text-slate-500 hover:border-pink-400/50 hover:text-slate-200 hover:bg-pink-500/10 transition-all duration-150 select-none">Education</button>
+                                        <button type="button" data-field="finance" class="field-pill px-2.5 py-1 rounded-lg text-[10px] font-medium bg-white/[0.04] border border-white/[0.07] text-slate-500 hover:border-pink-400/50 hover:text-slate-200 hover:bg-pink-500/10 transition-all duration-150 select-none">Finance</button>
+                                        <button type="button" data-field="marketing" class="field-pill px-2.5 py-1 rounded-lg text-[10px] font-medium bg-white/[0.04] border border-white/[0.07] text-slate-500 hover:border-pink-400/50 hover:text-slate-200 hover:bg-pink-500/10 transition-all duration-150 select-none">Marketing</button>
+                                        <button type="button" data-field="design" class="field-pill px-2.5 py-1 rounded-lg text-[10px] font-medium bg-white/[0.04] border border-white/[0.07] text-slate-500 hover:border-pink-400/50 hover:text-slate-200 hover:bg-pink-500/10 transition-all duration-150 select-none">Design</button>
+                                        <button type="button" data-field="engineering" class="field-pill px-2.5 py-1 rounded-lg text-[10px] font-medium bg-white/[0.04] border border-white/[0.07] text-slate-500 hover:border-pink-400/50 hover:text-slate-200 hover:bg-pink-500/10 transition-all duration-150 select-none">Engineering</button>
+                                        <button type="button" data-field="legal" class="field-pill px-2.5 py-1 rounded-lg text-[10px] font-medium bg-white/[0.04] border border-white/[0.07] text-slate-500 hover:border-pink-400/50 hover:text-slate-200 hover:bg-pink-500/10 transition-all duration-150 select-none">Legal</button>
+                                        <button type="button" data-field="hr" class="field-pill px-2.5 py-1 rounded-lg text-[10px] font-medium bg-white/[0.04] border border-white/[0.07] text-slate-500 hover:border-pink-400/50 hover:text-slate-200 hover:bg-pink-500/10 transition-all duration-150 select-none">Human Resources</button>
+                                        <button type="button" data-field="operations" class="field-pill px-2.5 py-1 rounded-lg text-[10px] font-medium bg-white/[0.04] border border-white/[0.07] text-slate-500 hover:border-pink-400/50 hover:text-slate-200 hover:bg-pink-500/10 transition-all duration-150 select-none">Operations</button>
+                                        <button type="button" data-field="agriculture" class="field-pill px-2.5 py-1 rounded-lg text-[10px] font-medium bg-white/[0.04] border border-white/[0.07] text-slate-500 hover:border-pink-400/50 hover:text-slate-200 hover:bg-pink-500/10 transition-all duration-150 select-none">Agriculture</button>
+                                        <button type="button" data-field="media" class="field-pill px-2.5 py-1 rounded-lg text-[10px] font-medium bg-white/[0.04] border border-white/[0.07] text-slate-500 hover:border-pink-400/50 hover:text-slate-200 hover:bg-pink-500/10 transition-all duration-150 select-none">Media</button>
+                                        <button type="button" data-field="research" class="field-pill px-2.5 py-1 rounded-lg text-[10px] font-medium bg-white/[0.04] border border-white/[0.07] text-slate-500 hover:border-pink-400/50 hover:text-slate-200 hover:bg-pink-500/10 transition-all duration-150 select-none">Research</button>
+                                        <button type="button" data-field="hospitality" class="field-pill px-2.5 py-1 rounded-lg text-[10px] font-medium bg-white/[0.04] border border-white/[0.07] text-slate-500 hover:border-pink-400/50 hover:text-slate-200 hover:bg-pink-500/10 transition-all duration-150 select-none">Hospitality</button>
+                                        <button type="button" data-field="manufacturing" class="field-pill px-2.5 py-1 rounded-lg text-[10px] font-medium bg-white/[0.04] border border-white/[0.07] text-slate-500 hover:border-pink-400/50 hover:text-slate-200 hover:bg-pink-500/10 transition-all duration-150 select-none">Manufacturing</button>
+                                        <button type="button" data-field="other" class="field-pill px-2.5 py-1 rounded-lg text-[10px] font-medium bg-white/[0.04] border border-white/[0.07] text-slate-500 hover:border-pink-400/50 hover:text-slate-200 hover:bg-pink-500/10 transition-all duration-150 select-none">Other</button>
+                                    </div>
+                                    <div id="field-other-wrap" style="display:none;" class="mt-2">
+                                        <input type="text" id="field-other-input" placeholder="Describe your preferred field..."
+                                               class="w-full px-3 py-2 rounded-lg bg-pink-500/10 border border-pink-400/30 text-white placeholder-slate-500 text-xs focus:outline-none focus:border-pink-400/60 transition-all duration-200"/>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- THIRD COL -->
+                            <div id="modal-col-3" class="pl-4" style="display:none;">
+                                <div class="sticky top-0 rounded-2xl bg-white/[0.03] border border-white/[0.06] p-4">
+                                    <div class="flex items-center gap-2 mb-4">
+                                        <div class="w-5 h-5 rounded-lg bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center flex-shrink-0">
+                                            <svg class="w-3 h-3 text-white" fill="currentColor" viewBox="0 0 20 20">
+                                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                                            </svg>
+                                        </div>
+                                        <p class="text-white text-xs font-semibold">Your Selections</p>
+                                    </div>
+
+                                    <div id="col3-skills-wrap" class="mb-3" style="display:none;">
+                                        <p class="text-purple-400 text-[10px] font-semibold uppercase tracking-widest mb-2">Skills</p>
+                                        <div id="col3-skills" class="flex flex-col gap-1.5"></div>
+                                    </div>
+
+                                    <div id="col3-fields-wrap" style="display:none;">
+                                        <p class="text-pink-400 text-[10px] font-semibold uppercase tracking-widest mb-2 mt-3">Fields</p>
+                                        <div id="col3-fields" class="flex flex-col gap-1.5"></div>
+                                    </div>
+
+                                    <p id="col3-empty" class="text-slate-700 text-[11px] italic text-center py-4">Nothing selected yet...</p>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <!-- Footer -->
+                        <div class="flex items-center justify-between mt-6 pt-5 border-t border-white/[0.05]">
+                            <p class="text-slate-600 text-[10px] flex items-center gap-1.5">
+                                <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
+                                </svg>
+                                Secure &amp; private. No spam, ever.
+                            </p>
+                            <button type="submit" id="modal-submit-btn"
+                                    class="group relative flex items-center gap-2 px-6 py-2.5 rounded-xl
+                                           bg-gradient-to-r from-purple-500 to-pink-600
+                                           text-white font-semibold text-xs tracking-widest uppercase
+                                           hover:opacity-90 hover:-translate-y-0.5 active:translate-y-0
+                                           transition-all duration-200
+                                           shadow-[0_4px_16px_rgba(139,92,246,0.35)]
+                                           disabled:opacity-40 disabled:cursor-not-allowed overflow-hidden">
+                                <span class="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-500 pointer-events-none"></span>
+                                <svg class="relative w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/>
+                                </svg>
+                                <span id="modal-btn-text" class="relative">Join Waitlist</span>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Waitlist Modal JS -->
+    <script src="/static/js/waitlist-modal.js"></script>
+
+    <!-- ══════════════════════════════════════════
+         ANIMATED MESH + COUNTER + HEALTH CHECK
+    ══════════════════════════════════════════ -->
+    <script>
+    /* ── Geometric mesh background ── */
+    (function() {
+        const canvas = document.getElementById('mesh-canvas');
+        const ctx = canvas.getContext('2d');
+        let w, h, dots = [];
+        const DOT_COUNT = 70;
+        const MAX_DIST = 160;
+
+        function resize() {
+            w = canvas.width = window.innerWidth;
+            h = canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resize);
+        resize();
+
+        for (let i = 0; i < DOT_COUNT; i++) {
+            dots.push({
+                x: Math.random() * w,
+                y: Math.random() * h,
+                vx: (Math.random() - 0.5) * 0.35,
+                vy: (Math.random() - 0.5) * 0.35,
+                r: Math.random() * 1.5 + 0.5
+            });
+        }
+
+        function draw() {
+            ctx.clearRect(0, 0, w, h);
+
+            // Move dots
+            for (const d of dots) {
+                d.x += d.vx;
+                d.y += d.vy;
+                if (d.x < 0 || d.x > w) d.vx *= -1;
+                if (d.y < 0 || d.y > h) d.vy *= -1;
+            }
+
+            // Draw lines
+            for (let i = 0; i < dots.length; i++) {
+                for (let j = i + 1; j < dots.length; j++) {
+                    const dx = dots[i].x - dots[j].x;
+                    const dy = dots[i].y - dots[j].y;
+                    const dist = Math.sqrt(dx * dx + dy * dy);
+                    if (dist < MAX_DIST) {
+                        const alpha = (1 - dist / MAX_DIST) * 0.15;
+                        ctx.strokeStyle = 'rgba(56,189,248,' + alpha + ')';
+                        ctx.lineWidth = 0.5;
+                        ctx.beginPath();
+                        ctx.moveTo(dots[i].x, dots[i].y);
+                        ctx.lineTo(dots[j].x, dots[j].y);
+                        ctx.stroke();
+                    }
+                }
+            }
+
+            // Draw dots
+            for (const d of dots) {
+                ctx.fillStyle = 'rgba(148,163,184,0.25)';
+                ctx.beginPath();
+                ctx.arc(d.x, d.y, d.r, 0, Math.PI * 2);
+                ctx.fill();
+            }
+
+            requestAnimationFrame(draw);
+        }
+        draw();
+    })();
+
+    /* ── Counter animation ── */
+    document.querySelectorAll('[data-count]').forEach(el => {
+        const target = parseInt(el.dataset.count, 10);
+        let current = 0;
+        const step = Math.ceil(target / 40);
+        const interval = setInterval(() => {
+            current += step;
+            if (current >= target) { current = target; clearInterval(interval); }
+            el.textContent = current;
+        }, 35);
+    });
+
+    /* ── Silent background health check ── */
+    (function() {
+        let redirecting = false;
+        function check() {
+            if (redirecting) return;
+            fetch('/health', { method: 'GET', cache: 'no-cache', headers: { 'Cache-Control': 'no-cache' } })
+                .then(r => { if (r.ok) return r.json(); throw 0; })
+                .then(d => {
+                    if (d && d.status === 'healthy') {
+                        redirecting = true;
+                        document.body.style.transition = 'opacity 0.6s ease-out';
+                        document.body.style.opacity = '0';
+                        setTimeout(() => { window.location.href = '/'; }, 600);
+                    }
+                })
+                .catch(() => {});
+        }
+        check();
+        setInterval(check, 3000);
+    })();
+    </script>
+</body>
+</html>
+

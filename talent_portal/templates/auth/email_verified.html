@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+
+{% block title %}Email Verified{% endblock %}
+
+{% block body %}
+<div class="min-h-screen gradient-bg flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-md w-full">
+        <div class="card text-center">
+            <!-- Success Icon -->
+            <div class="mx-auto w-16 h-16 bg-green-500/20 rounded-full flex items-center justify-center mb-6">
+                <svg class="w-8 h-8 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                </svg>
+            </div>
+
+            <h1 class="text-2xl font-bold text-white mb-2">Email Verified!</h1>
+            <p class="text-gray-400 mb-6">
+                Your email has been verified. Your account is now active and you can sign in.
+            </p>
+
+            <a href="/auth/login" class="btn-primary inline-block w-full">
+                Sign In to Your Account
+            </a>
+
+            <div class="mt-4">
+                <a href="{{ main_site_url }}" class="text-sm text-gray-400 hover:text-primary-400">
+                    ← Back to ForgeForth Africa
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+

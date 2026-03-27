@@ -1,0 +1,38 @@
+{% extends "emails/base.html" %}
+{% block title %}Interview Scheduled - {{ site_name }}{% endblock %}
+{% block content %}
+<h1>Interview Scheduled! 📅</h1>
+
+<p>Hi {{ user.first_name|default:user.email }},</p>
+
+<p>An interview has been scheduled for your application:</p>
+
+<div class="highlight">
+    <strong>{{ interview.title }}</strong><br>
+    {{ opportunity.title }} at {{ organization.name }}<br><br>
+
+    <strong>Date & Time:</strong> {{ interview.scheduled_at|date:"F j, Y, g:i A" }} ({{ interview.timezone }})<br>
+    <strong>Duration:</strong> {{ interview.duration_minutes }} minutes<br>
+    <strong>Type:</strong> {{ interview.interview_type|title }}<br>
+    {% if interview.location %}
+    <strong>Location:</strong> {{ interview.location }}<br>
+    {% endif %}
+    {% if interview.meeting_link %}
+    <strong>Meeting Link:</strong> <a href="{{ interview.meeting_link }}">{{ interview.meeting_link }}</a><br>
+    {% endif %}
+</div>
+
+{% if interview.description %}
+<p><strong>Notes:</strong></p>
+<p>{{ interview.description }}</p>
+{% endif %}
+
+<p style="text-align: center;">
+    <a href="{{ site_url }}/dashboard/applications" class="button">View Details</a>
+</p>
+
+<p>Good luck with your interview! 🍀</p>
+
+<p>Best regards,<br>The {{ site_name }} Team</p>
+{% endblock %}
+

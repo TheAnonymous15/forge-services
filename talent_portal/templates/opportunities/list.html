@@ -1,0 +1,158 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="p-6 lg:p-8">
+    <!-- Header -->
+    <div class="mb-8">
+        <h1 class="text-2xl font-bold text-white">Browse Opportunities</h1>
+        <p class="text-gray-400 mt-1">Find your next career opportunity</p>
+    </div>
+
+    <!-- Search & Filters -->
+    <div class="card mb-6">
+        <form action="/opportunities" method="get" class="flex flex-col md:flex-row gap-4">
+            <div class="flex-1">
+                <div class="relative">
+                    <svg class="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                    </svg>
+                    <input type="text" name="q" value="{{ query or '' }}" placeholder="Search by title, skill, or keyword..."
+                           class="input-field pl-10">
+                </div>
+            </div>
+            <div class="md:w-48">
+                <input type="text" name="location" value="{{ location or '' }}" placeholder="Location"
+                       class="input-field">
+            </div>
+            <div class="md:w-48">
+                <select name="type" class="input-field">
+                    <option value="">All types</option>
+                    <option value="full-time" {% if job_type == 'full-time' %}selected{% endif %}>Full-time</option>
+                    <option value="part-time" {% if job_type == 'part-time' %}selected{% endif %}>Part-time</option>
+                    <option value="contract" {% if job_type == 'contract' %}selected{% endif %}>Contract</option>
+                    <option value="internship" {% if job_type == 'internship' %}selected{% endif %}>Internship</option>
+                    <option value="volunteer" {% if job_type == 'volunteer' %}selected{% endif %}>Volunteer</option>
+                </select>
+            </div>
+            <button type="submit" class="btn-primary">
+                Search
+            </button>
+        </form>
+    </div>
+
+    <!-- Results -->
+    <div class="space-y-4">
+        {% if opportunities and opportunities.results %}
+        <div class="text-sm text-gray-400 mb-4">
+            Found {{ opportunities.count }} opportunities
+        </div>
+
+        {% for opp in opportunities.results %}
+        <a href="/opportunities/{{ opp.id }}" class="card block hover:border-primary-500/50 transition-colors">
+            <div class="flex items-start justify-between">
+                <div class="flex items-start">
+                    <div class="w-12 h-12 bg-gray-700 rounded-lg flex items-center justify-center flex-shrink-0 mr-4">
+                        {% if opp.company_logo %}
+                        <img src="{{ opp.company_logo }}" alt="{{ opp.company_name }}" class="w-full h-full object-cover rounded-lg">
+                        {% else %}
+                        <span class="text-white font-medium">{{ opp.company_name[0] if opp.company_name else 'C' }}</span>
+                        {% endif %}
+                    </div>
+                    <div>
+                        <h3 class="font-semibold text-white group-hover:text-primary-400">{{ opp.title }}</h3>
+                        <p class="text-sm text-gray-400">{{ opp.company_name }}</p>
+                        <div class="flex flex-wrap items-center gap-3 mt-2 text-sm text-gray-500">
+                            {% if opp.location %}
+                            <span class="flex items-center">
+                                <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+                                </svg>
+                                {{ opp.location }}
+                            </span>
+                            {% endif %}
+                            {% if opp.job_type %}
+                            <span class="flex items-center">
+                                <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+                                </svg>
+                                {{ opp.job_type | title }}
+                            </span>
+                            {% endif %}
+                            {% if opp.salary_range %}
+                            <span class="flex items-center">
+                                <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                </svg>
+                                {{ opp.salary_range }}
+                            </span>
+                            {% endif %}
+                            <span class="flex items-center">
+                                <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                </svg>
+                                Posted {{ opp.posted_at }}
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+                {% if opp.match_score %}
+                <div class="flex-shrink-0 ml-4">
+                    <span class="inline-flex items-center px-3 py-1 bg-primary-500/20 text-primary-400 rounded-full text-sm font-medium">
+                        {{ opp.match_score }}% match
+                    </span>
+                </div>
+                {% endif %}
+            </div>
+
+            {% if opp.skills %}
+            <div class="mt-4 flex flex-wrap gap-2">
+                {% for skill in opp.skills[:5] %}
+                <span class="px-2 py-1 bg-gray-700/50 text-gray-400 rounded text-xs">{{ skill }}</span>
+                {% endfor %}
+                {% if opp.skills|length > 5 %}
+                <span class="px-2 py-1 text-gray-500 text-xs">+{{ opp.skills|length - 5 }} more</span>
+                {% endif %}
+            </div>
+            {% endif %}
+        </a>
+        {% endfor %}
+
+        <!-- Pagination -->
+        {% if opportunities.count > 20 %}
+        <div class="flex items-center justify-center space-x-2 mt-8">
+            {% if current_page > 1 %}
+            <a href="?page={{ current_page - 1 }}&q={{ query or '' }}&location={{ location or '' }}&type={{ job_type or '' }}"
+               class="px-4 py-2 bg-dark-800 text-gray-400 rounded-lg hover:bg-gray-700 transition-colors">
+                Previous
+            </a>
+            {% endif %}
+
+            <span class="px-4 py-2 text-gray-400">
+                Page {{ current_page }} of {{ (opportunities.count / 20) | round(0, 'ceil') | int }}
+            </span>
+
+            {% if current_page * 20 < opportunities.count %}
+            <a href="?page={{ current_page + 1 }}&q={{ query or '' }}&location={{ location or '' }}&type={{ job_type or '' }}"
+               class="px-4 py-2 bg-dark-800 text-gray-400 rounded-lg hover:bg-gray-700 transition-colors">
+                Next
+            </a>
+            {% endif %}
+        </div>
+        {% endif %}
+
+        {% else %}
+        <!-- Empty State -->
+        <div class="card text-center py-12">
+            <svg class="w-16 h-16 text-gray-600 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+            </svg>
+            <h3 class="text-lg font-medium text-white mb-2">No opportunities found</h3>
+            <p class="text-gray-400 mb-6">Try adjusting your search filters or check back later for new listings.</p>
+            <a href="/opportunities" class="btn-primary">Clear filters</a>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
+

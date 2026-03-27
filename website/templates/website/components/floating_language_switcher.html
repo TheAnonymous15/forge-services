@@ -1,0 +1,650 @@
+<!-- ═══════════════════════════════════════════════════════════════════
+     FORGEFORTH AFRICA — Floating Language Switcher  (v3 — Sleek Glass)
+═══════════════════════════════════════════════════════════════════ -->
+
+<style>
+/* ── Floating Button ───────────────────────────────────────────── */
+#lang-fab {
+    width: 52px; height: 52px;
+    border-radius: 50%;
+    cursor: pointer;
+    position: relative;
+    transition: transform .25s cubic-bezier(.34,1.56,.64,1), box-shadow .25s ease;
+    box-shadow:
+        0 4px 20px rgba(0,0,0,.55),
+        0 0 0 1.5px rgba(255,255,255,.08),
+        inset 0 1px 0 rgba(255,255,255,.15);
+    background: radial-gradient(circle at 35% 35%, rgba(56,189,248,.25), transparent 65%),
+                linear-gradient(145deg, #0f172a 0%, #1e293b 50%, #0f172a 100%);
+}
+#lang-fab:hover  { transform: translateY(-3px) scale(1.06); box-shadow: 0 8px 30px rgba(56,189,248,.25), 0 0 0 1.5px rgba(56,189,248,.3), inset 0 1px 0 rgba(255,255,255,.2); }
+#lang-fab:active { transform: scale(.96); }
+#lang-fab-inner  { width:100%; height:100%; border-radius:50%; overflow:hidden; display:flex; align-items:center; justify-content:center; font-size:1.5rem; line-height:1; user-select:none; }
+#lang-fab-inner svg { width:22px; height:22px; color:rgba(148,214,255,.85); drop-shadow:0 0 6px rgba(56,189,248,.6); transition: color .2s; }
+#lang-fab:hover #lang-fab-inner svg { color:#7dd3fc; }
+#lang-fab-inner.has-flag { font-size:1.85rem; }
+#lang-fab-inner.has-flag svg { display:none; }
+#lang-fab .fab-ring {
+    position:absolute; inset:0; border-radius:50%;
+    background: conic-gradient(from 180deg, rgba(56,189,248,.4), rgba(129,140,248,.4), rgba(52,211,153,.4), rgba(56,189,248,.4));
+    -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 1.5px), #fff calc(100% - 1.5px));
+    mask:          radial-gradient(farthest-side, transparent calc(100% - 1.5px), #fff calc(100% - 1.5px));
+    animation: fab-spin 6s linear infinite;
+    opacity: 0;
+    transition: opacity .3s;
+}
+#lang-fab:hover .fab-ring { opacity: 1; }
+@keyframes fab-spin { to { transform: rotate(360deg); } }
+
+/* ── Modal panel ───────────────────────────────────────────────── */
+#lang-panel {
+    position: absolute;
+    bottom: calc(100% + 14px);
+    right: 0;
+    width: 260px;
+    border-radius: 20px;
+    overflow: hidden;
+    /* deep glass */
+    background:
+        linear-gradient(135deg, rgba(255,255,255,.07) 0%, rgba(255,255,255,.02) 100%);
+    backdrop-filter: blur(32px) saturate(180%);
+    -webkit-backdrop-filter: blur(32px) saturate(180%);
+    border: 1px solid rgba(255,255,255,.1);
+    box-shadow:
+        0 32px 80px rgba(0,0,0,.7),
+        0 0 0 1px rgba(255,255,255,.04),
+        inset 0 1px 0 rgba(255,255,255,.12);
+    display: none;
+    transform-origin: bottom right;
+}
+#lang-panel.open {
+    display: block;
+    animation: panel-in .22s cubic-bezier(.34,1.4,.64,1) forwards;
+}
+@keyframes panel-in {
+    from { opacity:0; transform: scale(.88) translateY(12px); }
+    to   { opacity:1; transform: scale(1)   translateY(0);    }
+}
+
+/* ── Panel header ──────────────────────────────────────────────── */
+.lp-header {
+    padding: 14px 16px 10px;
+    border-bottom: 1px solid rgba(255,255,255,.07);
+    background: linear-gradient(135deg, rgba(56,189,248,.08), rgba(129,140,248,.06));
+    display: flex; align-items: center; justify-content: space-between; gap: 10px;
+}
+.lp-title {
+    font-size: 11px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase;
+    color: rgba(255,255,255,.55); display: flex; align-items: center; gap: 6px;
+}
+.lp-title svg { width:13px; height:13px; color: rgba(56,189,248,.8); flex-shrink:0; }
+.lp-close {
+    width:26px; height:26px; border-radius:8px;
+    background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.08);
+    display:flex; align-items:center; justify-content:center; cursor:pointer;
+    transition: background .15s, transform .15s;
+    flex-shrink: 0;
+}
+.lp-close:hover { background: rgba(255,255,255,.12); transform: scale(1.05); }
+.lp-close svg   { width:12px; height:12px; color:rgba(255,255,255,.5); }
+
+/* ── Search box ────────────────────────────────────────────────── */
+.lp-search-wrap {
+    padding: 10px 12px 8px;
+    border-bottom: 1px solid rgba(255,255,255,.06);
+}
+.lp-search-inner {
+    display:flex; align-items:center; gap:8px;
+    background: rgba(255,255,255,.05);
+    border: 1px solid rgba(255,255,255,.08);
+    border-radius: 10px; padding: 7px 10px;
+    transition: border-color .2s, background .2s;
+}
+.lp-search-inner:focus-within {
+    border-color: rgba(56,189,248,.4);
+    background: rgba(56,189,248,.06);
+}
+.lp-search-inner svg { width:13px; height:13px; color:rgba(255,255,255,.3); flex-shrink:0; }
+.lp-search-inner input {
+    flex:1; background:transparent; border:none; outline:none;
+    color:#fff; font-size:12px; caret-color: rgba(56,189,248,.9);
+}
+.lp-search-inner input::placeholder { color:rgba(255,255,255,.25); }
+
+/* ── Region label ──────────────────────────────────────────────── */
+.lp-region {
+    padding: 8px 14px 3px;
+    font-size: 9px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase;
+    color: rgba(255,255,255,.2);
+}
+
+/* ── Language list ─────────────────────────────────────────────── */
+#lang-list {
+    max-height: 280px; overflow-y: auto;
+    padding: 4px 8px 10px;
+}
+@media (min-height: 700px) {
+    #lang-list { max-height: 400px; }
+    #lang-panel { width: 280px; }
+}
+@media (min-height: 900px) {
+    #lang-list { max-height: 520px; }
+    #lang-panel { width: 290px; }
+}
+#lang-list::-webkit-scrollbar { width: 3px; }
+#lang-list::-webkit-scrollbar-track { background: transparent; }
+#lang-list::-webkit-scrollbar-thumb { background: rgba(255,255,255,.1); border-radius: 2px; }
+
+/* ── Language row ──────────────────────────────────────────────── */
+.li-row {
+    display:flex; align-items:center; gap:9px;
+    padding: 7px 8px; border-radius: 10px;
+    cursor:pointer; border: 1px solid transparent;
+    transition: background .15s, border-color .15s, transform .15s;
+    position: relative;
+}
+.li-row:hover { background: rgba(255,255,255,.06); transform: translateX(2px); }
+.li-row.active {
+    background: linear-gradient(135deg, rgba(56,189,248,.12), rgba(129,140,248,.08));
+    border-color: rgba(56,189,248,.22);
+}
+.li-flag {
+    width:30px; height:30px; border-radius:8px; overflow:hidden;
+    display:flex; align-items:center; justify-content:center;
+    font-size:1.3rem; line-height:1; flex-shrink:0;
+    background: rgba(255,255,255,.04);
+    border: 1px solid rgba(255,255,255,.07);
+    box-shadow: 0 2px 6px rgba(0,0,0,.25);
+    transition: transform .15s;
+}
+.li-row:hover .li-flag, .li-row.active .li-flag { transform: scale(1.1); }
+.li-row.active .li-flag { border-color: rgba(56,189,248,.3); }
+.li-text { flex:1; min-width:0; }
+.li-native { font-size:12px; font-weight:600; color:rgba(255,255,255,.85); line-height:1.2; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.li-row.active .li-native { color:#7dd3fc; }
+.li-name   { font-size:10px; color:rgba(255,255,255,.3); line-height:1.2; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.li-check  { width:16px; height:16px; border-radius:50%; flex-shrink:0;
+             background: linear-gradient(135deg,#38bdf8,#818cf8);
+             display:flex; align-items:center; justify-content:center;
+             box-shadow: 0 0 8px rgba(56,189,248,.5); }
+.li-check svg { width:9px; height:9px; color:#fff; }
+
+/* ── Empty state ───────────────────────────────────────────────── */
+.lp-empty { padding:24px 0; text-align:center; color:rgba(255,255,255,.25); font-size:12px; }
+
+/* ── Footer ────────────────────────────────────────────────────── */
+.lp-footer {
+    padding: 8px 14px 10px;
+    border-top: 1px solid rgba(255,255,255,.06);
+    display:flex; align-items:center; justify-content:space-between;
+    font-size:9px; color:rgba(255,255,255,.2);
+    background: rgba(0,0,0,.15);
+}
+.lp-footer-badge {
+    display:flex; align-items:center; gap:4px;
+    background: rgba(255,255,255,.04); border:1px solid rgba(255,255,255,.07);
+    border-radius:6px; padding:3px 7px;
+}
+
+/* ── Google Translate suppress ─────────────────────────────────── */
+.goog-te-banner-frame,.goog-te-gadget-icon,#goog-gt-tt,.goog-te-balloon-frame,
+.goog-te-spinner-pos,.goog-te-ftab,.goog-te-menu-frame,.skiptranslate.goog-te-gadget,
+.goog-te-gadget,.VIpgJd-ZVi9od-ORHb-OEVmcd,.VIpgJd-ZVi9od-l4eHX-hSRGPd {
+    display:none !important;
+}
+body { top:0 !important; }
+.goog-text-highlight { background:none !important; box-shadow:none !important; }
+</style>
+
+<!-- ── Floating button ─────────────────────────────────────────── -->
+<div id="floating-language-switcher"
+     class="fixed bottom-24 lg:bottom-8 right-4 lg:right-6 z-[9999]"
+     style="position:fixed;">
+
+    <button id="lang-fab" onclick="langToggle()" aria-label="Select language">
+        <div class="fab-ring"></div>
+        <div id="lang-fab-inner">
+            <!-- default: SVG translate/language icon -->
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10"/>
+                <line x1="2" y1="12" x2="22" y2="12"/>
+                <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+            </svg>
+        </div>
+    </button>
+
+    <!-- ── Glass modal panel ───────────────────────────────────── -->
+    <div id="lang-panel" class="notranslate">
+
+        <!-- Header -->
+        <div class="lp-header">
+            <div class="lp-title">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                          d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129"/>
+                </svg>
+                Language
+            </div>
+            <button class="lp-close" onclick="langToggle()">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                </svg>
+            </button>
+        </div>
+
+        <!-- Search -->
+        <div class="lp-search-wrap">
+            <div class="lp-search-inner">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                          d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                </svg>
+                <input id="lang-search" type="text" placeholder="Search…" oninput="langFilter()" autocomplete="off" spellcheck="false">
+            </div>
+        </div>
+
+        <!-- List -->
+        <div id="lang-list"></div>
+
+        <!-- Footer -->
+        <div class="lp-footer">
+            <span id="lang-count" class="notranslate">— languages</span>
+            <div class="lp-footer-badge notranslate">
+                <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor" style="color:rgba(56,189,248,.6)">
+                    <path d="M12.87 15.07l-2.54-2.51.03-.03c1.74-1.94 2.98-4.17 3.71-6.53H17V4h-7V2H8v2H1v1.99h11.17C11.5 7.92 10.44 9.75 9 11.35 8.07 10.32 7.3 9.19 6.69 8h-2c.73 1.63 1.73 3.17 2.98 4.56l-5.09 5.02L4 19l5-5 3.11 3.11.76-2.04zM18.5 10h-2L12 22h2l1.12-3h4.75L21 22h2l-4.5-12zm-2.62 7l1.62-4.33L19.12 17h-3.24z"/>
+                </svg>
+                Google Translate
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Hidden Google Translate mount -->
+<div id="google_translate_element" class="hidden"></div>
+
+<script>
+/* ── Language data ─────────────────────────────────────────────── */
+const LANGS = [
+    // Africa — shown first (our home)
+    { c:'af',    n:'Afrikaans',           nat:'Afrikaans',        f:'🇿🇦', r:'Africa' },
+    { c:'am',    n:'Amharic',             nat:'አማርኛ',             f:'🇪🇹', r:'Africa' },
+    { c:'ha',    n:'Hausa',               nat:'Hausa',             f:'🇳🇬', r:'Africa' },
+    { c:'ig',    n:'Igbo',                nat:'Igbo',              f:'🇳🇬', r:'Africa' },
+    { c:'rw',    n:'Kinyarwanda',         nat:'Ikinyarwanda',      f:'🇷🇼', r:'Africa' },
+    { c:'lg',    n:'Luganda',             nat:'Luganda',           f:'🇺🇬', r:'Africa' },
+    { c:'ny',    n:'Chichewa',            nat:'Chichewa',          f:'🇲🇼', r:'Africa' },
+    { c:'om',    n:'Oromo',               nat:'Afaan Oromoo',      f:'🇪🇹', r:'Africa' },
+    { c:'sn',    n:'Shona',               nat:'chiShona',          f:'🇿🇼', r:'Africa' },
+    { c:'so',    n:'Somali',              nat:'Soomaali',          f:'🇸🇴', r:'Africa' },
+    { c:'st',    n:'Sesotho',             nat:'Sesotho',           f:'🇱🇸', r:'Africa' },
+    { c:'sw',    n:'Swahili',             nat:'Kiswahili',         f:'🇰🇪', r:'Africa' },
+    { c:'ti',    n:'Tigrinya',            nat:'ትግርኛ',              f:'🇪🇷', r:'Africa' },
+    { c:'xh',    n:'Xhosa',              nat:'isiXhosa',          f:'🇿🇦', r:'Africa' },
+    { c:'yo',    n:'Yoruba',              nat:'Yorùbá',            f:'🇳🇬', r:'Africa' },
+    { c:'zu',    n:'Zulu',                nat:'isiZulu',           f:'🇿🇦', r:'Africa' },
+    { c:'mg',    n:'Malagasy',            nat:'Malagasy',          f:'🇲🇬', r:'Africa' },
+    { c:'ts',    n:'Tsonga',              nat:'Xitsonga',          f:'🇿🇦', r:'Africa' },
+    { c:'tn',    n:'Setswana',            nat:'Setswana',          f:'🇧🇼', r:'Africa' },
+    // Global
+    { c:'en',    n:'English',             nat:'English',           f:'🇬🇧', r:'Global' },
+    { c:'fr',    n:'French',              nat:'Français',          f:'🇫🇷', r:'Global' },
+    { c:'es',    n:'Spanish',             nat:'Español',           f:'🇪🇸', r:'Global' },
+    { c:'ar',    n:'Arabic',              nat:'العربية',           f:'🇸🇦', r:'Global' },
+    { c:'pt',    n:'Portuguese',          nat:'Português',         f:'🇵🇹', r:'Global' },
+    { c:'ru',    n:'Russian',             nat:'Русский',           f:'🇷🇺', r:'Global' },
+    { c:'de',    n:'German',              nat:'Deutsch',           f:'🇩🇪', r:'Global' },
+    { c:'zh-CN', n:'Chinese (Simplified)',nat:'简体中文',           f:'🇨🇳', r:'Global' },
+    { c:'zh-TW', n:'Chinese (Traditional)',nat:'繁體中文',         f:'🇹🇼', r:'Global' },
+    { c:'ja',    n:'Japanese',            nat:'日本語',             f:'🇯🇵', r:'Global' },
+    { c:'hi',    n:'Hindi',               nat:'हिन्दी',             f:'🇮🇳', r:'Global' },
+    { c:'la',    n:'Latin',               nat:'Latina',            f:'🏛️',  r:'Global' },
+    { c:'eo',    n:'Esperanto',           nat:'Esperanto',         f:'🟢',  r:'Global' },
+    // Europe
+    { c:'sq',    n:'Albanian',            nat:'Shqip',             f:'🇦🇱', r:'Europe' },
+    { c:'hy',    n:'Armenian',            nat:'Հայերեն',            f:'🇦🇲', r:'Europe' },
+    { c:'az',    n:'Azerbaijani',         nat:'Azərbaycan',        f:'🇦🇿', r:'Europe' },
+    { c:'eu',    n:'Basque',              nat:'Euskara',           f:'🇪🇸', r:'Europe' },
+    { c:'be',    n:'Belarusian',          nat:'Беларуская',        f:'🇧🇾', r:'Europe' },
+    { c:'bs',    n:'Bosnian',             nat:'Bosanski',          f:'🇧🇦', r:'Europe' },
+    { c:'bg',    n:'Bulgarian',           nat:'Български',         f:'🇧🇬', r:'Europe' },
+    { c:'ca',    n:'Catalan',             nat:'Català',            f:'🇪🇸', r:'Europe' },
+    { c:'co',    n:'Corsican',            nat:'Corsu',             f:'🇫🇷', r:'Europe' },
+    { c:'hr',    n:'Croatian',            nat:'Hrvatski',          f:'🇭🇷', r:'Europe' },
+    { c:'cs',    n:'Czech',               nat:'Čeština',           f:'🇨🇿', r:'Europe' },
+    { c:'da',    n:'Danish',              nat:'Dansk',             f:'🇩🇰', r:'Europe' },
+    { c:'nl',    n:'Dutch',               nat:'Nederlands',        f:'🇳🇱', r:'Europe' },
+    { c:'et',    n:'Estonian',            nat:'Eesti',             f:'🇪🇪', r:'Europe' },
+    { c:'fi',    n:'Finnish',             nat:'Suomi',             f:'🇫🇮', r:'Europe' },
+    { c:'fy',    n:'Frisian',             nat:'Frysk',             f:'🇳🇱', r:'Europe' },
+    { c:'gl',    n:'Galician',            nat:'Galego',            f:'🇪🇸', r:'Europe' },
+    { c:'ka',    n:'Georgian',            nat:'ქართული',            f:'🇬🇪', r:'Europe' },
+    { c:'el',    n:'Greek',               nat:'Ελληνικά',          f:'🇬🇷', r:'Europe' },
+    { c:'hu',    n:'Hungarian',           nat:'Magyar',            f:'🇭🇺', r:'Europe' },
+    { c:'is',    n:'Icelandic',           nat:'Íslenska',          f:'🇮🇸', r:'Europe' },
+    { c:'ga',    n:'Irish',               nat:'Gaeilge',           f:'🇮🇪', r:'Europe' },
+    { c:'it',    n:'Italian',             nat:'Italiano',          f:'🇮🇹', r:'Europe' },
+    { c:'lv',    n:'Latvian',             nat:'Latviešu',          f:'🇱🇻', r:'Europe' },
+    { c:'lt',    n:'Lithuanian',          nat:'Lietuvių',          f:'🇱🇹', r:'Europe' },
+    { c:'lb',    n:'Luxembourgish',       nat:'Lëtzebuergesch',    f:'🇱🇺', r:'Europe' },
+    { c:'mk',    n:'Macedonian',          nat:'Македонски',        f:'🇲🇰', r:'Europe' },
+    { c:'mt',    n:'Maltese',             nat:'Malti',             f:'🇲🇹', r:'Europe' },
+    { c:'no',    n:'Norwegian',           nat:'Norsk',             f:'🇳🇴', r:'Europe' },
+    { c:'pl',    n:'Polish',              nat:'Polski',            f:'🇵🇱', r:'Europe' },
+    { c:'ro',    n:'Romanian',            nat:'Română',            f:'🇷🇴', r:'Europe' },
+    { c:'gd',    n:'Scottish Gaelic',     nat:'Gàidhlig',          f:'🏴󠁧󠁢󠁳󠁣󠁴󠁿', r:'Europe' },
+    { c:'sr',    n:'Serbian',             nat:'Српски',            f:'🇷🇸', r:'Europe' },
+    { c:'sk',    n:'Slovak',              nat:'Slovenčina',        f:'🇸🇰', r:'Europe' },
+    { c:'sl',    n:'Slovenian',           nat:'Slovenščina',       f:'🇸🇮', r:'Europe' },
+    { c:'sv',    n:'Swedish',             nat:'Svenska',           f:'🇸🇪', r:'Europe' },
+    { c:'tr',    n:'Turkish',             nat:'Türkçe',            f:'🇹🇷', r:'Europe' },
+    { c:'uk',    n:'Ukrainian',           nat:'Українська',        f:'🇺🇦', r:'Europe' },
+    { c:'cy',    n:'Welsh',               nat:'Cymraeg',           f:'🏴󠁧󠁢󠁷󠁬󠁳󠁿', r:'Europe' },
+    { c:'yi',    n:'Yiddish',             nat:'ייִדיש',             f:'🇮🇱', r:'Europe' },
+    // Asia
+    { c:'bn',    n:'Bengali',             nat:'বাংলা',              f:'🇧🇩', r:'Asia' },
+    { c:'my',    n:'Burmese',             nat:'မြန်မာ',              f:'🇲🇲', r:'Asia' },
+    { c:'ceb',   n:'Cebuano',             nat:'Cebuano',           f:'🇵🇭', r:'Asia' },
+    { c:'fil',   n:'Filipino',            nat:'Filipino',          f:'🇵🇭', r:'Asia' },
+    { c:'gu',    n:'Gujarati',            nat:'ગુજરાતી',             f:'🇮🇳', r:'Asia' },
+    { c:'hmn',   n:'Hmong',               nat:'Hmoob',             f:'🇱🇦', r:'Asia' },
+    { c:'id',    n:'Indonesian',          nat:'Bahasa Indonesia',  f:'🇮🇩', r:'Asia' },
+    { c:'jw',    n:'Javanese',            nat:'Basa Jawa',         f:'🇮🇩', r:'Asia' },
+    { c:'kn',    n:'Kannada',             nat:'ಕನ್ನಡ',               f:'🇮🇳', r:'Asia' },
+    { c:'kk',    n:'Kazakh',              nat:'Қазақ',              f:'🇰🇿', r:'Asia' },
+    { c:'km',    n:'Khmer',               nat:'ខ្មែរ',               f:'🇰🇭', r:'Asia' },
+    { c:'ko',    n:'Korean',              nat:'한국어',              f:'🇰🇷', r:'Asia' },
+    { c:'ky',    n:'Kyrgyz',              nat:'Кыргызча',          f:'🇰🇬', r:'Asia' },
+    { c:'lo',    n:'Lao',                 nat:'ລາວ',                f:'🇱🇦', r:'Asia' },
+    { c:'ml',    n:'Malayalam',           nat:'മലയാളം',             f:'🇮🇳', r:'Asia' },
+    { c:'mr',    n:'Marathi',             nat:'मराठी',               f:'🇮🇳', r:'Asia' },
+    { c:'mn',    n:'Mongolian',           nat:'Монгол',             f:'🇲🇳', r:'Asia' },
+    { c:'ne',    n:'Nepali',              nat:'नेपाली',              f:'🇳🇵', r:'Asia' },
+    { c:'pa',    n:'Punjabi',             nat:'ਪੰਜਾਬੀ',              f:'🇮🇳', r:'Asia' },
+    { c:'ps',    n:'Pashto',              nat:'پښتو',               f:'🇦🇫', r:'Asia' },
+    { c:'sd',    n:'Sindhi',              nat:'سنڌي',               f:'🇵🇰', r:'Asia' },
+    { c:'si',    n:'Sinhala',             nat:'සිංහල',              f:'🇱🇰', r:'Asia' },
+    { c:'su',    n:'Sundanese',           nat:'Basa Sunda',        f:'🇮🇩', r:'Asia' },
+    { c:'tg',    n:'Tajik',               nat:'Тоҷикӣ',             f:'🇹🇯', r:'Asia' },
+    { c:'ta',    n:'Tamil',               nat:'தமிழ்',               f:'🇮🇳', r:'Asia' },
+    { c:'te',    n:'Telugu',              nat:'తెలుగు',              f:'🇮🇳', r:'Asia' },
+    { c:'th',    n:'Thai',                nat:'ไทย',                f:'🇹🇭', r:'Asia' },
+    { c:'tk',    n:'Turkmen',             nat:'Türkmen',           f:'🇹🇲', r:'Asia' },
+    { c:'tt',    n:'Tatar',               nat:'Татар',              f:'🇷🇺', r:'Asia' },
+    { c:'ug',    n:'Uyghur',              nat:'ئۇيغۇرچە',            f:'🇨🇳', r:'Asia' },
+    { c:'ur',    n:'Urdu',                nat:'اردو',               f:'🇵🇰', r:'Asia' },
+    { c:'uz',    n:'Uzbek',               nat:'Oʻzbek',             f:'🇺🇿', r:'Asia' },
+    { c:'vi',    n:'Vietnamese',          nat:'Tiếng Việt',        f:'🇻🇳', r:'Asia' },
+    // Middle East
+    { c:'he',    n:'Hebrew',              nat:'עברית',              f:'🇮🇱', r:'Middle East' },
+    { c:'fa',    n:'Persian',             nat:'فارسی',              f:'🇮🇷', r:'Middle East' },
+    { c:'ku',    n:'Kurdish',             nat:'Kurdî',              f:'🇮🇶', r:'Middle East' },
+    // Pacific / Americas
+    { c:'haw',   n:'Hawaiian',            nat:'ʻŌlelo Hawaiʻi',   f:'🌺',  r:'Pacific' },
+    { c:'mi',    n:'Māori',               nat:'Te Reo Māori',      f:'🇳🇿', r:'Pacific' },
+    { c:'sm',    n:'Samoan',              nat:'Gagana Samoa',      f:'🇼🇸', r:'Pacific' },
+    { c:'ht',    n:'Haitian Creole',      nat:'Kreyòl Ayisyen',    f:'🇭🇹', r:'Americas' },
+];
+
+let _curLang = 'en';
+let _open = false;
+
+/* detect cookie */
+(function(){
+    const m = document.cookie.match(/googtrans=\/[^\/]*\/([^;]+)/);
+    if (m && m[1]) _curLang = m[1];
+})();
+
+function langToggle(){
+    const panel = document.getElementById('lang-panel');
+    _open = !_open;
+    if(_open){
+        panel.classList.add('open');
+        panel.style.display = 'block';
+        setTimeout(()=>{ const s=document.getElementById('lang-search'); if(s) s.focus(); },80);
+    } else {
+        panel.classList.remove('open');
+        panel.style.display = 'none';
+    }
+}
+
+document.addEventListener('click', function(e){
+    const wrap = document.getElementById('floating-language-switcher');
+    if(wrap && !wrap.contains(e.target) && _open){
+        _open = false;
+        const panel = document.getElementById('lang-panel');
+        panel.classList.remove('open');
+        panel.style.display = 'none';
+    }
+});
+document.addEventListener('keydown', function(e){
+    if(e.key==='Escape' && _open) langToggle();
+});
+
+function langFilter(){
+    const q = (document.getElementById('lang-search').value||'').toLowerCase().trim();
+    const result = q ? LANGS.filter(l=>
+        l.n.toLowerCase().includes(q)||
+        l.nat.toLowerCase().includes(q)||
+        l.c.toLowerCase().includes(q)||
+        l.r.toLowerCase().includes(q)
+    ) : LANGS;
+    langRender(result);
+}
+
+function langSelect(code){
+    _curLang = code;
+    langUpdateFab();
+    langRender(LANGS);
+    langToggle();
+
+    if(code==='en'){
+        /* Clear all Google Translate cookies to restore original page */
+        const domains = ['', location.hostname, '.'+location.hostname, 'www.'+location.hostname];
+        domains.forEach(d=>{
+            const domainPart = d ? ';domain='+d : '';
+            document.cookie = 'googtrans=;expires=Thu,01 Jan 1970 00:00:00 UTC;path=/' + domainPart;
+            document.cookie = 'googtrans=;expires=Thu,01 Jan 1970 00:00:00 UTC;path=/;' + domainPart;
+        });
+        /* Also try to reset Google Translate widget */
+        const sel = document.querySelector('select.goog-te-combo');
+        if(sel){
+            sel.value = 'en';
+            sel.dispatchEvent(new Event('change',{bubbles:true}));
+            /* Give it a moment then reload */
+            setTimeout(()=>location.reload(), 100);
+        } else {
+            location.reload();
+        }
+    } else {
+        const v = '/en/'+code;
+        document.cookie = 'googtrans='+v+';path=/';
+        document.cookie = 'googtrans='+v+';path=/;domain='+location.hostname;
+        document.cookie = 'googtrans='+v+';path=/;domain=.'+location.hostname;
+        const sel = document.querySelector('select.goog-te-combo');
+        if(sel){ sel.value=code; sel.dispatchEvent(new Event('change',{bubbles:true})); }
+        else location.reload();
+    }
+}
+
+function langUpdateFab(){
+    const l = LANGS.find(x=>x.c===_curLang);
+    const inner = document.getElementById('lang-fab-inner');
+    if(l && _curLang!=='en'){
+        inner.innerHTML = l.f;
+        inner.classList.add('has-flag');
+    } else {
+        inner.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"/>
+            <line x1="2" y1="12" x2="22" y2="12"/>
+            <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+        </svg>`;
+        inner.classList.remove('has-flag');
+    }
+}
+
+function langRender(list){
+    const el = document.getElementById('lang-list');
+    const cnt = document.getElementById('lang-count');
+    if(!list.length){
+        el.innerHTML = '<div class="lp-empty">No languages found</div>';
+        if(cnt) cnt.textContent = '0 languages';
+        return;
+    }
+
+    /* group by region */
+    const regions = [];
+    const regionMap = {};
+    list.forEach(l=>{
+        if(!regionMap[l.r]){ regionMap[l.r]=[]; regions.push(l.r); }
+        regionMap[l.r].push(l);
+    });
+
+    let html = '';
+    regions.forEach(r=>{
+        /* only show region label when not searching (>1 region visible) */
+        if(regions.length > 1){
+            html += `<div class="lp-region">${r}</div>`;
+        }
+        regionMap[r].forEach(l=>{
+            const active = l.c === _curLang;
+            html += `
+            <div class="li-row${active?' active':''}" onclick="langSelect('${l.c}')">
+                <div class="li-flag">${l.f}</div>
+                <div class="li-text">
+                    <div class="li-native">${l.nat}</div>
+                    <div class="li-name">${l.n}</div>
+                </div>
+                ${active ? `<div class="li-check"><svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg></div>` : ''}
+            </div>`;
+        });
+    });
+    el.innerHTML = html;
+    if(cnt) cnt.textContent = list.length + ' language' + (list.length!==1?'s':'');
+}
+
+document.addEventListener('DOMContentLoaded', function(){
+    langUpdateFab();
+    langRender(LANGS);
+    protectEmails();
+});
+
+/* ── Email + Brand protection — prevent Google Translate mangling them ── */
+function protectEmails(){
+    // Patterns that must NEVER be translated
+    // Patterns that must NEVER be translated
+    // Note: "Africa" alone is intentionally NOT in this list — we only protect it
+    // as part of the brand via the DOM sibling pass below.
+    const PROTECT_RE = /([a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}|ForgeForth\s+Africa|ForgeForth Africa|ForgeForth|forgeforthafrica\.com|SynaVue\s+Technologies|SynaVue Technologies|SynaVue|synavue\.com)/g;
+
+    function shieldNode(node){
+        if(!node || node.nodeType !== Node.TEXT_NODE) return;
+        const text = node.textContent;
+        if(!PROTECT_RE.test(text)) return;
+        PROTECT_RE.lastIndex = 0;
+
+        const frag = document.createDocumentFragment();
+        let last = 0, m;
+        while((m = PROTECT_RE.exec(text)) !== null){
+            if(m.index > last)
+                frag.appendChild(document.createTextNode(text.slice(last, m.index)));
+            const span = document.createElement('span');
+            span.className = 'notranslate';
+            span.setAttribute('translate', 'no');
+            span.textContent = m[0];
+            frag.appendChild(span);
+            last = m.index + m[0].length;
+        }
+        if(last < text.length)
+            frag.appendChild(document.createTextNode(text.slice(last)));
+        node.parentNode.replaceChild(frag, node);
+    }
+
+    function walkTree(root){
+        const skip = new Set(['SCRIPT','STYLE','NOSCRIPT','TEXTAREA']);
+        const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, {
+            acceptNode(n){
+                const p = n.parentElement;
+                if(!p) return NodeFilter.FILTER_REJECT;
+                if(skip.has(p.tagName)) return NodeFilter.FILTER_REJECT;
+                if(p.classList && p.classList.contains('notranslate')) return NodeFilter.FILTER_REJECT;
+                return NodeFilter.FILTER_ACCEPT;
+            }
+        });
+        const nodes = [];
+        while(walker.nextNode()) nodes.push(walker.currentNode);
+        nodes.forEach(shieldNode);
+    }
+
+    walkTree(document.body);
+
+    /* ── Brand sibling pass ─────────────────────────────────────────────
+       Google Translate splits "ForgeForth" and "Africa" into separate nodes.
+       Find every element containing exactly "ForgeForth" and shield its
+       adjacent siblings that contain "Africa" too.
+    ──────────────────────────────────────────────────────────────────── */
+    function shieldBrandSiblings(){
+        document.querySelectorAll('.notranslate, [translate="no"]').forEach(el => {
+            if(!/ForgeForth/.test(el.textContent)) return;
+            // check next siblings
+            let sib = el.nextSibling;
+            while(sib){
+                if(sib.nodeType === Node.TEXT_NODE && /Africa/.test(sib.textContent)){
+                    const span = document.createElement('span');
+                    span.className = 'notranslate';
+                    span.setAttribute('translate','no');
+                    span.textContent = sib.textContent;
+                    sib.parentNode.replaceChild(span, sib);
+                    break;
+                }
+                if(sib.nodeType === Node.ELEMENT_NODE){
+                    sib.classList.add('notranslate');
+                    sib.setAttribute('translate','no');
+                    break;
+                }
+                sib = sib.nextSibling;
+            }
+        });
+    }
+    shieldBrandSiblings();
+
+    /* also mark mailto: href elements */
+    document.querySelectorAll('a[href^="mailto:"]').forEach(a => {
+        a.classList.add('notranslate');
+        a.setAttribute('translate', 'no');
+    });
+
+    /* watch for future DOM changes (e.g. modals injected late) */
+    const obs = new MutationObserver(muts => {
+        muts.forEach(m => {
+            m.addedNodes.forEach(n => {
+                if(n.nodeType === Node.ELEMENT_NODE) walkTree(n);
+                else if(n.nodeType === Node.TEXT_NODE) shieldNode(n);
+            });
+        });
+        shieldBrandSiblings();
+    });
+    obs.observe(document.body, { childList:true, subtree:true });
+}
+
+/* Google Translate init */
+function googleTranslateElementInit(){
+    new google.translate.TranslateElement({
+        pageLanguage:'en', autoDisplay:false, multilanguagePage:true
+    }, 'google_translate_element');
+}
+</script>
+<!-- Load Google Translate after page is interactive -->
+<script>
+(function(){
+    // Delay loading Google Translate to not block initial render
+    function loadGT(){
+        var s = document.createElement('script');
+        s.src = '//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit';
+        s.async = true;
+        document.body.appendChild(s);
+    }
+    if(document.readyState === 'complete') loadGT();
+    else window.addEventListener('load', loadGT);
+})();
+</script>
+

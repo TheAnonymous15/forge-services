@@ -1,0 +1,96 @@
+{% extends "base.html" %}
+
+{% block title %}{{ page_title }}{% endblock %}
+
+{% block content %}
+<div class="max-w-2xl mx-auto">
+    <!-- Header -->
+    <div class="mb-8">
+        <div class="flex items-center justify-between">
+            <div>
+                <h1 class="text-2xl font-bold text-white">{{ page_title }}</h1>
+                <p class="text-gray-400 mt-1">Add your work experience</p>
+            </div>
+            <a href="/profile/edit" class="btn-secondary">
+                ← Back
+            </a>
+        </div>
+    </div>
+
+    {% if error %}
+    <div class="mb-6 p-4 bg-red-500/10 border border-red-500/30 rounded-lg">
+        <p class="text-sm text-red-400">{{ error }}</p>
+    </div>
+    {% endif %}
+
+    <!-- Form -->
+    <form method="post" class="card space-y-6">
+        <div>
+            <label class="block text-sm font-medium text-gray-300 mb-2">Job Title *</label>
+            <input type="text" name="title" value="{{ experience.title if experience else '' }}"
+                   class="input-field" placeholder="e.g., Software Engineer" required>
+        </div>
+
+        <div>
+            <label class="block text-sm font-medium text-gray-300 mb-2">Company *</label>
+            <input type="text" name="company" value="{{ experience.company if experience else '' }}"
+                   class="input-field" placeholder="e.g., Google" required>
+        </div>
+
+        <div>
+            <label class="block text-sm font-medium text-gray-300 mb-2">Location</label>
+            <input type="text" name="location" value="{{ experience.location if experience else '' }}"
+                   class="input-field" placeholder="e.g., Cape Town, South Africa">
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+                <label class="block text-sm font-medium text-gray-300 mb-2">Start Date *</label>
+                <input type="date" name="start_date" value="{{ experience.start_date if experience else '' }}"
+                       class="input-field" required>
+            </div>
+            <div id="end-date-container">
+                <label class="block text-sm font-medium text-gray-300 mb-2">End Date</label>
+                <input type="date" name="end_date" value="{{ experience.end_date if experience else '' }}"
+                       class="input-field" id="end-date-input">
+            </div>
+        </div>
+
+        <div class="flex items-center space-x-2">
+            <input type="checkbox" name="is_current" id="is_current"
+                   class="w-4 h-4 rounded bg-dark-700 border-gray-600"
+                   {% if experience and experience.is_current %}checked{% endif %}
+                   onchange="toggleEndDate()">
+            <label for="is_current" class="text-sm text-gray-300">I currently work here</label>
+        </div>
+
+        <div>
+            <label class="block text-sm font-medium text-gray-300 mb-2">Description</label>
+            <textarea name="description" rows="4" class="input-field"
+                      placeholder="Describe your responsibilities and achievements...">{{ experience.description if experience else '' }}</textarea>
+        </div>
+
+        <div class="flex justify-end space-x-4 pt-4">
+            <a href="/profile/edit" class="btn-secondary">Cancel</a>
+            <button type="submit" class="btn-primary">
+                {{ 'Update Experience' if experience else 'Add Experience' }}
+            </button>
+        </div>
+    </form>
+</div>
+
+<script>
+function toggleEndDate() {
+    const isCurrent = document.getElementById('is_current').checked;
+    const endDateInput = document.getElementById('end-date-input');
+    endDateInput.disabled = isCurrent;
+    if (isCurrent) {
+        endDateInput.value = '';
+    }
+}
+
+// Initialize on load
+document.addEventListener('DOMContentLoaded', toggleEndDate);
+</script>
+{% endblock %}
+

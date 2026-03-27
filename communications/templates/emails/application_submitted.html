@@ -1,0 +1,26 @@
+{% extends "emails/base.html" %}
+{% block title %}Application Submitted - {{ site_name }}{% endblock %}
+{% block content %}
+<h1>Application Submitted! ✅</h1>
+
+<p>Hi {{ user.first_name|default:user.email }},</p>
+
+<p>Your application has been successfully submitted!</p>
+
+<div class="highlight">
+    <strong>{{ opportunity.title }}</strong><br>
+    {{ organization.name }}<br>
+    {% if opportunity.location %}{{ opportunity.location }}{% endif %}
+</div>
+
+<p>The hiring team will review your application and get back to you. You can track the status of your application in your dashboard.</p>
+
+<p style="text-align: center;">
+    <a href="{{ site_url }}/dashboard/applications" class="button">View My Applications</a>
+</p>
+
+<p>Good luck! 🍀</p>
+
+<p>Best regards,<br>The {{ site_name }} Team</p>
+{% endblock %}
+

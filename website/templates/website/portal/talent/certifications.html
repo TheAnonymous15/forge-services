@@ -1,0 +1,198 @@
+{% extends "website/layouts/portal_base.html" %}
+
+{% block title %}Certifications - Talent Portal{% endblock %}
+
+{% block portal_content %}
+<div class="mb-8">
+    <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+        <div>
+            <h1 class="text-2xl md:text-3xl font-bold text-white mb-2 flex items-center gap-3">
+                <svg class="w-8 h-8 text-secondary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
+                </svg>
+                Certifications
+            </h1>
+            <p class="text-blue-200/70">Showcase your credentials and achievements</p>
+        </div>
+        <button onclick="openAddCertModal()" class="px-4 py-2 rounded-xl bg-gradient-to-r from-secondary to-accent text-white font-semibold hover:opacity-90 transition flex items-center gap-2">
+            <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+            </svg>
+            Add Certification
+        </button>
+    </div>
+</div>
+
+{% if certifications %}
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    {% for cert in certifications %}
+    <div class="glass-card rounded-2xl p-6 group hover:border-secondary/30 transition-all duration-300">
+        <div class="flex items-start justify-between mb-4">
+            <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-secondary/30 to-accent/30 flex items-center justify-center">
+                <svg class="w-6 h-6 text-secondary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
+                </svg>
+            </div>
+            <div class="flex gap-2 opacity-0 group-hover:opacity-100 transition">
+                <button onclick="editCert('{{ cert.id }}')" class="text-blue-200/60 hover:text-white">
+                    <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
+                    </svg>
+                </button>
+                <button onclick="deleteCert('{{ cert.id }}')" class="text-red-400/60 hover:text-red-400">
+                    <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+
+        <h3 class="text-white font-semibold text-lg mb-1">{{ cert.name }}</h3>
+        <p class="text-secondary text-sm mb-3">{{ cert.issuing_organization }}</p>
+
+        <div class="flex items-center gap-4 text-sm text-blue-200/60 mb-4">
+            <span class="flex items-center gap-1">
+                <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                </svg>
+                {{ cert.issue_date|date:"M Y" }}
+            </span>
+            {% if cert.expiration_date %}
+            <span class="flex items-center gap-1 {% if cert.is_expired %}text-red-400{% endif %}">
+                <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                </svg>
+                {% if cert.is_expired %}Expired{% else %}Expires {{ cert.expiration_date|date:"M Y" }}{% endif %}
+            </span>
+            {% else %}
+            <span class="text-accent">No Expiration</span>
+            {% endif %}
+        </div>
+
+        {% if cert.credential_id %}
+        <p class="text-blue-200/40 text-xs mb-4">Credential ID: {{ cert.credential_id }}</p>
+        {% endif %}
+
+        {% if cert.credential_url %}
+        <a href="{{ cert.credential_url }}" target="_blank" class="flex items-center justify-center gap-2 px-4 py-2 rounded-xl bg-white/5 text-white text-sm hover:bg-white/10 transition">
+            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/>
+            </svg>
+            View Credential
+        </a>
+        {% endif %}
+    </div>
+    {% endfor %}
+</div>
+{% else %}
+<div class="glass-card rounded-2xl p-12 text-center">
+    <div class="w-20 h-20 rounded-full bg-gradient-to-br from-secondary/20 to-accent/20 flex items-center justify-center mx-auto mb-6">
+        <svg class="w-10 h-10 text-secondary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
+        </svg>
+    </div>
+    <h2 class="text-2xl font-bold text-white mb-3">No Certifications Yet</h2>
+    <p class="text-blue-200/70 mb-6 max-w-md mx-auto">Add your professional certifications to stand out to employers and showcase your expertise.</p>
+    <button onclick="openAddCertModal()" class="px-6 py-3 rounded-xl bg-gradient-to-r from-secondary to-accent text-white font-semibold hover:opacity-90 transition">
+        Add Your First Certification
+    </button>
+</div>
+{% endif %}
+
+<!-- Add Certification Modal -->
+<div id="addCertModal" class="fixed inset-0 bg-black/70 flex items-center justify-center z-50 hidden">
+    <div class="glass-card rounded-2xl p-6 w-full max-w-lg mx-4 max-h-[90vh] overflow-y-auto">
+        <div class="flex items-center justify-between mb-6">
+            <h3 class="text-xl font-semibold text-white">Add Certification</h3>
+            <button onclick="closeAddCertModal()" class="text-blue-200/60 hover:text-white">
+                <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                </svg>
+            </button>
+        </div>
+        <form id="addCertForm" onsubmit="submitAddCert(event)">
+            <div class="space-y-4">
+                <div>
+                    <label class="block text-blue-200/70 text-sm mb-2">Certification Name *</label>
+                    <input type="text" name="name" required
+                           class="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder-blue-200/40 focus:border-secondary focus:ring-1 focus:ring-secondary transition"
+                           placeholder="e.g., AWS Solutions Architect">
+                </div>
+                <div>
+                    <label class="block text-blue-200/70 text-sm mb-2">Issuing Organization *</label>
+                    <input type="text" name="issuing_organization" required
+                           class="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder-blue-200/40 focus:border-secondary focus:ring-1 focus:ring-secondary transition"
+                           placeholder="e.g., Amazon Web Services">
+                </div>
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-blue-200/70 text-sm mb-2">Issue Date *</label>
+                        <input type="month" name="issue_date" required
+                               class="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white focus:border-secondary focus:ring-1 focus:ring-secondary transition">
+                    </div>
+                    <div>
+                        <label class="block text-blue-200/70 text-sm mb-2">Expiration Date</label>
+                        <input type="month" name="expiration_date"
+                               class="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white focus:border-secondary focus:ring-1 focus:ring-secondary transition">
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-blue-200/70 text-sm mb-2">Credential ID</label>
+                    <input type="text" name="credential_id"
+                           class="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder-blue-200/40 focus:border-secondary focus:ring-1 focus:ring-secondary transition"
+                           placeholder="e.g., ABC123XYZ">
+                </div>
+                <div>
+                    <label class="block text-blue-200/70 text-sm mb-2">Credential URL</label>
+                    <input type="url" name="credential_url"
+                           class="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder-blue-200/40 focus:border-secondary focus:ring-1 focus:ring-secondary transition"
+                           placeholder="https://...">
+                </div>
+            </div>
+            <div class="flex gap-3 mt-6">
+                <button type="button" onclick="closeAddCertModal()" class="flex-1 px-4 py-3 rounded-xl bg-white/5 text-white hover:bg-white/10 transition">
+                    Cancel
+                </button>
+                <button type="submit" class="flex-1 px-4 py-3 rounded-xl bg-gradient-to-r from-secondary to-accent text-white font-semibold hover:opacity-90 transition">
+                    Add Certification
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+function openAddCertModal() {
+    document.getElementById('addCertModal').classList.remove('hidden');
+}
+
+function closeAddCertModal() {
+    document.getElementById('addCertModal').classList.add('hidden');
+}
+
+function submitAddCert(e) {
+    e.preventDefault();
+    const form = e.target;
+    const formData = new FormData(form);
+
+    // TODO: Implement API call to add certification
+    alert('Certification adding coming soon!');
+    closeAddCertModal();
+}
+
+function editCert(certId) {
+    // TODO: Implement edit certification
+    console.log('Edit cert:', certId);
+}
+
+function deleteCert(certId) {
+    if (confirm('Are you sure you want to delete this certification?')) {
+        // TODO: Implement delete certification
+        console.log('Delete cert:', certId);
+    }
+}
+</script>
+{% endblock %}
+

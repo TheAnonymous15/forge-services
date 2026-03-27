@@ -1,0 +1,110 @@
+{% extends "base.html" %}
+
+{% block guest_content %}
+<div class="w-full max-w-lg">
+    <!-- Logo -->
+    <div class="text-center mb-8">
+        <a href="{{ main_site_url }}" class="inline-flex items-center gap-3">
+            <div class="w-12 h-12 bg-primary-600 rounded-xl flex items-center justify-center">
+                <span class="text-white font-bold text-xl">FF</span>
+            </div>
+            <div class="text-left">
+                <span class="text-white font-bold text-xl">ForgeForth</span>
+                <span class="text-primary-400 block text-sm">Organization Portal</span>
+            </div>
+        </a>
+    </div>
+
+    <!-- Register Card -->
+    <div class="card">
+        <h1 class="text-xl font-bold text-white mb-2">Register Your Organization</h1>
+        <p class="text-gray-400 text-sm mb-6">Connect with Africa's best talent</p>
+
+        {% if errors and errors.general %}
+        <div class="mb-6 p-4 bg-red-500/10 border border-red-500/30 rounded-lg">
+            <p class="text-sm text-red-400">{{ errors.general }}</p>
+        </div>
+        {% endif %}
+
+        <form method="post" class="space-y-4">
+            <div>
+                <label class="block text-sm font-medium text-gray-300 mb-2">Organization Name *</label>
+                <input type="text" name="organization_name" value="{{ organization_name if organization_name else '' }}"
+                       class="input-field" placeholder="Your Company Name" required>
+            </div>
+
+            <div class="grid grid-cols-2 gap-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-300 mb-2">Industry *</label>
+                    <select name="industry" class="input-field" required>
+                        <option value="">Select Industry</option>
+                        <option value="technology" {% if industry == 'technology' %}selected{% endif %}>Technology</option>
+                        <option value="finance" {% if industry == 'finance' %}selected{% endif %}>Finance & Banking</option>
+                        <option value="healthcare" {% if industry == 'healthcare' %}selected{% endif %}>Healthcare</option>
+                        <option value="education" {% if industry == 'education' %}selected{% endif %}>Education</option>
+                        <option value="retail" {% if industry == 'retail' %}selected{% endif %}>Retail</option>
+                        <option value="manufacturing" {% if industry == 'manufacturing' %}selected{% endif %}>Manufacturing</option>
+                        <option value="consulting" {% if industry == 'consulting' %}selected{% endif %}>Consulting</option>
+                        <option value="nonprofit" {% if industry == 'nonprofit' %}selected{% endif %}>Non-Profit</option>
+                        <option value="other" {% if industry == 'other' %}selected{% endif %}>Other</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-300 mb-2">Country *</label>
+                    <input type="text" name="country" value="{{ country if country else '' }}"
+                           class="input-field" placeholder="South Africa" required>
+                </div>
+            </div>
+
+            <div>
+                <label class="block text-sm font-medium text-gray-300 mb-2">Website</label>
+                <input type="url" name="website" class="input-field" placeholder="https://yourcompany.com">
+            </div>
+
+            <div>
+                <label class="block text-sm font-medium text-gray-300 mb-2">Work Email *</label>
+                <input type="email" name="email" value="{{ email if email else '' }}"
+                       class="input-field" placeholder="you@company.com" required>
+            </div>
+
+            <div class="grid grid-cols-2 gap-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-300 mb-2">Password *</label>
+                    <input type="password" name="password" class="input-field"
+                           placeholder="••••••••" required minlength="8">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-300 mb-2">Confirm Password *</label>
+                    <input type="password" name="confirm_password" class="input-field"
+                           placeholder="••••••••" required>
+                    {% if errors and errors.confirm_password %}
+                    <p class="text-xs text-red-400 mt-1">{{ errors.confirm_password }}</p>
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class="flex items-start gap-2">
+                <input type="checkbox" name="consent_terms" id="consent"
+                       class="w-4 h-4 mt-1 rounded bg-dark-700 border-gray-600" required>
+                <label for="consent" class="text-sm text-gray-400">
+                    I agree to the <a href="{{ main_site_url }}/terms-of-service" class="text-primary-400 hover:underline">Terms of Service</a>
+                    and <a href="{{ main_site_url }}/privacy-policy" class="text-primary-400 hover:underline">Privacy Policy</a>
+                </label>
+            </div>
+            {% if errors and errors.consent_terms %}
+            <p class="text-xs text-red-400">{{ errors.consent_terms }}</p>
+            {% endif %}
+
+            <button type="submit" class="btn-primary w-full">Create Account</button>
+        </form>
+
+        <div class="mt-6 text-center">
+            <p class="text-gray-400 text-sm">
+                Already have an account?
+                <a href="/auth/login" class="text-primary-400 hover:underline">Sign in</a>
+            </p>
+        </div>
+    </div>
+</div>
+{% endblock %}
+

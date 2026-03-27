@@ -1,0 +1,271 @@
+{% extends "website/layouts/portal_base.html" %}
+{% load humanize %}
+
+{% block title %}My Goals{% endblock %}
+
+{% block portal_content %}
+<div class="space-y-6">
+    <!-- Page Header -->
+    <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+        <div>
+            <h1 class="text-2xl font-bold text-white flex items-center gap-3">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-violet-500/20 to-violet-500/5 flex items-center justify-center">
+                    <svg class="w-5 h-5 text-violet-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                    </svg>
+                </div>
+                My Goals
+            </h1>
+            <p class="text-blue-200/60 mt-1">Set career goals and track your progress</p>
+        </div>
+        <button onclick="openAddGoalModal()" class="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-gradient-to-r from-violet-500 to-purple-500 text-white font-medium hover:shadow-lg hover:shadow-violet-500/25 transition">
+            <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
+            </svg>
+            Add Goal
+        </button>
+    </div>
+
+    <!-- Goal Stats -->
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <div class="glass-card rounded-xl p-4">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-lg bg-violet-500/20 flex items-center justify-center">
+                    <svg class="w-5 h-5 text-violet-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
+                    </svg>
+                </div>
+                <div>
+                    <div class="text-xl font-bold text-white">{{ total_goals|default:0 }}</div>
+                    <div class="text-blue-200/60 text-xs">Total Goals</div>
+                </div>
+            </div>
+        </div>
+        <div class="glass-card rounded-xl p-4">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-lg bg-emerald-500/20 flex items-center justify-center">
+                    <svg class="w-5 h-5 text-emerald-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                    </svg>
+                </div>
+                <div>
+                    <div class="text-xl font-bold text-white">{{ completed_goals|default:0 }}</div>
+                    <div class="text-blue-200/60 text-xs">Completed</div>
+                </div>
+            </div>
+        </div>
+        <div class="glass-card rounded-xl p-4">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-lg bg-secondary/20 flex items-center justify-center">
+                    <svg class="w-5 h-5 text-secondary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                    </svg>
+                </div>
+                <div>
+                    <div class="text-xl font-bold text-white">{{ in_progress_goals|default:0 }}</div>
+                    <div class="text-blue-200/60 text-xs">In Progress</div>
+                </div>
+            </div>
+        </div>
+        <div class="glass-card rounded-xl p-4">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-lg bg-blue-500/20 flex items-center justify-center">
+                    <svg class="w-5 h-5 text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                    </svg>
+                </div>
+                <div>
+                    <div class="text-xl font-bold text-white">{{ upcoming_goals|default:0 }}</div>
+                    <div class="text-blue-200/60 text-xs">Upcoming</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Goals List -->
+    <div class="glass-card rounded-2xl p-6">
+        <div class="flex items-center justify-between mb-6">
+            <h2 class="text-lg font-semibold text-white">Your Goals</h2>
+            <select class="px-3 py-1.5 rounded-lg bg-white/5 border border-white/10 text-white text-sm focus:outline-none">
+                <option>All Goals</option>
+                <option>In Progress</option>
+                <option>Completed</option>
+                <option>Short-term</option>
+                <option>Long-term</option>
+            </select>
+        </div>
+
+        {% if short_term_goals or long_term_goals %}
+            <!-- Short-term Goals -->
+            {% if short_term_goals %}
+            <div class="mb-8">
+                <h3 class="text-sm font-medium text-blue-200/60 mb-4">Short-term Goals (1-3 months)</h3>
+                <div class="space-y-3">
+                    {% for goal in short_term_goals %}
+                    <div class="flex items-start gap-4 p-4 bg-white/5 rounded-xl border border-white/5 hover:border-violet-500/30 transition">
+                        <button class="w-6 h-6 rounded-full border-2 {% if goal.completed %}bg-emerald-500 border-emerald-500{% else %}border-white/30 hover:border-violet-500{% endif %} flex items-center justify-center flex-shrink-0 mt-0.5 transition">
+                            {% if goal.completed %}
+                            <svg class="w-3 h-3 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/>
+                            </svg>
+                            {% endif %}
+                        </button>
+                        <div class="flex-1 min-w-0">
+                            <h4 class="text-white font-medium {% if goal.completed %}line-through opacity-60{% endif %}">{{ goal.title }}</h4>
+                            <p class="text-blue-200/60 text-sm mt-1">{{ goal.description }}</p>
+                            <div class="flex items-center gap-4 mt-2">
+                                <span class="text-xs text-blue-200/40">Due: {{ goal.due_date }}</span>
+                                {% if goal.progress %}
+                                <div class="flex items-center gap-2">
+                                    <div class="w-20 h-1.5 bg-white/10 rounded-full overflow-hidden">
+                                        <div class="h-full bg-violet-500 rounded-full" style="width: {{ goal.progress }}%"></div>
+                                    </div>
+                                    <span class="text-xs text-violet-400">{{ goal.progress }}%</span>
+                                </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                        <button class="text-blue-200/40 hover:text-white transition">
+                            <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z"/>
+                            </svg>
+                        </button>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endif %}
+
+            <!-- Long-term Goals -->
+            {% if long_term_goals %}
+            <div>
+                <h3 class="text-sm font-medium text-blue-200/60 mb-4">Long-term Goals (6+ months)</h3>
+                <div class="space-y-3">
+                    {% for goal in long_term_goals %}
+                    <div class="flex items-start gap-4 p-4 bg-white/5 rounded-xl border border-white/5 hover:border-violet-500/30 transition">
+                        <button class="w-6 h-6 rounded-full border-2 {% if goal.completed %}bg-emerald-500 border-emerald-500{% else %}border-white/30 hover:border-violet-500{% endif %} flex items-center justify-center flex-shrink-0 mt-0.5 transition">
+                            {% if goal.completed %}
+                            <svg class="w-3 h-3 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/>
+                            </svg>
+                            {% endif %}
+                        </button>
+                        <div class="flex-1 min-w-0">
+                            <h4 class="text-white font-medium {% if goal.completed %}line-through opacity-60{% endif %}">{{ goal.title }}</h4>
+                            <p class="text-blue-200/60 text-sm mt-1">{{ goal.description }}</p>
+                            <div class="flex items-center gap-4 mt-2">
+                                <span class="text-xs text-blue-200/40">Due: {{ goal.due_date }}</span>
+                            </div>
+                        </div>
+                        <button class="text-blue-200/40 hover:text-white transition">
+                            <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z"/>
+                            </svg>
+                        </button>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endif %}
+        {% else %}
+            <!-- Empty State -->
+            <div class="text-center py-16">
+                <div class="w-20 h-20 rounded-full bg-white/5 flex items-center justify-center mx-auto mb-4">
+                    <svg class="w-10 h-10 text-blue-200/30" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                    </svg>
+                </div>
+                <h3 class="text-white text-lg font-medium mb-2">No goals set yet</h3>
+                <p class="text-blue-200/60 text-sm max-w-sm mx-auto mb-6">Start setting goals to track your career progress and stay motivated on your journey.</p>
+                <button onclick="openAddGoalModal()" class="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-gradient-to-r from-violet-500 to-purple-500 text-white font-medium hover:shadow-lg hover:shadow-violet-500/25 transition">
+                    <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
+                    </svg>
+                    Set Your First Goal
+                </button>
+            </div>
+        {% endif %}
+    </div>
+
+    <!-- Suggested Goals -->
+    <div class="glass-card rounded-2xl p-6">
+        <h2 class="text-lg font-semibold text-white mb-4">Suggested Goals</h2>
+        <p class="text-blue-200/60 text-sm mb-6">Based on your profile, here are some goals to consider:</p>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="flex items-center gap-4 p-4 bg-white/5 rounded-xl border border-white/5 hover:border-violet-500/30 transition cursor-pointer group" onclick="addSuggestedGoal('Complete your profile to 100%')">
+                <div class="w-10 h-10 rounded-lg bg-violet-500/20 flex items-center justify-center group-hover:scale-110 transition">
+                    <svg class="w-5 h-5 text-violet-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
+                    </svg>
+                </div>
+                <div class="flex-1">
+                    <h4 class="text-white font-medium text-sm">Complete your profile to 100%</h4>
+                    <p class="text-blue-200/60 text-xs">Make your profile stand out to recruiters</p>
+                </div>
+                <svg class="w-5 h-5 text-blue-200/40 group-hover:text-violet-400 transition" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
+                </svg>
+            </div>
+
+            <div class="flex items-center gap-4 p-4 bg-white/5 rounded-xl border border-white/5 hover:border-violet-500/30 transition cursor-pointer group" onclick="addSuggestedGoal('Apply to 5 opportunities')">
+                <div class="w-10 h-10 rounded-lg bg-blue-500/20 flex items-center justify-center group-hover:scale-110 transition">
+                    <svg class="w-5 h-5 text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+                    </svg>
+                </div>
+                <div class="flex-1">
+                    <h4 class="text-white font-medium text-sm">Apply to 5 opportunities</h4>
+                    <p class="text-blue-200/60 text-xs">Increase your chances of landing interviews</p>
+                </div>
+                <svg class="w-5 h-5 text-blue-200/40 group-hover:text-violet-400 transition" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
+                </svg>
+            </div>
+
+            <div class="flex items-center gap-4 p-4 bg-white/5 rounded-xl border border-white/5 hover:border-violet-500/30 transition cursor-pointer group" onclick="addSuggestedGoal('Learn a new skill this month')">
+                <div class="w-10 h-10 rounded-lg bg-accent/20 flex items-center justify-center group-hover:scale-110 transition">
+                    <svg class="w-5 h-5 text-accent" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/>
+                    </svg>
+                </div>
+                <div class="flex-1">
+                    <h4 class="text-white font-medium text-sm">Learn a new skill this month</h4>
+                    <p class="text-blue-200/60 text-xs">Expand your expertise and marketability</p>
+                </div>
+                <svg class="w-5 h-5 text-blue-200/40 group-hover:text-violet-400 transition" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
+                </svg>
+            </div>
+
+            <div class="flex items-center gap-4 p-4 bg-white/5 rounded-xl border border-white/5 hover:border-violet-500/30 transition cursor-pointer group" onclick="addSuggestedGoal('Get your first interview')">
+                <div class="w-10 h-10 rounded-lg bg-purple-500/20 flex items-center justify-center group-hover:scale-110 transition">
+                    <svg class="w-5 h-5 text-purple-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                    </svg>
+                </div>
+                <div class="flex-1">
+                    <h4 class="text-white font-medium text-sm">Get your first interview</h4>
+                    <p class="text-blue-200/60 text-xs">Land that important first conversation</p>
+                </div>
+                <svg class="w-5 h-5 text-blue-200/40 group-hover:text-violet-400 transition" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
+                </svg>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+function openAddGoalModal() {
+    // TODO: Implement goal creation modal
+    alert('Goal creation feature coming soon!');
+}
+
+function addSuggestedGoal(title) {
+    // TODO: Quick add suggested goal
+    alert('Adding goal: ' + title + '\n\nThis feature is coming soon!');
+}
+</script>
+{% endblock portal_content %}
+

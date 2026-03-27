@@ -1,0 +1,1040 @@
+{% extends "website/layouts/portal_base.html" %}
+
+{% block title %}My Documents - ForgeForth Africa{% endblock %}
+
+{% block head_extra %}
+<style>
+    :root {
+        --ff-gold: #F4A62B;
+        --ff-gold-light: #FFD180;
+        --ff-dark: #0a0e1a;
+        --ff-card: #0f1424;
+    }
+
+    .ff-glow { box-shadow: 0 0 40px -10px rgba(244, 166, 43, 0.25); }
+    .ff-border { border: 1px solid rgba(244, 166, 43, 0.15); }
+    .ff-border-subtle { border: 1px solid rgba(255,255,255,0.08); }
+
+    /* Upload Zone */
+    .upload-zone {
+        border: 2px dashed rgba(244, 166, 43, 0.3);
+        background: rgba(244, 166, 43, 0.03);
+        transition: all 0.3s ease;
+    }
+    .upload-zone:hover, .upload-zone.dragover {
+        border-color: var(--ff-gold);
+        background: rgba(244, 166, 43, 0.08);
+    }
+    .upload-zone.dragover {
+        transform: scale(1.01);
+    }
+
+    /* Document Card */
+    .doc-card {
+        background: var(--ff-card);
+        transition: all 0.3s ease;
+    }
+    .doc-card:hover {
+        border-color: rgba(244, 166, 43, 0.3);
+        transform: translateY(-2px);
+    }
+    .doc-card:hover .doc-actions {
+        opacity: 1;
+    }
+    .doc-actions {
+        opacity: 0;
+        transition: opacity 0.2s;
+    }
+
+    /* File Icon */
+    .file-icon {
+        width: 48px;
+        height: 48px;
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+    }
+    .file-icon.pdf { background: rgba(220, 38, 38, 0.15); color: #ef4444; }
+    .file-icon.doc { background: rgba(37, 99, 235, 0.15); color: #3b82f6; }
+    .file-icon.image { background: rgba(16, 185, 129, 0.15); color: #10b981; }
+    .file-icon.other { background: rgba(107, 114, 128, 0.15); color: #6b7280; }
+
+    /* Category Tab */
+    .category-tab {
+        transition: all 0.2s ease;
+        border-bottom: 2px solid transparent;
+    }
+    .category-tab:hover {
+        color: white;
+    }
+    .category-tab.active {
+        color: var(--ff-gold);
+        border-color: var(--ff-gold);
+    }
+
+    /* Storage Bar */
+    .storage-bar {
+        height: 6px;
+        background: rgba(255,255,255,0.1);
+        border-radius: 3px;
+        overflow: hidden;
+    }
+    .storage-fill {
+        height: 100%;
+        background: linear-gradient(90deg, var(--ff-gold), var(--ff-gold-light));
+        transition: width 0.5s ease;
+    }
+    .storage-fill.warning { background: linear-gradient(90deg, #f59e0b, #fbbf24); }
+    .storage-fill.danger { background: linear-gradient(90deg, #ef4444, #f87171); }
+
+    /* Primary Badge */
+    .primary-badge {
+        background: linear-gradient(135deg, var(--ff-gold), var(--ff-gold-light));
+        color: var(--ff-dark);
+        font-size: 10px;
+        font-weight: 600;
+        padding: 2px 8px;
+        border-radius: 10px;
+    }
+
+    /* Status Badge */
+    .status-badge {
+        font-size: 10px;
+        padding: 2px 8px;
+        border-radius: 10px;
+    }
+    .status-badge.ready { background: rgba(16, 185, 129, 0.2); color: #10b981; }
+    .status-badge.pending { background: rgba(245, 158, 11, 0.2); color: #f59e0b; }
+    .status-badge.processing { background: rgba(59, 130, 246, 0.2); color: #3b82f6; }
+    .status-badge.failed { background: rgba(239, 68, 68, 0.2); color: #ef4444; }
+
+    /* Modal */
+    .modal-backdrop {
+        background: rgba(0,0,0,0.85);
+        backdrop-filter: blur(8px);
+    }
+    .modal-box {
+        background: var(--ff-card);
+        border: 1px solid rgba(244, 166, 43, 0.2);
+        box-shadow: 0 25px 60px rgba(0,0,0,0.5);
+    }
+
+    /* Form Elements */
+    .ff-input {
+        background: rgba(255,255,255,0.03);
+        border: 1px solid rgba(255,255,255,0.1);
+        color: white;
+        transition: all 0.2s ease;
+    }
+    .ff-input:focus {
+        outline: none;
+        border-color: var(--ff-gold);
+        background: rgba(244, 166, 43, 0.05);
+    }
+    .ff-input::placeholder { color: rgba(255,255,255,0.3); }
+
+    .ff-select {
+        background: rgba(255,255,255,0.03) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%23F4A62B'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'/%3E%3C/svg%3E") no-repeat right 12px center;
+        background-size: 14px;
+        border: 1px solid rgba(255,255,255,0.1);
+        color: white;
+        appearance: none;
+        padding-right: 36px;
+    }
+    .ff-select:focus { outline: none; border-color: var(--ff-gold); }
+    .ff-select option { background: #0f1424; color: white; }
+
+    /* Preview Container */
+    .preview-container {
+        background: rgba(0,0,0,0.3);
+        border-radius: 12px;
+        overflow: hidden;
+    }
+    .preview-container img {
+        max-width: 100%;
+        max-height: 400px;
+        object-fit: contain;
+    }
+    .preview-container iframe {
+        width: 100%;
+        height: 500px;
+        border: none;
+    }
+
+    /* Empty State */
+    .empty-state {
+        padding: 60px 20px;
+        text-align: center;
+    }
+    .empty-icon {
+        width: 80px;
+        height: 80px;
+        margin: 0 auto 20px;
+        border-radius: 20px;
+        background: rgba(244, 166, 43, 0.1);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    /* List View */
+    .doc-list-item {
+        transition: all 0.2s ease;
+    }
+    .doc-list-item:hover {
+        background: rgba(255,255,255,0.03);
+    }
+
+    /* Progress Indicator */
+    .upload-progress {
+        height: 4px;
+        background: rgba(255,255,255,0.1);
+        border-radius: 2px;
+        overflow: hidden;
+    }
+    .upload-progress-bar {
+        height: 100%;
+        background: var(--ff-gold);
+        transition: width 0.3s ease;
+    }
+
+    /* Quick Actions */
+    .quick-action {
+        transition: all 0.2s ease;
+    }
+    .quick-action:hover {
+        background: rgba(244, 166, 43, 0.1);
+        color: var(--ff-gold);
+    }
+
+    /* Context Menu */
+    .context-menu {
+        position: absolute;
+        background: var(--ff-card);
+        border: 1px solid rgba(255,255,255,0.1);
+        border-radius: 8px;
+        padding: 4px;
+        min-width: 160px;
+        z-index: 1000;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+    }
+    .context-menu-item {
+        padding: 8px 12px;
+        border-radius: 6px;
+        cursor: pointer;
+        transition: all 0.15s;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 13px;
+    }
+    .context-menu-item:hover {
+        background: rgba(244, 166, 43, 0.1);
+    }
+    .context-menu-item.danger:hover {
+        background: rgba(239, 68, 68, 0.1);
+        color: #ef4444;
+    }
+</style>
+{% endblock %}
+
+{% block portal_content %}
+
+<!-- ═══════════════════════════════════════════════════════════════════════════
+     HEADER
+═══════════════════════════════════════════════════════════════════════════ -->
+<div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6">
+    <div>
+        <h1 class="text-xl lg:text-2xl font-bold text-white">My Documents</h1>
+        <p class="text-slate-400 text-sm mt-1">Upload, organize, and manage your professional documents</p>
+    </div>
+    <button onclick="openUploadModal()" class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-[#F4A62B] text-[#0a0e1a] font-semibold text-sm hover:bg-[#FFD180] transition">
+        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/>
+        </svg>
+        Upload Document
+    </button>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════════════════
+     STATS ROW
+═══════════════════════════════════════════════════════════════════════════ -->
+<div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+    <!-- Total Documents -->
+    <div class="rounded-xl bg-[#0f1424] ff-border-subtle p-4">
+        <p class="text-slate-500 text-xs uppercase tracking-wide mb-1">Total Documents</p>
+        <p class="text-2xl font-bold text-white">{{ total_documents }}</p>
+    </div>
+
+    <!-- Storage Used -->
+    <div class="rounded-xl bg-[#0f1424] ff-border-subtle p-4">
+        <p class="text-slate-500 text-xs uppercase tracking-wide mb-1">Storage Used</p>
+        <p class="text-2xl font-bold text-white" id="storageDisplay">
+            <script>
+                document.write(formatStorageSize({{ total_size }}));
+                function formatStorageSize(bytes) {
+                    if (bytes >= 1048576) return (bytes / 1048576).toFixed(1) + ' MB';
+                    if (bytes >= 1024) return (bytes / 1024).toFixed(1) + ' KB';
+                    return bytes + ' B';
+                }
+            </script>
+        </p>
+        <div class="storage-bar mt-2">
+            <div class="storage-fill {% if storage_used_percent > 90 %}danger{% elif storage_used_percent > 70 %}warning{% endif %}" style="width: {{ storage_used_percent }}%"></div>
+        </div>
+        <p class="text-slate-500 text-xs mt-1">{{ storage_used_percent }}% of 50 MB</p>
+    </div>
+
+    <!-- Primary Resume -->
+    <div class="rounded-xl bg-[#0f1424] ff-border-subtle p-4">
+        <p class="text-slate-500 text-xs uppercase tracking-wide mb-1">Primary Resume</p>
+        {% if primary_resume %}
+        <p class="text-sm font-medium text-white truncate">{{ primary_resume.title }}</p>
+        <p class="text-slate-400 text-xs mt-1">Updated {{ primary_resume.updated_at|timesince }} ago</p>
+        {% else %}
+        <p class="text-slate-400 text-sm">Not set</p>
+        <button onclick="openUploadModal('cv')" class="text-[#F4A62B] text-xs mt-1 hover:underline">Upload CV</button>
+        {% endif %}
+    </div>
+
+    <!-- Quick Actions -->
+    <div class="rounded-xl bg-[#0f1424] ff-border-subtle p-4">
+        <p class="text-slate-500 text-xs uppercase tracking-wide mb-2">Quick Upload</p>
+        <div class="flex flex-wrap gap-2">
+            <button onclick="openUploadModal('cv')" class="quick-action px-2 py-1 rounded-lg text-xs text-slate-300 border border-white/10">+ CV</button>
+            <button onclick="openUploadModal('certificate')" class="quick-action px-2 py-1 rounded-lg text-xs text-slate-300 border border-white/10">+ Cert</button>
+            <button onclick="openUploadModal('portfolio')" class="quick-action px-2 py-1 rounded-lg text-xs text-slate-300 border border-white/10">+ Portfolio</button>
+        </div>
+    </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════════════════
+     CATEGORY TABS
+═══════════════════════════════════════════════════════════════════════════ -->
+<div class="flex items-center gap-1 border-b border-white/10 mb-6 overflow-x-auto pb-px">
+    <button onclick="filterCategory('all')" class="category-tab active px-4 py-3 text-sm text-slate-400 whitespace-nowrap" data-category="all">
+        All <span class="ml-1 text-xs text-slate-500">({{ total_documents }})</span>
+    </button>
+    <button onclick="filterCategory('cv')" class="category-tab px-4 py-3 text-sm text-slate-400 whitespace-nowrap" data-category="cv">
+        Resumes <span class="ml-1 text-xs text-slate-500">({{ type_counts.cv|default:0 }})</span>
+    </button>
+    <button onclick="filterCategory('cover_letter')" class="category-tab px-4 py-3 text-sm text-slate-400 whitespace-nowrap" data-category="cover_letter">
+        Cover Letters <span class="ml-1 text-xs text-slate-500">({{ type_counts.cover_letter|default:0 }})</span>
+    </button>
+    <button onclick="filterCategory('certificate')" class="category-tab px-4 py-3 text-sm text-slate-400 whitespace-nowrap" data-category="certificate">
+        Certificates <span class="ml-1 text-xs text-slate-500">({{ type_counts.certificate|default:0 }})</span>
+    </button>
+    <button onclick="filterCategory('portfolio')" class="category-tab px-4 py-3 text-sm text-slate-400 whitespace-nowrap" data-category="portfolio">
+        Portfolio <span class="ml-1 text-xs text-slate-500">({{ type_counts.portfolio|default:0 }})</span>
+    </button>
+    <button onclick="filterCategory('other')" class="category-tab px-4 py-3 text-sm text-slate-400 whitespace-nowrap" data-category="other">
+        Other <span class="ml-1 text-xs text-slate-500">({{ type_counts.other|default:0 }})</span>
+    </button>
+
+    <!-- View Toggle -->
+    <div class="ml-auto flex items-center gap-1 px-2">
+        <button onclick="setView('grid')" id="viewGrid" class="p-2 rounded-lg text-slate-400 hover:text-white hover:bg-white/5 transition">
+            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/>
+            </svg>
+        </button>
+        <button onclick="setView('list')" id="viewList" class="p-2 rounded-lg text-slate-400 hover:text-white hover:bg-white/5 transition">
+            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16"/>
+            </svg>
+        </button>
+    </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════════════════
+     DOCUMENTS GRID
+═══════════════════════════════════════════════════════════════════════════ -->
+<div id="documentsContainer">
+    {% if documents %}
+    <div id="documentsGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        {% for doc in documents %}
+        <div class="doc-card rounded-xl ff-border-subtle p-4 cursor-pointer"
+             data-id="{{ doc.id }}"
+             data-type="{{ doc.media_file.file_type }}"
+             onclick="openDocumentPreview('{{ doc.id }}')"
+             oncontextmenu="showContextMenu(event, '{{ doc.id }}')">
+            <div class="flex items-start gap-3">
+                <!-- File Icon -->
+                <div class="file-icon {% if doc.media_file.extension == '.pdf' %}pdf{% elif doc.media_file.extension in '.doc,.docx' %}doc{% elif doc.media_file.is_image %}image{% else %}other{% endif %}">
+                    {% if doc.media_file.extension == '.pdf' %}
+                    <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M14,2H6A2,2 0 0,0 4,4V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V8L14,2M18,20H6V4H13V9H18V20M10.92,12.31C10.68,11.54 10.15,9.08 11.55,9.04C12.95,9 12.03,12.16 12.03,12.16C12.42,13.65 14.05,14.72 14.05,14.72C14.55,14.57 17.4,14.24 17,15.72C16.57,17.2 13.5,15.81 13.5,15.81C11.55,15.95 10.09,16.47 10.09,16.47C8.96,18.58 7.64,19.5 7.1,18.61C6.43,17.5 9.23,16.07 9.23,16.07C10.68,13.72 10.9,12.35 10.92,12.31Z"/></svg>
+                    {% elif doc.media_file.is_image %}
+                    <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+                    {% else %}
+                    <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+                    {% endif %}
+                </div>
+
+                <!-- Document Info -->
+                <div class="flex-1 min-w-0">
+                    <div class="flex items-center gap-2">
+                        <h4 class="text-white text-sm font-medium truncate">{{ doc.title }}</h4>
+                        {% if doc.is_primary %}
+                        <span class="primary-badge">Primary</span>
+                        {% endif %}
+                    </div>
+                    <p class="text-slate-500 text-xs mt-1 truncate">{{ doc.media_file.original_filename }}</p>
+                    <div class="flex items-center gap-3 mt-2 text-xs text-slate-500">
+                        <span>{{ doc.media_file.size_kb }} KB</span>
+                        <span>{{ doc.created_at|date:"M d, Y" }}</span>
+                        <span class="status-badge {{ doc.media_file.status }}">{{ doc.media_file.get_status_display }}</span>
+                    </div>
+                </div>
+
+                <!-- Actions -->
+                <div class="doc-actions flex items-center gap-1">
+                    <button onclick="event.stopPropagation(); downloadDocument('{{ doc.id }}')" class="p-1.5 rounded-lg hover:bg-white/10 text-slate-400 hover:text-white transition" title="Download">
+                        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+                    </button>
+                    <button onclick="event.stopPropagation(); showDocumentMenu('{{ doc.id }}')" class="p-1.5 rounded-lg hover:bg-white/10 text-slate-400 hover:text-white transition" title="More">
+                        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z"/></svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    <!-- List View (Hidden by default) -->
+    <div id="documentsList" class="hidden rounded-xl bg-[#0f1424] ff-border-subtle overflow-hidden">
+        {% for doc in documents %}
+        <div class="doc-list-item flex items-center gap-4 px-4 py-3 border-b border-white/5 last:border-0 cursor-pointer"
+             data-id="{{ doc.id }}"
+             data-type="{{ doc.media_file.file_type }}"
+             onclick="openDocumentPreview('{{ doc.id }}')">
+            <!-- Icon -->
+            <div class="file-icon w-10 h-10 {% if doc.media_file.extension == '.pdf' %}pdf{% elif doc.media_file.is_image %}image{% else %}other{% endif %}">
+                <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+            </div>
+            <!-- Info -->
+            <div class="flex-1 min-w-0">
+                <div class="flex items-center gap-2">
+                    <span class="text-white text-sm font-medium truncate">{{ doc.title }}</span>
+                    {% if doc.is_primary %}<span class="primary-badge">Primary</span>{% endif %}
+                </div>
+                <p class="text-slate-500 text-xs truncate">{{ doc.media_file.original_filename }}</p>
+            </div>
+            <!-- Type -->
+            <span class="hidden md:block text-slate-400 text-xs px-2 py-1 rounded bg-white/5 capitalize">{{ doc.media_file.file_type|cut:"_" }}</span>
+            <!-- Size -->
+            <span class="hidden sm:block text-slate-500 text-xs w-16 text-right">{{ doc.media_file.size_kb }} KB</span>
+            <!-- Date -->
+            <span class="hidden lg:block text-slate-500 text-xs w-24">{{ doc.created_at|date:"M d, Y" }}</span>
+            <!-- Actions -->
+            <div class="flex items-center gap-1">
+                <button onclick="event.stopPropagation(); downloadDocument('{{ doc.id }}')" class="p-1.5 rounded-lg hover:bg-white/10 text-slate-400 hover:text-white transition">
+                    <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+                </button>
+                <button onclick="event.stopPropagation(); deleteDocument('{{ doc.id }}')" class="p-1.5 rounded-lg hover:bg-red-500/10 text-slate-400 hover:text-red-400 transition">
+                    <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
+                </button>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    {% else %}
+    <!-- Empty State -->
+    <div class="empty-state rounded-xl bg-[#0f1424] ff-border-subtle">
+        <div class="empty-icon">
+            <svg class="w-10 h-10 text-[#F4A62B]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 13h6m-3-3v6m5 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+            </svg>
+        </div>
+        <h3 class="text-white text-lg font-semibold mb-2">No documents yet</h3>
+        <p class="text-slate-400 text-sm mb-6 max-w-sm mx-auto">Upload your resume, certificates, and portfolio items to showcase your professional credentials.</p>
+        <button onclick="openUploadModal()" class="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[#F4A62B] text-[#0a0e1a] font-semibold text-sm hover:bg-[#FFD180] transition">
+            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/></svg>
+            Upload Your First Document
+        </button>
+    </div>
+    {% endif %}
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════════════════
+     UPLOAD MODAL
+═══════════════════════════════════════════════════════════════════════════ -->
+<div id="uploadModal" class="fixed inset-0 z-50 hidden">
+    <div class="modal-backdrop absolute inset-0" onclick="closeUploadModal()"></div>
+    <div class="absolute inset-4 md:inset-8 lg:inset-16 flex items-center justify-center pointer-events-none">
+        <div class="modal-box rounded-2xl w-full max-w-lg pointer-events-auto overflow-hidden">
+            <div class="p-6">
+                <div class="flex items-center justify-between mb-6">
+                    <h3 class="text-lg font-semibold text-white">Upload Document</h3>
+                    <button onclick="closeUploadModal()" class="p-1 rounded-lg hover:bg-white/10 text-slate-400 hover:text-white transition">
+                        <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                    </button>
+                </div>
+
+                <form id="uploadForm" onsubmit="handleUpload(event)">
+                    <!-- Upload Zone -->
+                    <div id="uploadZone" class="upload-zone rounded-xl p-8 text-center mb-4"
+                         ondrop="handleDrop(event)" ondragover="handleDragOver(event)" ondragleave="handleDragLeave(event)">
+                        <input type="file" id="fileInput" class="hidden" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png,.txt,.zip" onchange="handleFileSelect(this)">
+                        <div id="uploadPlaceholder">
+                            <svg class="w-12 h-12 mx-auto text-[#F4A62B] mb-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"/>
+                            </svg>
+                            <p class="text-white font-medium mb-1">Drop file here or click to browse</p>
+                            <p class="text-slate-500 text-xs">PDF, DOC, DOCX, JPG, PNG (max 10MB)</p>
+                        </div>
+                        <div id="filePreview" class="hidden">
+                            <div class="file-icon mx-auto mb-3 pdf">
+                                <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+                            </div>
+                            <p id="selectedFileName" class="text-white font-medium text-sm truncate"></p>
+                            <p id="selectedFileSize" class="text-slate-500 text-xs mt-1"></p>
+                            <button type="button" onclick="clearFileSelection()" class="mt-2 text-[#F4A62B] text-xs hover:underline">Change file</button>
+                        </div>
+                    </div>
+
+                    <!-- Upload Progress -->
+                    <div id="uploadProgress" class="hidden mb-4">
+                        <div class="flex items-center justify-between mb-1">
+                            <span class="text-slate-400 text-xs">Uploading...</span>
+                            <span id="uploadPercent" class="text-slate-400 text-xs">0%</span>
+                        </div>
+                        <div class="upload-progress">
+                            <div id="uploadProgressBar" class="upload-progress-bar" style="width: 0%"></div>
+                        </div>
+                    </div>
+
+                    <!-- Document Type -->
+                    <div class="mb-4">
+                        <label class="text-slate-400 text-xs block mb-1.5">Document Type</label>
+                        <select id="fileType" name="file_type" class="ff-select w-full px-3 py-2.5 rounded-lg text-sm">
+                            {% for type_key, type_name, type_desc in document_types %}
+                            <option value="{{ type_key }}">{{ type_name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <!-- Title -->
+                    <div class="mb-4">
+                        <label class="text-slate-400 text-xs block mb-1.5">Title (optional)</label>
+                        <input type="text" id="docTitle" name="title" class="ff-input w-full px-3 py-2.5 rounded-lg text-sm" placeholder="e.g., Software Engineer Resume 2024">
+                    </div>
+
+                    <!-- Description -->
+                    <div class="mb-4">
+                        <label class="text-slate-400 text-xs block mb-1.5">Description (optional)</label>
+                        <textarea id="docDescription" name="description" rows="2" class="ff-input w-full px-3 py-2.5 rounded-lg text-sm resize-none" placeholder="Brief description of this document"></textarea>
+                    </div>
+
+                    <!-- Set as Primary (for CV only) -->
+                    <div id="primaryOption" class="hidden mb-4">
+                        <label class="flex items-center gap-3 cursor-pointer">
+                            <input type="checkbox" id="isPrimary" name="is_primary" class="w-4 h-4 rounded border-white/20 bg-white/5 text-[#F4A62B] focus:ring-[#F4A62B] focus:ring-offset-0">
+                            <span class="text-white text-sm">Set as primary resume</span>
+                        </label>
+                        <p class="text-slate-500 text-xs mt-1 ml-7">This will be used when you apply to opportunities</p>
+                    </div>
+
+                    <!-- Actions -->
+                    <div class="flex justify-end gap-3 mt-6">
+                        <button type="button" onclick="closeUploadModal()" class="px-4 py-2.5 rounded-lg text-sm text-slate-400 hover:text-white hover:bg-white/5 transition">Cancel</button>
+                        <button type="submit" id="uploadBtn" class="px-5 py-2.5 rounded-lg text-sm bg-[#F4A62B] text-[#0a0e1a] font-semibold hover:bg-[#FFD180] transition disabled:opacity-50" disabled>
+                            Upload Document
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════════════════
+     PREVIEW MODAL
+═══════════════════════════════════════════════════════════════════════════ -->
+<div id="previewModal" class="fixed inset-0 z-50 hidden">
+    <div class="modal-backdrop absolute inset-0" onclick="closePreviewModal()"></div>
+    <div class="absolute inset-4 md:inset-8 flex items-center justify-center pointer-events-none">
+        <div class="modal-box rounded-2xl w-full max-w-4xl max-h-full pointer-events-auto overflow-hidden flex flex-col">
+            <div class="p-4 border-b border-white/10 flex items-center justify-between">
+                <div>
+                    <h3 id="previewTitle" class="text-lg font-semibold text-white">Document Preview</h3>
+                    <p id="previewFilename" class="text-slate-500 text-xs"></p>
+                </div>
+                <div class="flex items-center gap-2">
+                    <button onclick="downloadCurrentPreview()" class="p-2 rounded-lg hover:bg-white/10 text-slate-400 hover:text-white transition" title="Download">
+                        <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+                    </button>
+                    <button onclick="closePreviewModal()" class="p-2 rounded-lg hover:bg-white/10 text-slate-400 hover:text-white transition">
+                        <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                    </button>
+                </div>
+            </div>
+            <div class="flex-1 p-4 overflow-auto">
+                <div id="previewContent" class="preview-container flex items-center justify-center min-h-[300px]">
+                    <p class="text-slate-400">Loading preview...</p>
+                </div>
+            </div>
+            <div class="p-4 border-t border-white/10 flex items-center justify-between">
+                <div class="flex items-center gap-4 text-xs text-slate-500">
+                    <span id="previewSize"></span>
+                    <span id="previewDate"></span>
+                </div>
+                <div class="flex items-center gap-2">
+                    <button id="setPrimaryBtn" onclick="setPrimaryFromPreview()" class="hidden px-3 py-1.5 rounded-lg text-xs bg-[#F4A62B]/20 text-[#F4A62B] hover:bg-[#F4A62B]/30 transition">Set as Primary</button>
+                    <button onclick="renameFromPreview()" class="px-3 py-1.5 rounded-lg text-xs bg-white/5 text-slate-300 hover:bg-white/10 transition">Rename</button>
+                    <button onclick="deleteFromPreview()" class="px-3 py-1.5 rounded-lg text-xs bg-red-500/10 text-red-400 hover:bg-red-500/20 transition">Delete</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════════════════
+     RENAME MODAL
+═══════════════════════════════════════════════════════════════════════════ -->
+<div id="renameModal" class="fixed inset-0 z-50 hidden">
+    <div class="modal-backdrop absolute inset-0" onclick="closeRenameModal()"></div>
+    <div class="absolute inset-0 flex items-center justify-center pointer-events-none">
+        <div class="modal-box rounded-xl w-full max-w-sm pointer-events-auto p-5">
+            <h3 class="text-lg font-semibold text-white mb-4">Rename Document</h3>
+            <input type="text" id="renameInput" class="ff-input w-full px-3 py-2.5 rounded-lg text-sm mb-4" placeholder="Enter new name">
+            <div class="flex justify-end gap-2">
+                <button onclick="closeRenameModal()" class="px-4 py-2 rounded-lg text-sm text-slate-400 hover:text-white transition">Cancel</button>
+                <button onclick="confirmRename()" class="px-4 py-2 rounded-lg text-sm bg-[#F4A62B] text-[#0a0e1a] font-semibold hover:bg-[#FFD180] transition">Save</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════════════════
+     CONTEXT MENU
+═══════════════════════════════════════════════════════════════════════════ -->
+<div id="contextMenu" class="context-menu hidden">
+    <div class="context-menu-item" onclick="openDocumentPreview(contextMenuDocId)">
+        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
+        Preview
+    </div>
+    <div class="context-menu-item" onclick="downloadDocument(contextMenuDocId)">
+        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+        Download
+    </div>
+    <div class="context-menu-item" onclick="renameDocument(contextMenuDocId)">
+        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
+        Rename
+    </div>
+    <div id="contextSetPrimary" class="context-menu-item" onclick="setPrimary(contextMenuDocId)">
+        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"/></svg>
+        Set as Primary
+    </div>
+    <div class="context-menu-item danger" onclick="deleteDocument(contextMenuDocId)">
+        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
+        Delete
+    </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════════════════
+     JAVASCRIPT
+═══════════════════════════════════════════════════════════════════════════ -->
+<script>
+// State
+let currentView = 'grid';
+let currentCategory = 'all';
+let contextMenuDocId = null;
+let currentPreviewDocId = null;
+let selectedFile = null;
+let renameDocId = null;
+
+// CSRF Token
+const csrfToken = '{{ csrf_token }}';
+
+// ─────────────────────────────────────────────────────────────────────────────
+// VIEW MANAGEMENT
+// ─────────────────────────────────────────────────────────────────────────────
+function setView(view) {
+    currentView = view;
+    document.getElementById('documentsGrid').classList.toggle('hidden', view !== 'grid');
+    document.getElementById('documentsList').classList.toggle('hidden', view !== 'list');
+    document.getElementById('viewGrid').classList.toggle('text-[#F4A62B]', view === 'grid');
+    document.getElementById('viewList').classList.toggle('text-[#F4A62B]', view === 'list');
+}
+
+function filterCategory(category) {
+    currentCategory = category;
+
+    // Update tabs
+    document.querySelectorAll('.category-tab').forEach(tab => {
+        tab.classList.toggle('active', tab.dataset.category === category);
+    });
+
+    // Filter cards
+    document.querySelectorAll('.doc-card, .doc-list-item').forEach(card => {
+        const type = card.dataset.type;
+        const show = category === 'all' || type === category;
+        card.style.display = show ? '' : 'none';
+    });
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// UPLOAD MODAL
+// ─────────────────────────────────────────────────────────────────────────────
+function openUploadModal(defaultType = null) {
+    document.getElementById('uploadModal').classList.remove('hidden');
+    document.body.style.overflow = 'hidden';
+    if (defaultType) {
+        document.getElementById('fileType').value = defaultType;
+        updatePrimaryOption();
+    }
+}
+
+function closeUploadModal() {
+    document.getElementById('uploadModal').classList.add('hidden');
+    document.body.style.overflow = '';
+    clearFileSelection();
+}
+
+function updatePrimaryOption() {
+    const fileType = document.getElementById('fileType').value;
+    document.getElementById('primaryOption').classList.toggle('hidden', fileType !== 'cv');
+}
+
+document.getElementById('fileType').addEventListener('change', updatePrimaryOption);
+
+// ─────────────────────────────────────────────────────────────────────────────
+// FILE SELECTION
+// ─────────────────────────────────────────────────────────────────────────────
+function handleFileSelect(input) {
+    if (input.files && input.files[0]) {
+        selectFile(input.files[0]);
+    }
+}
+
+function handleDrop(e) {
+    e.preventDefault();
+    document.getElementById('uploadZone').classList.remove('dragover');
+    if (e.dataTransfer.files && e.dataTransfer.files[0]) {
+        selectFile(e.dataTransfer.files[0]);
+    }
+}
+
+function handleDragOver(e) {
+    e.preventDefault();
+    document.getElementById('uploadZone').classList.add('dragover');
+}
+
+function handleDragLeave(e) {
+    e.preventDefault();
+    document.getElementById('uploadZone').classList.remove('dragover');
+}
+
+function selectFile(file) {
+    selectedFile = file;
+    document.getElementById('uploadPlaceholder').classList.add('hidden');
+    document.getElementById('filePreview').classList.remove('hidden');
+    document.getElementById('selectedFileName').textContent = file.name;
+    document.getElementById('selectedFileSize').textContent = formatFileSize(file.size);
+    document.getElementById('uploadBtn').disabled = false;
+
+    // Auto-fill title
+    if (!document.getElementById('docTitle').value) {
+        document.getElementById('docTitle').value = file.name.replace(/\.[^/.]+$/, '');
+    }
+}
+
+function clearFileSelection() {
+    selectedFile = null;
+    document.getElementById('fileInput').value = '';
+    document.getElementById('uploadPlaceholder').classList.remove('hidden');
+    document.getElementById('filePreview').classList.add('hidden');
+    document.getElementById('uploadBtn').disabled = true;
+    document.getElementById('uploadProgress').classList.add('hidden');
+}
+
+document.getElementById('uploadZone').addEventListener('click', () => {
+    if (!selectedFile) document.getElementById('fileInput').click();
+});
+
+// ─────────────────────────────────────────────────────────────────────────────
+// UPLOAD HANDLING
+// ─────────────────────────────────────────────────────────────────────────────
+async function handleUpload(e) {
+    e.preventDefault();
+    if (!selectedFile) return;
+
+    const formData = new FormData();
+    formData.append('file', selectedFile);
+    formData.append('file_type', document.getElementById('fileType').value);
+    formData.append('title', document.getElementById('docTitle').value);
+    formData.append('description', document.getElementById('docDescription').value);
+    formData.append('is_primary', document.getElementById('isPrimary')?.checked || false);
+
+    // Show progress
+    document.getElementById('uploadProgress').classList.remove('hidden');
+    document.getElementById('uploadBtn').disabled = true;
+
+    try {
+        const xhr = new XMLHttpRequest();
+        xhr.open('POST', '{% url "portal:talent_upload_document" %}');
+        xhr.setRequestHeader('X-CSRFToken', csrfToken);
+
+        xhr.upload.onprogress = (e) => {
+            if (e.lengthComputable) {
+                const percent = Math.round((e.loaded / e.total) * 100);
+                document.getElementById('uploadProgressBar').style.width = percent + '%';
+                document.getElementById('uploadPercent').textContent = percent + '%';
+            }
+        };
+
+        xhr.onload = () => {
+            const response = JSON.parse(xhr.responseText);
+            if (xhr.status === 200 && response.success) {
+                showToast('Document uploaded successfully', 'success');
+                setTimeout(() => location.reload(), 1000);
+            } else {
+                showToast(response.error || 'Upload failed', 'error');
+                document.getElementById('uploadBtn').disabled = false;
+            }
+        };
+
+        xhr.onerror = () => {
+            showToast('Upload failed. Please try again.', 'error');
+            document.getElementById('uploadBtn').disabled = false;
+        };
+
+        xhr.send(formData);
+    } catch (err) {
+        showToast('Upload failed: ' + err.message, 'error');
+        document.getElementById('uploadBtn').disabled = false;
+    }
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// DOCUMENT ACTIONS
+// ─────────────────────────────────────────────────────────────────────────────
+async function downloadDocument(docId) {
+    window.open(`/portal/talent/api/documents/download/${docId}/`, '_blank');
+}
+
+async function deleteDocument(docId) {
+    if (!confirm('Are you sure you want to delete this document? This action cannot be undone.')) return;
+
+    try {
+        const response = await fetch(`/portal/talent/api/documents/delete/${docId}/`, {
+            method: 'POST',
+            headers: { 'X-CSRFToken': csrfToken }
+        });
+        const data = await response.json();
+
+        if (data.success) {
+            showToast('Document deleted', 'success');
+            // Remove from DOM
+            document.querySelectorAll(`[data-id="${docId}"]`).forEach(el => el.remove());
+            closePreviewModal();
+        } else {
+            showToast(data.error || 'Failed to delete', 'error');
+        }
+    } catch (err) {
+        showToast('Error deleting document', 'error');
+    }
+}
+
+async function setPrimary(docId) {
+    try {
+        const response = await fetch(`/portal/talent/api/documents/set-primary/${docId}/`, {
+            method: 'POST',
+            headers: { 'X-CSRFToken': csrfToken }
+        });
+        const data = await response.json();
+
+        if (data.success) {
+            showToast('Set as primary resume', 'success');
+            setTimeout(() => location.reload(), 1000);
+        } else {
+            showToast(data.error || 'Failed to set as primary', 'error');
+        }
+    } catch (err) {
+        showToast('Error setting primary', 'error');
+    }
+}
+
+function renameDocument(docId) {
+    renameDocId = docId;
+    const card = document.querySelector(`[data-id="${docId}"]`);
+    const currentTitle = card?.querySelector('h4')?.textContent || '';
+    document.getElementById('renameInput').value = currentTitle;
+    document.getElementById('renameModal').classList.remove('hidden');
+    document.getElementById('renameInput').focus();
+    hideContextMenu();
+}
+
+async function confirmRename() {
+    const newTitle = document.getElementById('renameInput').value.trim();
+    if (!newTitle || !renameDocId) return;
+
+    try {
+        const response = await fetch(`/portal/talent/api/documents/rename/${renameDocId}/`, {
+            method: 'POST',
+            headers: {
+                'X-CSRFToken': csrfToken,
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ title: newTitle })
+        });
+        const data = await response.json();
+
+        if (data.success) {
+            showToast('Document renamed', 'success');
+            // Update in DOM
+            document.querySelectorAll(`[data-id="${renameDocId}"] h4`).forEach(el => {
+                el.textContent = newTitle;
+            });
+            closeRenameModal();
+        } else {
+            showToast(data.error || 'Failed to rename', 'error');
+        }
+    } catch (err) {
+        showToast('Error renaming document', 'error');
+    }
+}
+
+function closeRenameModal() {
+    document.getElementById('renameModal').classList.add('hidden');
+    renameDocId = null;
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// PREVIEW MODAL
+// ─────────────────────────────────────────────────────────────────────────────
+async function openDocumentPreview(docId) {
+    currentPreviewDocId = docId;
+    document.getElementById('previewModal').classList.remove('hidden');
+    document.body.style.overflow = 'hidden';
+
+    document.getElementById('previewContent').innerHTML = '<p class="text-slate-400">Loading preview...</p>';
+
+    try {
+        const response = await fetch(`/portal/talent/api/documents/preview/${docId}/`);
+        const data = await response.json();
+
+        if (data.success) {
+            document.getElementById('previewTitle').textContent = data.filename;
+            document.getElementById('previewFilename').textContent = data.filename;
+            document.getElementById('previewSize').textContent = formatFileSize(data.size);
+
+            if (data.is_image) {
+                document.getElementById('previewContent').innerHTML = `<img src="${data.url}" alt="Preview">`;
+            } else if (data.mime_type === 'application/pdf') {
+                document.getElementById('previewContent').innerHTML = `<iframe src="${data.url}#toolbar=0"></iframe>`;
+            } else {
+                document.getElementById('previewContent').innerHTML = `
+                    <div class="text-center py-12">
+                        <div class="file-icon mx-auto mb-4 other w-16 h-16">
+                            <svg class="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+                        </div>
+                        <p class="text-white font-medium mb-1">${data.filename}</p>
+                        <p class="text-slate-500 text-sm mb-4">Preview not available for this file type</p>
+                        <button onclick="downloadCurrentPreview()" class="px-4 py-2 rounded-lg bg-[#F4A62B] text-[#0a0e1a] text-sm font-semibold hover:bg-[#FFD180] transition">
+                            Download to View
+                        </button>
+                    </div>
+                `;
+            }
+        } else {
+            document.getElementById('previewContent').innerHTML = `<p class="text-red-400">Failed to load preview</p>`;
+        }
+    } catch (err) {
+        document.getElementById('previewContent').innerHTML = `<p class="text-red-400">Error loading preview</p>`;
+    }
+}
+
+function closePreviewModal() {
+    document.getElementById('previewModal').classList.add('hidden');
+    document.body.style.overflow = '';
+    currentPreviewDocId = null;
+}
+
+function downloadCurrentPreview() {
+    if (currentPreviewDocId) downloadDocument(currentPreviewDocId);
+}
+
+function setPrimaryFromPreview() {
+    if (currentPreviewDocId) setPrimary(currentPreviewDocId);
+}
+
+function renameFromPreview() {
+    if (currentPreviewDocId) {
+        closePreviewModal();
+        renameDocument(currentPreviewDocId);
+    }
+}
+
+function deleteFromPreview() {
+    if (currentPreviewDocId) deleteDocument(currentPreviewDocId);
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// CONTEXT MENU
+// ─────────────────────────────────────────────────────────────────────────────
+function showContextMenu(e, docId) {
+    e.preventDefault();
+    contextMenuDocId = docId;
+
+    const menu = document.getElementById('contextMenu');
+    menu.style.left = e.pageX + 'px';
+    menu.style.top = e.pageY + 'px';
+    menu.classList.remove('hidden');
+
+    // Show/hide set primary based on doc type
+    const card = document.querySelector(`[data-id="${docId}"]`);
+    const isCV = card?.dataset.type === 'cv';
+    document.getElementById('contextSetPrimary').style.display = isCV ? '' : 'none';
+}
+
+function hideContextMenu() {
+    document.getElementById('contextMenu').classList.add('hidden');
+    contextMenuDocId = null;
+}
+
+document.addEventListener('click', hideContextMenu);
+
+// ─────────────────────────────────────────────────────────────────────────────
+// UTILITIES
+// ─────────────────────────────────────────────────────────────────────────────
+function formatFileSize(bytes) {
+    if (bytes === 0) return '0 Bytes';
+    const k = 1024;
+    const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+    const i = Math.floor(Math.log(bytes) / Math.log(k));
+    return parseFloat((bytes / Math.pow(k, i)).toFixed(1)) + ' ' + sizes[i];
+}
+
+function showToast(message, type = 'info') {
+    // Simple toast - you can enhance this
+    const toast = document.createElement('div');
+    toast.className = `fixed bottom-4 right-4 px-4 py-3 rounded-lg text-sm font-medium z-50 ${
+        type === 'success' ? 'bg-green-500/90 text-white' :
+        type === 'error' ? 'bg-red-500/90 text-white' :
+        'bg-slate-800 text-white'
+    }`;
+    toast.textContent = message;
+    document.body.appendChild(toast);
+    setTimeout(() => toast.remove(), 3000);
+}
+
+// Keyboard shortcuts
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+        closeUploadModal();
+        closePreviewModal();
+        closeRenameModal();
+        hideContextMenu();
+    }
+});
+
+// Initialize view
+setView('grid');
+</script>
+
+{% endblock %}
+

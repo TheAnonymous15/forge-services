@@ -1,0 +1,285 @@
+{% extends "website/layouts/portal_base.html" %}
+
+{% block title %}Application Details - {{ application.opportunity.title }}{% endblock %}
+
+{% block portal_content %}
+<!-- Back Button -->
+<div class="mb-6">
+    <a href="/portal/talent/applications/" class="inline-flex items-center gap-2 text-slate-400 hover:text-white transition">
+        <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+        </svg>
+        Back to Applications
+    </a>
+</div>
+
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+    <!-- Main Content -->
+    <div class="lg:col-span-2 space-y-6">
+        <!-- Application Header -->
+        <div class="glass-card glow-card rounded-2xl p-6 md:p-8">
+            <div class="flex flex-col md:flex-row md:items-start gap-6">
+                <div class="w-20 h-20 rounded-2xl bg-gradient-to-br from-primary to-forgeforth-blue-light flex items-center justify-center flex-shrink-0">
+                    <span class="text-white font-bold text-2xl">{{ application.opportunity.organization.name|slice:":2"|upper }}</span>
+                </div>
+
+                <div class="flex-1">
+                    <div class="flex items-center gap-3 mb-3">
+                        <span class="px-4 py-1.5 rounded-full text-sm font-semibold
+                            {% if application.status == 'pending' %}bg-secondary/20 text-secondary
+                            {% elif application.status == 'reviewing' %}bg-forgeforth-blue-light/20 text-forgeforth-blue-light
+                            {% elif application.status == 'interview' %}bg-accent/20 text-accent
+                            {% elif application.status == 'offered' %}bg-green-500/20 text-green-400
+                            {% elif application.status == 'hired' %}bg-green-600/20 text-green-500
+                            {% elif application.status == 'rejected' %}bg-red-500/20 text-red-400
+                            {% elif application.status == 'withdrawn' %}bg-slate-500/20 text-slate-400
+                            {% else %}bg-white/10 text-slate-400{% endif %}">
+                            {{ application.status|title }}
+                        </span>
+                    </div>
+
+                    <h1 class="text-2xl md:text-3xl font-bold text-white mb-2">{{ application.opportunity.title }}</h1>
+                    <p class="text-lg text-slate-300 mb-4">{{ application.opportunity.organization.name }}</p>
+
+                    <div class="flex flex-wrap gap-4 text-sm text-slate-400">
+                        <span class="flex items-center gap-2">
+                            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                            </svg>
+                            Applied {{ application.created_at|date:"M d, Y" }}
+                        </span>
+                        {% if application.opportunity.location %}
+                        <span class="flex items-center gap-2">
+                            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+                            </svg>
+                            {{ application.opportunity.location }}
+                        </span>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Cover Letter -->
+        {% if application.cover_letter %}
+        <div class="glass-card rounded-2xl p-6 md:p-8">
+            <h2 class="text-xl font-bold text-white mb-4">Your Cover Letter</h2>
+            <div class="text-slate-300 whitespace-pre-wrap">{{ application.cover_letter }}</div>
+        </div>
+        {% endif %}
+
+        <!-- Status Timeline -->
+        <div class="glass-card rounded-2xl p-6 md:p-8">
+            <h2 class="text-xl font-bold text-white mb-6">Application Timeline</h2>
+
+            <div class="relative">
+                <!-- Timeline Line -->
+                <div class="absolute left-6 top-0 bottom-0 w-0.5 bg-gradient-to-b from-secondary via-accent to-primary/50"></div>
+
+                <div class="space-y-6">
+                    <!-- Applied -->
+                    <div class="relative flex items-start gap-4 pl-14">
+                        <div class="absolute left-3.5 w-5 h-5 rounded-full bg-secondary border-4 border-[#0a0e1a]"></div>
+                        <div>
+                            <h4 class="text-white font-semibold">Application Submitted</h4>
+                            <p class="text-slate-400 text-sm">{{ application.created_at|date:"M d, Y \a\t H:i" }}</p>
+                        </div>
+                    </div>
+
+                    {% if status_history %}
+                    {% for history in status_history %}
+                    <div class="relative flex items-start gap-4 pl-14">
+                        <div class="absolute left-3.5 w-5 h-5 rounded-full
+                            {% if history.new_status == 'interview' %}bg-accent
+                            {% elif history.new_status == 'offered' %}bg-green-500
+                            {% elif history.new_status == 'rejected' %}bg-red-500
+                            {% else %}bg-forgeforth-blue-light{% endif %} border-4 border-[#0a0e1a]"></div>
+                        <div>
+                            <h4 class="text-white font-semibold">{{ history.new_status|title }}</h4>
+                            <p class="text-slate-400 text-sm">{{ history.changed_at|date:"M d, Y \a\t H:i" }}</p>
+                            {% if history.notes %}
+                            <p class="text-slate-500 text-sm mt-1">{{ history.notes }}</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                    {% endfor %}
+                    {% endif %}
+
+                    <!-- Pending Status Indicator -->
+                    {% if application.status == 'pending' or application.status == 'reviewing' %}
+                    <div class="relative flex items-start gap-4 pl-14">
+                        <div class="absolute left-3.5 w-5 h-5 rounded-full bg-white/20 border-4 border-[#0a0e1a] animate-pulse"></div>
+                        <div>
+                            <h4 class="text-slate-400 font-semibold">Awaiting Response</h4>
+                            <p class="text-slate-500 text-sm">Your application is being reviewed</p>
+                        </div>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <!-- Opportunity Details -->
+        <div class="glass-card rounded-2xl p-6 md:p-8">
+            <h2 class="text-xl font-bold text-white mb-4">About the Opportunity</h2>
+            <div class="text-slate-300 line-clamp-4">{{ application.opportunity.description|truncatewords:100 }}</div>
+            <a href="/portal/talent/opportunity/{{ application.opportunity.slug }}/" class="inline-flex items-center gap-2 mt-4 text-secondary font-medium hover:underline">
+                View Full Details
+                <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                </svg>
+            </a>
+        </div>
+    </div>
+
+    <!-- Sidebar -->
+    <div class="space-y-6">
+        <!-- Actions Card -->
+        <div class="glass-card rounded-2xl p-6 sticky top-24">
+            <h3 class="text-lg font-semibold text-white mb-4">Actions</h3>
+
+            {% if application.status not in 'offered,hired,rejected,withdrawn' %}
+            <button onclick="confirmWithdraw()" class="w-full py-3 rounded-xl border border-red-500/30 text-red-400 font-medium hover:bg-red-500/10 transition mb-4">
+                Withdraw Application
+            </button>
+            {% endif %}
+
+            <a href="/portal/talent/opportunity/{{ application.opportunity.slug }}/" class="block w-full py-3 rounded-xl bg-white/5 text-slate-300 text-center font-medium hover:bg-white/10 transition">
+                View Opportunity
+            </a>
+        </div>
+
+        <!-- Status Info -->
+        <div class="glass-card rounded-2xl p-6">
+            <h3 class="text-lg font-semibold text-white mb-4">Status Information</h3>
+
+            <div class="space-y-4">
+                {% if application.status == 'pending' %}
+                <div class="p-4 rounded-xl bg-secondary/10 border border-secondary/20">
+                    <p class="text-secondary text-sm font-medium mb-1">Under Review</p>
+                    <p class="text-slate-400 text-sm">Your application is being reviewed by the employer. This may take a few days.</p>
+                </div>
+                {% elif application.status == 'reviewing' %}
+                <div class="p-4 rounded-xl bg-forgeforth-blue-light/10 border border-forgeforth-blue-light/20">
+                    <p class="text-forgeforth-blue-light text-sm font-medium mb-1">In Review</p>
+                    <p class="text-slate-400 text-sm">The employer is actively reviewing your profile and application.</p>
+                </div>
+                {% elif application.status == 'interview' %}
+                <div class="p-4 rounded-xl bg-accent/10 border border-accent/20">
+                    <p class="text-accent text-sm font-medium mb-1">🎉 Interview Scheduled!</p>
+                    <p class="text-slate-400 text-sm">Congratulations! The employer wants to interview you. Check your email for details.</p>
+                </div>
+                {% elif application.status == 'offered' %}
+                <div class="p-4 rounded-xl bg-green-500/10 border border-green-500/20">
+                    <p class="text-green-400 text-sm font-medium mb-1">🎊 Offer Received!</p>
+                    <p class="text-slate-400 text-sm">Amazing news! You've received an offer. Review the details carefully.</p>
+                </div>
+                {% elif application.status == 'rejected' %}
+                <div class="p-4 rounded-xl bg-red-500/10 border border-red-500/20">
+                    <p class="text-red-400 text-sm font-medium mb-1">Not Selected</p>
+                    <p class="text-slate-400 text-sm">Unfortunately, you weren't selected for this role. Keep applying - your opportunity is out there!</p>
+                </div>
+                {% elif application.status == 'withdrawn' %}
+                <div class="p-4 rounded-xl bg-slate-500/10 border border-slate-500/20">
+                    <p class="text-slate-400 text-sm font-medium mb-1">Application Withdrawn</p>
+                    <p class="text-slate-500 text-sm">You withdrew this application.</p>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- Tips -->
+        {% if application.status == 'pending' or application.status == 'reviewing' %}
+        <div class="glass-card rounded-2xl p-6 bg-gradient-to-br from-secondary/5 to-accent/5">
+            <h3 class="text-lg font-semibold text-white mb-4">💡 Tips While You Wait</h3>
+            <ul class="space-y-3 text-slate-400 text-sm">
+                <li class="flex items-start gap-2">
+                    <span class="text-secondary">•</span>
+                    Keep your profile updated with new skills
+                </li>
+                <li class="flex items-start gap-2">
+                    <span class="text-secondary">•</span>
+                    Apply to other opportunities to increase chances
+                </li>
+                <li class="flex items-start gap-2">
+                    <span class="text-secondary">•</span>
+                    Check your email regularly for updates
+                </li>
+            </ul>
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+<!-- Withdraw Confirmation Modal -->
+<div id="withdrawModal" class="fixed inset-0 z-50 hidden">
+    <div class="absolute inset-0 bg-black/60 backdrop-blur-sm" onclick="closeWithdrawModal()"></div>
+    <div class="absolute inset-0 flex items-center justify-center p-4">
+        <div class="w-full max-w-md glass-card rounded-2xl p-6">
+            <div class="text-center">
+                <div class="w-16 h-16 rounded-2xl bg-red-500/20 flex items-center justify-center mx-auto mb-4">
+                    <svg class="w-8 h-8 text-red-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
+                    </svg>
+                </div>
+                <h3 class="text-xl font-bold text-white mb-2">Withdraw Application?</h3>
+                <p class="text-slate-400 mb-6">This action cannot be undone. Are you sure you want to withdraw your application?</p>
+                <div class="flex gap-4">
+                    <button onclick="closeWithdrawModal()" class="flex-1 py-3 rounded-xl bg-white/5 text-slate-300 font-medium hover:bg-white/10 transition">
+                        Cancel
+                    </button>
+                    <button onclick="withdrawApplication()" class="flex-1 py-3 rounded-xl bg-red-500/20 text-red-400 font-semibold hover:bg-red-500/30 transition">
+                        Withdraw
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+const applicationId = '{{ application.id }}';
+
+function confirmWithdraw() {
+    document.getElementById('withdrawModal').classList.remove('hidden');
+}
+
+function closeWithdrawModal() {
+    document.getElementById('withdrawModal').classList.add('hidden');
+}
+
+function withdrawApplication() {
+    fetch(`/portal/talent/api/withdraw/${applicationId}/`, {
+        method: 'POST',
+        headers: {
+            'X-CSRFToken': getCookie('csrftoken')
+        }
+    })
+    .then(r => r.json())
+    .then(data => {
+        if (data.success) {
+            window.location.reload();
+        } else {
+            alert(data.error || 'Failed to withdraw application');
+        }
+    });
+}
+
+function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim();
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+</script>
+{% endblock %}
+

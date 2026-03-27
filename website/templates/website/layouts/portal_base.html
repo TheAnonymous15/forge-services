@@ -1,0 +1,1123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Portal{% endblock %} - ForgeForth Africa</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'forgeforth': {
+                            'gold': '#F4A62B',
+                            'green': '#2ECC71',
+                            'orange': '#E67E22',
+                            'blue': '#1E3A8A',
+                            'blue-light': '#3B82F6',
+                        },
+                        'primary': '#1E3A8A',
+                        'secondary': '#F4A62B',
+                        'accent': '#2ECC71',
+                    },
+                }
+            }
+        }
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+
+        /* ═══════════════════════════════════════════════════════════
+           FUTURISTIC BACKGROUND
+        ═══════════════════════════════════════════════════════════ */
+        .portal-bg {
+            background: #0a0e1a;
+            position: relative;
+            overflow: hidden;
+        }
+        .portal-bg::before {
+            content: '';
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background:
+                radial-gradient(ellipse 80% 50% at 20% -20%, rgba(244, 166, 43, 0.15) 0%, transparent 50%),
+                radial-gradient(ellipse 60% 40% at 80% 100%, rgba(30, 58, 138, 0.2) 0%, transparent 50%),
+                radial-gradient(ellipse 40% 30% at 50% 50%, rgba(46, 204, 113, 0.05) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* Animated grid */
+        .grid-overlay {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-image:
+                linear-gradient(rgba(244, 166, 43, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(244, 166, 43, 0.03) 1px, transparent 1px);
+            background-size: 60px 60px;
+            pointer-events: none;
+            z-index: 0;
+            animation: gridPulse 8s ease-in-out infinite;
+        }
+        @keyframes gridPulse {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 0.6; }
+        }
+
+        /* Floating orbs */
+        .orb {
+            position: fixed;
+            border-radius: 50%;
+            filter: blur(80px);
+            pointer-events: none;
+            z-index: 0;
+            animation: orbFloat 20s ease-in-out infinite;
+        }
+        .orb-1 {
+            width: 400px; height: 400px;
+            background: rgba(244, 166, 43, 0.12);
+            top: -100px; right: -100px;
+            animation-delay: 0s;
+        }
+        .orb-2 {
+            width: 300px; height: 300px;
+            background: rgba(30, 58, 138, 0.15);
+            bottom: -50px; left: -50px;
+            animation-delay: -7s;
+        }
+        .orb-3 {
+            width: 200px; height: 200px;
+            background: rgba(46, 204, 113, 0.08);
+            top: 50%; left: 50%;
+            animation-delay: -14s;
+        }
+        @keyframes orbFloat {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            25% { transform: translate(30px, -30px) scale(1.05); }
+            50% { transform: translate(-20px, 20px) scale(0.95); }
+            75% { transform: translate(20px, 30px) scale(1.02); }
+        }
+
+        /* ═══════════════════════════════════════════════════════════
+           3D GLASS CARDS
+        ═══════════════════════════════════════════════════════════ */
+        .glass-card {
+            background: linear-gradient(135deg,
+                rgba(255, 255, 255, 0.05) 0%,
+                rgba(255, 255, 255, 0.02) 100%);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow:
+                0 8px 32px rgba(0, 0, 0, 0.3),
+                0 0 0 1px rgba(255, 255, 255, 0.05) inset,
+                0 -2px 6px rgba(0, 0, 0, 0.1) inset;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .glass-card:hover {
+            transform: translateY(-2px);
+            box-shadow:
+                0 12px 40px rgba(0, 0, 0, 0.4),
+                0 0 0 1px rgba(244, 166, 43, 0.15) inset,
+                0 0 30px rgba(244, 166, 43, 0.05);
+            border-color: rgba(244, 166, 43, 0.2);
+        }
+
+        /* Glowing accent cards */
+        .glow-card {
+            position: relative;
+        }
+        .glow-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            border-radius: inherit;
+            padding: 1px;
+            background: linear-gradient(135deg,
+                rgba(244, 166, 43, 0.3) 0%,
+                rgba(46, 204, 113, 0.2) 50%,
+                rgba(30, 58, 138, 0.3) 100%);
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        .glow-card:hover::before {
+            opacity: 1;
+        }
+
+        /* ═══════════════════════════════════════════════════════════
+           NAV & SIDEBAR
+        ═══════════════════════════════════════════════════════════ */
+        .glass-nav {
+            background: rgba(10, 14, 26, 0.85);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(244, 166, 43, 0.1);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        /* ═══════════════════════════════════════════════════════════
+           FUTURISTIC SIDEBAR
+        ═══════════════════════════════════════════════════════════ */
+        .glass-sidebar {
+            background: linear-gradient(180deg,
+                rgba(8, 12, 24, 0.98) 0%,
+                rgba(12, 18, 35, 0.95) 50%,
+                rgba(8, 12, 24, 0.98) 100%);
+            backdrop-filter: blur(30px);
+            -webkit-backdrop-filter: blur(30px);
+            border-right: 1px solid rgba(244, 166, 43, 0.08);
+            box-shadow:
+                inset -1px 0 0 rgba(255, 255, 255, 0.02),
+                4px 0 30px rgba(0, 0, 0, 0.4);
+        }
+
+        /* Sidebar glowing edge */
+        .glass-sidebar::before {
+            content: '';
+            position: absolute;
+            top: 0; right: 0; bottom: 0;
+            width: 1px;
+            background: linear-gradient(180deg,
+                transparent 0%,
+                rgba(244, 166, 43, 0.3) 20%,
+                rgba(46, 204, 113, 0.2) 50%,
+                rgba(244, 166, 43, 0.3) 80%,
+                transparent 100%);
+            animation: sidebarGlow 4s ease-in-out infinite;
+        }
+        @keyframes sidebarGlow {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 0.8; }
+        }
+
+        /* Section headers */
+        .sidebar-section-header {
+            position: relative;
+            padding-left: 16px;
+            margin-bottom: 8px;
+        }
+        .sidebar-section-header::before {
+            content: '';
+            position: absolute;
+            left: 0; top: 50%;
+            width: 4px; height: 4px;
+            background: linear-gradient(135deg, #F4A62B, #2ECC71);
+            border-radius: 50%;
+            transform: translateY(-50%);
+            box-shadow: 0 0 8px rgba(244, 166, 43, 0.5);
+        }
+
+        /* Nav links - 3D holographic effect */
+        .sidebar-link {
+            position: relative;
+            overflow: hidden;
+            transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+            transform-style: preserve-3d;
+            perspective: 1000px;
+        }
+
+        /* Glowing left border */
+        .sidebar-link::before {
+            content: '';
+            position: absolute;
+            left: 0; top: 0; bottom: 0;
+            width: 2px;
+            background: linear-gradient(180deg,
+                rgba(244, 166, 43, 0) 0%,
+                rgba(244, 166, 43, 0.8) 50%,
+                rgba(46, 204, 113, 0.8) 75%,
+                rgba(244, 166, 43, 0) 100%);
+            transform: scaleY(0);
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 0 10px rgba(244, 166, 43, 0.5);
+        }
+
+        /* Hover shimmer effect */
+        .sidebar-link::after {
+            content: '';
+            position: absolute;
+            top: 0; left: -100%;
+            width: 100%; height: 100%;
+            background: linear-gradient(90deg,
+                transparent 0%,
+                rgba(244, 166, 43, 0.05) 50%,
+                transparent 100%);
+            transition: left 0.5s ease;
+        }
+
+        .sidebar-link:hover {
+            background: linear-gradient(90deg,
+                rgba(244, 166, 43, 0.12) 0%,
+                rgba(244, 166, 43, 0.03) 40%,
+                transparent 100%);
+            transform: translateX(4px);
+            box-shadow:
+                inset 0 0 20px rgba(244, 166, 43, 0.03),
+                -4px 0 20px rgba(244, 166, 43, 0.05);
+        }
+        .sidebar-link:hover::before {
+            transform: scaleY(1);
+        }
+        .sidebar-link:hover::after {
+            left: 100%;
+        }
+
+        /* Active state - cyberpunk glow */
+        .sidebar-link.active {
+            background: linear-gradient(90deg,
+                rgba(244, 166, 43, 0.15) 0%,
+                rgba(46, 204, 113, 0.05) 50%,
+                transparent 100%);
+            border-left: none;
+            box-shadow:
+                inset 0 0 30px rgba(244, 166, 43, 0.05),
+                -4px 0 25px rgba(244, 166, 43, 0.1);
+        }
+        .sidebar-link.active::before {
+            transform: scaleY(1);
+            animation: activePulse 2s ease-in-out infinite;
+        }
+        @keyframes activePulse {
+            0%, 100% { box-shadow: 0 0 10px rgba(244, 166, 43, 0.5); }
+            50% { box-shadow: 0 0 20px rgba(244, 166, 43, 0.8), 0 0 30px rgba(46, 204, 113, 0.3); }
+        }
+
+        /* Icon glow on hover */
+        .sidebar-link:hover svg,
+        .sidebar-link.active svg {
+            filter: drop-shadow(0 0 6px rgba(244, 166, 43, 0.5));
+            color: #F4A62B;
+        }
+
+        /* Badge styles */
+        .sidebar-badge {
+            background: linear-gradient(135deg, rgba(244, 166, 43, 0.2), rgba(46, 204, 113, 0.2));
+            border: 1px solid rgba(244, 166, 43, 0.3);
+            animation: badgeGlow 3s ease-in-out infinite;
+        }
+        @keyframes badgeGlow {
+            0%, 100% { box-shadow: 0 0 5px rgba(244, 166, 43, 0.2); }
+            50% { box-shadow: 0 0 15px rgba(244, 166, 43, 0.4); }
+        }
+
+        /* New/AI badge pulse */
+        .badge-new {
+            animation: newPulse 2s ease-in-out infinite;
+        }
+        @keyframes newPulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+
+        /* Sidebar divider */
+        .sidebar-divider {
+            position: relative;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        .sidebar-divider::before {
+            content: '';
+            position: absolute;
+            left: 20%; right: 20%; top: -1px;
+            height: 1px;
+            background: linear-gradient(90deg,
+                transparent,
+                rgba(244, 166, 43, 0.3),
+                rgba(46, 204, 113, 0.2),
+                transparent);
+        }
+
+        /* ═══════════════════════════════════════════════════════════
+           STAT CARDS (3D)
+        ═══════════════════════════════════════════════════════════ */
+        .stat-card {
+            background: linear-gradient(145deg,
+                rgba(255, 255, 255, 0.06) 0%,
+                rgba(255, 255, 255, 0.02) 100%);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow:
+                0 10px 40px rgba(0, 0, 0, 0.3),
+                0 0 0 1px rgba(255, 255, 255, 0.05) inset;
+            transform-style: preserve-3d;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .stat-card:hover {
+            transform: translateY(-4px) rotateX(2deg);
+            box-shadow:
+                0 20px 50px rgba(0, 0, 0, 0.4),
+                0 0 0 1px rgba(244, 166, 43, 0.2) inset,
+                0 0 40px rgba(244, 166, 43, 0.08);
+        }
+
+        /* Stat card variants */
+        .stat-card-gold { border-top: 2px solid rgba(244, 166, 43, 0.5); }
+        .stat-card-green { border-top: 2px solid rgba(46, 204, 113, 0.5); }
+        .stat-card-blue { border-top: 2px solid rgba(59, 130, 246, 0.5); }
+        .stat-card-orange { border-top: 2px solid rgba(230, 126, 34, 0.5); }
+
+        /* ═══════════════════════════════════════════════════════════
+           SCROLLBAR
+        ═══════════════════════════════════════════════════════════ */
+        .scrollbar-thin::-webkit-scrollbar {
+            width: 4px;
+        }
+        .scrollbar-thin::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .scrollbar-thin::-webkit-scrollbar-thumb {
+            background: linear-gradient(180deg, rgba(244, 166, 43, 0.4), rgba(46, 204, 113, 0.3));
+            border-radius: 4px;
+        }
+        .scrollbar-thin::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(180deg, rgba(244, 166, 43, 0.6), rgba(46, 204, 113, 0.5));
+        }
+
+        /* ═══════════════════════════════════════════════════════════
+           ANIMATIONS
+        ═══════════════════════════════════════════════════════════ */
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fade-in-up {
+            animation: fadeInUp 0.5s ease-out forwards;
+        }
+        .animate-delay-100 { animation-delay: 0.1s; }
+        .animate-delay-200 { animation-delay: 0.2s; }
+        .animate-delay-300 { animation-delay: 0.3s; }
+        .animate-delay-400 { animation-delay: 0.4s; }
+
+        /* Pulse glow effect */
+        @keyframes pulseGlow {
+            0%, 100% { box-shadow: 0 0 20px rgba(244, 166, 43, 0.2); }
+            50% { box-shadow: 0 0 40px rgba(244, 166, 43, 0.4); }
+        }
+        .pulse-glow {
+            animation: pulseGlow 3s ease-in-out infinite;
+        }
+    </style>
+    {% block head_extra %}{% endblock %}
+</head>
+<body class="min-h-screen portal-bg">
+    <!-- Background Effects -->
+    <div class="grid-overlay"></div>
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+    <!-- Top Navigation -->
+    <nav class="fixed top-0 left-0 right-0 h-16 glass-nav z-50">
+        <div class="h-full px-4 lg:px-6 flex items-center justify-between">
+            <!-- Left: Logo & Mobile Menu Toggle -->
+            <div class="flex items-center gap-4">
+                <button id="sidebarToggle" class="lg:hidden p-2 text-blue-200 hover:text-white">
+                    <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+                    </svg>
+                </button>
+                <a href="/" class="flex items-center gap-3">
+                    <img src="/static/images/logo.png" alt="ForgeForth Africa" class="h-8">
+                    <span class="hidden md:inline text-white font-semibold">ForgeForth Africa</span>
+                </a>
+            </div>
+
+            <!-- Right: User Menu -->
+            <div class="flex items-center gap-2 md:gap-4">
+                <!-- Language Selector -->
+                <div class="relative" id="langSwitcherContainer">
+                    <button onclick="toggleLangMenu()" class="w-9 h-9 rounded-full flex items-center justify-center bg-white/5 border border-white/10 hover:bg-white/10 hover:border-secondary/30 transition overflow-hidden" title="Select Language" id="langBtn">
+                        <span id="langBtnFlag" class="text-lg">🌐</span>
+                    </button>
+
+                    <!-- Language Dropdown -->
+                    <div id="langMenu" class="hidden absolute right-0 mt-2 w-64 glass-card rounded-xl shadow-2xl z-50 overflow-hidden">
+                        <div class="px-4 py-3 border-b border-white/10 bg-primary/20">
+                            <p class="text-white text-sm font-medium flex items-center gap-2">
+                                <svg class="w-4 h-4 text-secondary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129"/>
+                                </svg>
+                                Select Language
+                            </p>
+                        </div>
+                        <!-- Search -->
+                        <div class="px-3 py-2 border-b border-white/10">
+                            <input type="text" id="langSearchInput" placeholder="Search languages..."
+                                   class="w-full px-3 py-2 text-sm bg-white/5 border border-white/10 rounded-lg text-white placeholder-slate-500 focus:border-secondary focus:ring-1 focus:ring-secondary transition"
+                                   oninput="filterLangs(this.value)">
+                        </div>
+                        <!-- Language List -->
+                        <div id="langList" class="max-h-64 overflow-y-auto scrollbar-thin py-2">
+                            <!-- Languages will be populated by JS -->
+                        </div>
+                        <div class="px-4 py-2 border-t border-white/10 bg-black/20 flex items-center justify-between">
+                            <span class="text-xs text-slate-500" id="langCountLabel">121 languages</span>
+                            <span class="text-xs text-secondary">Powered by Google</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Notifications -->
+                <button class="relative p-2 text-blue-200 hover:text-white transition">
+                    <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/>
+                    </svg>
+                    <span class="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full"></span>
+                </button>
+
+                <!-- User Dropdown -->
+                <div class="relative" x-data="{ open: false }">
+                    <button onclick="toggleUserMenu()" class="flex items-center gap-3 p-2 rounded-xl hover:bg-white/5 transition">
+                        <div class="w-8 h-8 rounded-full bg-gradient-to-br from-blue-500 to-purple-500 flex items-center justify-center">
+                            <span class="text-white font-semibold text-sm">{{ user.first_name|slice:":1"|upper|default:"U" }}</span>
+                        </div>
+                        <div class="hidden md:block text-left">
+                            <p class="text-white text-sm font-medium">{{ user.get_full_name|default:user.email }}</p>
+                            <p class="text-blue-200/60 text-xs">{{ user.role|default:"User"|title }}</p>
+                        </div>
+                        <svg class="w-4 h-4 text-blue-200/60 hidden md:block" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                        </svg>
+                    </button>
+
+                    <!-- Dropdown Menu -->
+                    <div id="userMenu" class="hidden absolute right-0 mt-2 w-56 glass-card rounded-xl shadow-2xl py-2 z-50">
+                        <div class="px-4 py-3 border-b border-white/10">
+                            <p class="text-white font-medium">{{ user.get_full_name|default:"User" }}</p>
+                            <p class="text-blue-200/60 text-sm truncate">{{ user.email }}</p>
+                        </div>
+                        <a href="/portal/{% if is_talent %}talent{% else %}org{% endif %}/settings/" class="flex items-center gap-3 px-4 py-2 text-blue-200 hover:text-white hover:bg-white/5 transition">
+                            <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/>
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                            </svg>
+                            Settings
+                        </a>
+                        <a href="/" class="flex items-center gap-3 px-4 py-2 text-blue-200 hover:text-white hover:bg-white/5 transition">
+                            <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
+                            </svg>
+                            Main Website
+                        </a>
+                        <div class="border-t border-white/10 mt-2 pt-2">
+                            <a href="/portal/logout/" class="flex items-center gap-3 px-4 py-2 text-red-400 hover:text-red-300 hover:bg-red-500/10 transition">
+                                <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/>
+                                </svg>
+                                Sign Out
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Sidebar -->
+    <aside id="sidebar" class="fixed top-16 left-0 bottom-0 w-72 glass-sidebar transform -translate-x-full lg:translate-x-0 transition-transform z-40 overflow-y-auto scrollbar-thin">
+        <!-- User Quick Card -->
+        <div class="p-4 mb-2">
+            <div class="p-4 rounded-2xl bg-gradient-to-br from-white/5 to-transparent border border-white/5 relative overflow-hidden">
+                <div class="absolute top-0 right-0 w-24 h-24 bg-gradient-to-bl from-secondary/10 to-transparent rounded-bl-full"></div>
+                <div class="flex items-center gap-3 relative z-10">
+                    <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-secondary/30 to-accent/30 flex items-center justify-center border border-secondary/20 shadow-lg shadow-secondary/10">
+                        <span class="text-white font-bold text-lg">{{ user.first_name|slice:":1"|upper|default:"U" }}</span>
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <p class="text-white font-semibold truncate">{{ user.first_name|default:"Welcome" }}</p>
+                        <p class="text-blue-200/50 text-xs">Talent Profile</p>
+                    </div>
+                </div>
+                <!-- Mini progress bar -->
+                <div class="mt-3 relative z-10">
+                    <div class="flex justify-between text-xs mb-1">
+                        <span class="text-blue-200/50">Profile</span>
+                        <span class="text-secondary">{{ profile_completion.percentage|default:0 }}%</span>
+                    </div>
+                    <div class="h-1.5 bg-white/5 rounded-full overflow-hidden">
+                        <div class="h-full bg-gradient-to-r from-secondary to-accent rounded-full transition-all duration-500" style="width: {{ profile_completion.percentage|default:0 }}%"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <nav class="px-3 pb-4">
+            {% if is_talent %}
+            <!-- Talent Navigation -->
+
+            <!-- Main Section -->
+            <div class="mb-5">
+                <p class="sidebar-section-header text-blue-300/40 text-[10px] font-bold uppercase tracking-widest mb-2">Command Center</p>
+                <a href="/portal/talent/dashboard/" class="sidebar-link flex items-center gap-3 px-4 py-2.5 rounded-xl text-blue-100 mb-1 {% if 'dashboard' in request.path and 'talent' in request.path %}active{% endif %}">
+                    <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-secondary/20 to-secondary/5 flex items-center justify-center">
+                        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM4 13a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H5a1 1 0 01-1-1v-6zM16 13a1 1 0 011-1h2a1 1 0 011 1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-6z"/>
+                        </svg>
+                    </div>
+                    <span class="font-medium text-sm">Dashboard</span>
+                </a>
+                <a href="/portal/talent/profile/" class="sidebar-link flex items-center gap-3 px-4 py-2.5 rounded-xl text-blue-100 mb-1 {% if 'profile' in request.path %}active{% endif %}">
+                    <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-accent/20 to-accent/5 flex items-center justify-center">
+                        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
+                        </svg>
+                    </div>
+                    <span class="font-medium text-sm">My Profile</span>
+                </a>
+                <a href="/portal/talent/resume/" class="sidebar-link flex items-center gap-3 px-4 py-2.5 rounded-xl text-blue-100 mb-1 {% if 'resume' in request.path %}active{% endif %}">
+                    <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-purple-500/20 to-purple-500/5 flex items-center justify-center">
+                        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                        </svg>
+                    </div>
+                    <span class="font-medium text-sm">Resume Builder</span>
+                    <span class="ml-auto px-2 py-0.5 text-[10px] bg-secondary/20 text-secondary rounded-full font-semibold badge-new">NEW</span>
+                </a>
+                <a href="/portal/talent/documents/" class="sidebar-link flex items-center gap-3 px-4 py-2.5 rounded-xl text-blue-100 mb-1 {% if 'documents' in request.path %}active{% endif %}">
+                    <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-cyan-500/20 to-cyan-500/5 flex items-center justify-center">
+                        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 19a2 2 0 01-2-2V7a2 2 0 012-2h4l2 2h4a2 2 0 012 2v1M5 19h14a2 2 0 002-2v-5a2 2 0 00-2-2H9a2 2 0 00-2 2v5a2 2 0 01-2 2z"/>
+                        </svg>
+                    </div>
+                    <span class="font-medium text-sm">Documents</span>
+                </a>
+            </div>
+
+            <!-- Progress & Goals -->
+            <div class="mb-5">
+                <p class="sidebar-section-header text-blue-300/40 text-[10px] font-bold uppercase tracking-widest mb-2">Growth Tracker</p>
+                <a href="/portal/talent/progress/" class="sidebar-link flex items-center gap-3 px-4 py-2.5 rounded-xl text-blue-100 mb-1 {% if 'progress' in request.path %}active{% endif %}">
+                    <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-green-500/20 to-green-500/5 flex items-center justify-center">
+                        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/>
+                        </svg>
+                    </div>
+                    <span class="font-medium text-sm">My Progress</span>
+                </a>
+                <a href="/portal/talent/goals/" class="sidebar-link flex items-center gap-3 px-4 py-2.5 rounded-xl text-blue-100 mb-1 {% if 'goals' in request.path %}active{% endif %}">
+                    <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-yellow-500/20 to-yellow-500/5 flex items-center justify-center">
+                        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
+                        </svg>
+                    </div>
+                    <span class="font-medium text-sm">Goals</span>
+                </a>
+                <a href="/portal/talent/activities/" class="sidebar-link flex items-center gap-3 px-4 py-2.5 rounded-xl text-blue-100 mb-1 {% if 'activities' in request.path %}active{% endif %}">
+                    <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-orange-500/20 to-orange-500/5 flex items-center justify-center">
+                        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                        </svg>
+                    </div>
+                    <span class="font-medium text-sm">Activities</span>
+                </a>
+                <a href="/portal/talent/contributions/" class="sidebar-link flex items-center gap-3 px-4 py-2.5 rounded-xl text-blue-100 mb-1 {% if 'contributions' in request.path %}active{% endif %}">
+                    <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-pink-500/20 to-pink-500/5 flex items-center justify-center">
+                        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/>
+                        </svg>
+                    </div>
+                    <span class="font-medium text-sm">Contributions</span>
+                    <span class="ml-auto px-2 py-0.5 text-[10px] bg-accent/20 text-accent rounded-full font-semibold">GIVE</span>
+                </a>
+            </div>
+
+            <!-- Opportunities -->
+            <div class="mb-5">
+                <p class="sidebar-section-header text-blue-300/40 text-[10px] font-bold uppercase tracking-widest mb-2">Opportunities</p>
+                <a href="/portal/talent/opportunities/" class="sidebar-link flex items-center gap-3 px-4 py-2.5 rounded-xl text-blue-100 mb-1 {% if 'opportunities' in request.path and 'saved' not in request.path %}active{% endif %}">
+                    <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-500/20 to-blue-500/5 flex items-center justify-center">
+                        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+                        </svg>
+                    </div>
+                    <span class="font-medium text-sm">Browse All</span>
+                </a>
+                <a href="/portal/talent/recommendations/" class="sidebar-link flex items-center gap-3 px-4 py-2.5 rounded-xl text-blue-100 mb-1 {% if 'recommendations' in request.path %}active{% endif %}">
+                    <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-violet-500/20 to-violet-500/5 flex items-center justify-center relative">
+                        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/>
+                        </svg>
+                        <span class="absolute -top-1 -right-1 w-2 h-2 bg-accent rounded-full animate-ping"></span>
+                    </div>
+                    <span class="font-medium text-sm">AI Match</span>
+                    <span class="ml-auto px-2 py-0.5 text-[10px] bg-gradient-to-r from-violet-500/20 to-accent/20 text-accent rounded-full font-semibold border border-accent/20">AI</span>
+                </a>
+                <a href="/portal/talent/saved/" class="sidebar-link flex items-center gap-3 px-4 py-2.5 rounded-xl text-blue-100 mb-1 {% if 'saved' in request.path %}active{% endif %}">
+                    <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-rose-500/20 to-rose-500/5 flex items-center justify-center">
+                        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"/>
+                        </svg>
+                    </div>
+                    <span class="font-medium text-sm">Saved</span>
+                    {% if saved_count %}<span class="ml-auto text-xs text-secondary font-semibold">{{ saved_count }}</span>{% endif %}
+                </a>
+                <a href="/portal/talent/applications/" class="sidebar-link flex items-center gap-3 px-4 py-2.5 rounded-xl text-blue-100 mb-1 {% if 'applications' in request.path %}active{% endif %}">
+                    <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-emerald-500/20 to-emerald-500/5 flex items-center justify-center">
+                        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
+                        </svg>
+                    </div>
+                    <span class="font-medium text-sm">Applications</span>
+                </a>
+                <a href="/portal/talent/interviews/" class="sidebar-link flex items-center gap-3 px-4 py-2.5 rounded-xl text-blue-100 mb-1 {% if 'interviews' in request.path %}active{% endif %}">
+                    <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-amber-500/20 to-amber-500/5 flex items-center justify-center">
+                        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                        </svg>
+                    </div>
+                    <span class="font-medium text-sm">Interviews</span>
+                </a>
+            </div>
+
+            <!-- Learning & Growth -->
+            <div class="mb-5">
+                <p class="sidebar-section-header text-blue-300/40 text-[10px] font-bold uppercase tracking-widest mb-2">Skills & Learning</p>
+                <a href="/portal/talent/skillsets/" class="sidebar-link flex items-center gap-3 px-4 py-2.5 rounded-xl text-blue-100 mb-1 {% if 'skillsets' in request.path %}active{% endif %}">
+                    <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-teal-500/20 to-teal-500/5 flex items-center justify-center">
+                        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"/>
+                        </svg>
+                    </div>
+                    <span class="font-medium text-sm">My Skills</span>
+                </a>
+                <a href="/portal/talent/skills/" class="sidebar-link flex items-center gap-3 px-4 py-2.5 rounded-xl text-blue-100 mb-1 {% if 'skills' in request.path and 'skillsets' not in request.path %}active{% endif %}">
+                    <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-indigo-500/20 to-indigo-500/5 flex items-center justify-center">
+                        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
+                        </svg>
+                    </div>
+                    <span class="font-medium text-sm">Assessment</span>
+                </a>
+                <a href="/portal/talent/certifications/" class="sidebar-link flex items-center gap-3 px-4 py-2.5 rounded-xl text-blue-100 mb-1 {% if 'certifications' in request.path %}active{% endif %}">
+                    <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-secondary/20 to-secondary/5 flex items-center justify-center">
+                        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"/>
+                        </svg>
+                    </div>
+                    <span class="font-medium text-sm">Certifications</span>
+                </a>
+                <a href="/portal/talent/learning/" class="sidebar-link flex items-center gap-3 px-4 py-2.5 rounded-xl text-blue-100 mb-1 {% if 'learning' in request.path %}active{% endif %}">
+                    <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-fuchsia-500/20 to-fuchsia-500/5 flex items-center justify-center">
+                        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
+                        </svg>
+                    </div>
+                    <span class="font-medium text-sm">Learning Hub</span>
+                    <span class="ml-auto px-2 py-0.5 text-[10px] bg-primary/40 text-blue-300 rounded-full font-semibold">SOON</span>
+                </a>
+            </div>
+
+            <!-- Communication -->
+            <div class="mb-5">
+                <p class="sidebar-section-header text-blue-300/40 text-[10px] font-bold uppercase tracking-widest mb-2">Communication</p>
+                <a href="/portal/talent/messages/" class="sidebar-link flex items-center gap-3 px-4 py-2.5 rounded-xl text-blue-100 mb-1 {% if 'messages' in request.path %}active{% endif %}">
+                    <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-sky-500/20 to-sky-500/5 flex items-center justify-center relative">
+                        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/>
+                        </svg>
+                        {% if unread_messages %}<span class="absolute -top-1 -right-1 w-2 h-2 bg-secondary rounded-full animate-pulse"></span>{% endif %}
+                    </div>
+                    <span class="font-medium text-sm">Messages</span>
+                    {% if unread_messages %}
+                    <span class="ml-auto w-5 h-5 rounded-full bg-gradient-to-br from-secondary to-orange-500 text-white text-[10px] flex items-center justify-center font-bold shadow-lg shadow-secondary/30">{{ unread_messages }}</span>
+                    {% endif %}
+                </a>
+                <a href="/portal/talent/notifications/" class="sidebar-link flex items-center gap-3 px-4 py-2.5 rounded-xl text-blue-100 mb-1 {% if 'notifications' in request.path %}active{% endif %}">
+                    <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-red-500/20 to-red-500/5 flex items-center justify-center relative">
+                        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/>
+                        </svg>
+                        {% if unread_notifications %}<span class="absolute -top-1 -right-1 w-2 h-2 bg-red-500 rounded-full animate-pulse"></span>{% endif %}
+                    </div>
+                    <span class="font-medium text-sm">Notifications</span>
+                    {% if unread_notifications %}
+                    <span class="ml-auto w-5 h-5 rounded-full bg-gradient-to-br from-red-500 to-pink-500 text-white text-[10px] flex items-center justify-center font-bold shadow-lg shadow-red-500/30">{{ unread_notifications }}</span>
+                    {% endif %}
+                </a>
+            </div>
+
+            <!-- Network -->
+            <div class="mb-5">
+                <p class="sidebar-section-header text-blue-300/40 text-[10px] font-bold uppercase tracking-widest mb-2">Network</p>
+                <a href="/portal/talent/connections/" class="sidebar-link flex items-center gap-3 px-4 py-2.5 rounded-xl text-blue-100 mb-1 {% if 'connections' in request.path %}active{% endif %}">
+                    <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-lime-500/20 to-lime-500/5 flex items-center justify-center">
+                        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
+                        </svg>
+                    </div>
+                    <span class="font-medium text-sm">My Network</span>
+                </a>
+                <a href="/portal/talent/mentors/" class="sidebar-link flex items-center gap-3 px-4 py-2.5 rounded-xl text-blue-100 mb-1 {% if 'mentors' in request.path and 'become' not in request.path %}active{% endif %}">
+                    <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-cyan-400/20 to-cyan-400/5 flex items-center justify-center">
+                        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/>
+                        </svg>
+                    </div>
+                    <span class="font-medium text-sm">Find Mentors</span>
+                </a>
+                <a href="/portal/talent/become-mentor/" class="sidebar-link flex items-center gap-3 px-4 py-2.5 rounded-xl text-blue-100 mb-1 {% if 'become-mentor' in request.path %}active{% endif %}">
+                    <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-yellow-400/20 to-yellow-400/5 flex items-center justify-center">
+                        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"/>
+                        </svg>
+                    </div>
+                    <span class="font-medium text-sm">Become Mentor</span>
+                    <span class="ml-auto px-2 py-0.5 text-[10px] bg-accent/20 text-accent rounded-full font-semibold">GIVE</span>
+                </a>
+            </div>
+            {% else %}
+            <!-- Organization Navigation -->
+            <div class="mb-6">
+                <p class="text-blue-300/50 text-xs font-medium uppercase tracking-wider px-4 mb-2">Organization Portal</p>
+                <a href="/portal/org/dashboard/" class="sidebar-link flex items-center gap-3 px-4 py-3 rounded-lg text-blue-100 {% if 'dashboard' in request.path %}active{% endif %}">
+                    <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
+                    </svg>
+                    Dashboard
+                </a>
+                <a href="/portal/org/opportunities/" class="sidebar-link flex items-center gap-3 px-4 py-3 rounded-lg text-blue-100 {% if 'opportunities' in request.path %}active{% endif %}">
+                    <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/>
+                    </svg>
+                    Opportunities
+                </a>
+                <a href="/portal/org/applications/" class="sidebar-link flex items-center gap-3 px-4 py-3 rounded-lg text-blue-100 {% if 'applications' in request.path %}active{% endif %}">
+                    <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
+                    </svg>
+                    Applications
+                </a>
+                <a href="/portal/org/team/" class="sidebar-link flex items-center gap-3 px-4 py-3 rounded-lg text-blue-100 {% if 'team' in request.path %}active{% endif %}">
+                    <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/>
+                    </svg>
+                    Team
+                </a>
+            </div>
+            {% endif %}
+
+            <!-- Settings Section -->
+            <div class="sidebar-divider pt-4 mt-2">
+                <a href="/portal/{% if is_talent %}talent{% else %}org{% endif %}/settings/" class="sidebar-link flex items-center gap-3 px-4 py-2.5 rounded-xl text-blue-100 {% if 'settings' in request.path %}active{% endif %}">
+                    <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-slate-500/20 to-slate-500/5 flex items-center justify-center">
+                        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                        </svg>
+                    </div>
+                    <span class="font-medium text-sm">Settings</span>
+                </a>
+
+                <!-- Help & Support -->
+                <a href="/portal/{% if is_talent %}talent{% else %}org{% endif %}/help/" class="sidebar-link flex items-center gap-3 px-4 py-2.5 rounded-xl text-blue-100/70 mb-1 mt-1 {% if 'help' in request.path %}active{% endif %}">
+                    <div class="w-8 h-8 rounded-lg bg-white/5 flex items-center justify-center">
+                        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                        </svg>
+                    </div>
+                    <span class="text-sm">Help & Support</span>
+                </a>
+            </div>
+
+            <!-- Sidebar Footer Branding -->
+            <div class="mt-6 px-4 py-3">
+                <div class="text-center">
+                    <div class="flex items-center justify-center gap-2 mb-1">
+                        <div class="w-1.5 h-1.5 rounded-full bg-accent animate-pulse"></div>
+                        <span class="text-[10px] text-blue-200/40 uppercase tracking-widest font-medium">Powered by</span>
+                        <div class="w-1.5 h-1.5 rounded-full bg-secondary animate-pulse"></div>
+                    </div>
+                    <p class="text-blue-200/30 text-[10px]">ForgeForth Africa</p>
+                </div>
+            </div>
+        </nav>
+    </aside>
+
+    <!-- Sidebar Overlay (Mobile) -->
+    <div id="sidebarOverlay" class="fixed inset-0 bg-black/50 z-30 hidden lg:hidden" onclick="closeSidebar()"></div>
+
+    <!-- Main Content -->
+    <main class="lg:ml-72 pt-16 min-h-screen">
+        <div class="p-6 lg:p-8">
+            {% block portal_content %}{% endblock %}
+        </div>
+    </main>
+
+    <script>
+        function toggleUserMenu() {
+            document.getElementById('userMenu').classList.toggle('hidden');
+            document.getElementById('langMenu')?.classList.add('hidden');
+        }
+
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('sidebarOverlay');
+            sidebar.classList.toggle('-translate-x-full');
+            overlay.classList.toggle('hidden');
+        }
+
+        function closeSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('sidebarOverlay');
+            sidebar.classList.add('-translate-x-full');
+            overlay.classList.add('hidden');
+        }
+
+        document.getElementById('sidebarToggle')?.addEventListener('click', toggleSidebar);
+
+        // Close menus when clicking outside
+        document.addEventListener('click', (e) => {
+            const userMenu = document.getElementById('userMenu');
+            const langMenu = document.getElementById('langMenu');
+            const userMenuBtn = e.target.closest('button[onclick="toggleUserMenu()"]');
+            const langMenuBtn = e.target.closest('button[onclick="toggleLangMenu()"]');
+
+            if (!userMenuBtn && !e.target.closest('#userMenu')) {
+                userMenu?.classList.add('hidden');
+            }
+            if (!langMenuBtn && !e.target.closest('#langMenu')) {
+                langMenu?.classList.add('hidden');
+            }
+        });
+
+        // ═══════════════════════════════════════════════════════════
+        // Language Switcher (Google Translate Integration)
+        // ═══════════════════════════════════════════════════════════
+        const LANGUAGES = [
+            // Major World Languages
+            { code: 'en', name: 'English', native: 'English', flag: '🇬🇧' },
+            { code: 'es', name: 'Spanish', native: 'Español', flag: '🇪🇸' },
+            { code: 'fr', name: 'French', native: 'Français', flag: '🇫🇷' },
+            { code: 'de', name: 'German', native: 'Deutsch', flag: '🇩🇪' },
+            { code: 'it', name: 'Italian', native: 'Italiano', flag: '🇮🇹' },
+            { code: 'pt', name: 'Portuguese', native: 'Português', flag: '🇵🇹' },
+            { code: 'ru', name: 'Russian', native: 'Русский', flag: '🇷🇺' },
+            { code: 'ja', name: 'Japanese', native: '日本語', flag: '🇯🇵' },
+            { code: 'ko', name: 'Korean', native: '한국어', flag: '🇰🇷' },
+            { code: 'zh-CN', name: 'Chinese (Simplified)', native: '简体中文', flag: '🇨🇳' },
+            { code: 'zh-TW', name: 'Chinese (Traditional)', native: '繁體中文', flag: '🇹🇼' },
+            { code: 'ar', name: 'Arabic', native: 'العربية', flag: '🇸🇦' },
+            { code: 'hi', name: 'Hindi', native: 'हिन्दी', flag: '🇮🇳' },
+            // African Languages
+            { code: 'sw', name: 'Swahili', native: 'Kiswahili', flag: '🇰🇪' },
+            { code: 'am', name: 'Amharic', native: 'አማርኛ', flag: '🇪🇹' },
+            { code: 'zu', name: 'Zulu', native: 'isiZulu', flag: '🇿🇦' },
+            { code: 'xh', name: 'Xhosa', native: 'isiXhosa', flag: '🇿🇦' },
+            { code: 'af', name: 'Afrikaans', native: 'Afrikaans', flag: '🇿🇦' },
+            { code: 'ha', name: 'Hausa', native: 'Hausa', flag: '🇳🇬' },
+            { code: 'yo', name: 'Yoruba', native: 'Yorùbá', flag: '🇳🇬' },
+            { code: 'ig', name: 'Igbo', native: 'Igbo', flag: '🇳🇬' },
+            { code: 'st', name: 'Sesotho', native: 'Sesotho', flag: '🇱🇸' },
+            { code: 'sn', name: 'Shona', native: 'chiShona', flag: '🇿🇼' },
+            { code: 'so', name: 'Somali', native: 'Soomaali', flag: '🇸🇴' },
+            { code: 'ny', name: 'Chichewa', native: 'Chichewa', flag: '🇲🇼' },
+            { code: 'rw', name: 'Kinyarwanda', native: 'Ikinyarwanda', flag: '🇷🇼' },
+            { code: 'mg', name: 'Malagasy', native: 'Malagasy', flag: '🇲🇬' },
+            { code: 'ti', name: 'Tigrinya', native: 'ትግርኛ', flag: '🇪🇷' },
+            { code: 'om', name: 'Oromo', native: 'Afaan Oromoo', flag: '🇪🇹' },
+            { code: 'lg', name: 'Luganda', native: 'Luganda', flag: '🇺🇬' },
+            { code: 'ak', name: 'Akan', native: 'Akan', flag: '🇬🇭' },
+            { code: 'ee', name: 'Ewe', native: 'Eʋegbe', flag: '🇬🇭' },
+            { code: 'ln', name: 'Lingala', native: 'Lingála', flag: '🇨🇩' },
+            { code: 'ts', name: 'Tsonga', native: 'Xitsonga', flag: '🇿🇦' },
+            // European Languages
+            { code: 'nl', name: 'Dutch', native: 'Nederlands', flag: '🇳🇱' },
+            { code: 'pl', name: 'Polish', native: 'Polski', flag: '🇵🇱' },
+            { code: 'uk', name: 'Ukrainian', native: 'Українська', flag: '🇺🇦' },
+            { code: 'cs', name: 'Czech', native: 'Čeština', flag: '🇨🇿' },
+            { code: 'ro', name: 'Romanian', native: 'Română', flag: '🇷🇴' },
+            { code: 'hu', name: 'Hungarian', native: 'Magyar', flag: '🇭🇺' },
+            { code: 'el', name: 'Greek', native: 'Ελληνικά', flag: '🇬🇷' },
+            { code: 'sv', name: 'Swedish', native: 'Svenska', flag: '🇸🇪' },
+            { code: 'da', name: 'Danish', native: 'Dansk', flag: '🇩🇰' },
+            { code: 'fi', name: 'Finnish', native: 'Suomi', flag: '🇫🇮' },
+            { code: 'no', name: 'Norwegian', native: 'Norsk', flag: '🇳🇴' },
+            { code: 'sk', name: 'Slovak', native: 'Slovenčina', flag: '🇸🇰' },
+            { code: 'sl', name: 'Slovenian', native: 'Slovenščina', flag: '🇸🇮' },
+            { code: 'hr', name: 'Croatian', native: 'Hrvatski', flag: '🇭🇷' },
+            { code: 'sr', name: 'Serbian', native: 'Српски', flag: '🇷🇸' },
+            { code: 'bs', name: 'Bosnian', native: 'Bosanski', flag: '🇧🇦' },
+            { code: 'mk', name: 'Macedonian', native: 'Македонски', flag: '🇲🇰' },
+            { code: 'bg', name: 'Bulgarian', native: 'Български', flag: '🇧🇬' },
+            { code: 'sq', name: 'Albanian', native: 'Shqip', flag: '🇦🇱' },
+            { code: 'et', name: 'Estonian', native: 'Eesti', flag: '🇪🇪' },
+            { code: 'lv', name: 'Latvian', native: 'Latviešu', flag: '🇱🇻' },
+            { code: 'lt', name: 'Lithuanian', native: 'Lietuvių', flag: '🇱🇹' },
+            { code: 'be', name: 'Belarusian', native: 'Беларуская', flag: '🇧🇾' },
+            { code: 'is', name: 'Icelandic', native: 'Íslenska', flag: '🇮🇸' },
+            { code: 'ga', name: 'Irish', native: 'Gaeilge', flag: '🇮🇪' },
+            { code: 'cy', name: 'Welsh', native: 'Cymraeg', flag: '🏴󠁧󠁢󠁷󠁬󠁳󠁿' },
+            { code: 'gd', name: 'Scots Gaelic', native: 'Gàidhlig', flag: '🏴󠁧󠁢󠁳󠁣󠁴󠁿' },
+            { code: 'mt', name: 'Maltese', native: 'Malti', flag: '🇲🇹' },
+            { code: 'lb', name: 'Luxembourgish', native: 'Lëtzebuergesch', flag: '🇱🇺' },
+            { code: 'ca', name: 'Catalan', native: 'Català', flag: '🇪🇸' },
+            { code: 'gl', name: 'Galician', native: 'Galego', flag: '🇪🇸' },
+            { code: 'eu', name: 'Basque', native: 'Euskara', flag: '🇪🇸' },
+            { code: 'fy', name: 'Frisian', native: 'Frysk', flag: '🇳🇱' },
+            { code: 'co', name: 'Corsican', native: 'Corsu', flag: '🇫🇷' },
+            // Asian Languages
+            { code: 'tr', name: 'Turkish', native: 'Türkçe', flag: '🇹🇷' },
+            { code: 'vi', name: 'Vietnamese', native: 'Tiếng Việt', flag: '🇻🇳' },
+            { code: 'th', name: 'Thai', native: 'ไทย', flag: '🇹🇭' },
+            { code: 'id', name: 'Indonesian', native: 'Bahasa Indonesia', flag: '🇮🇩' },
+            { code: 'ms', name: 'Malay', native: 'Bahasa Melayu', flag: '🇲🇾' },
+            { code: 'tl', name: 'Filipino', native: 'Filipino', flag: '🇵🇭' },
+            { code: 'bn', name: 'Bengali', native: 'বাংলা', flag: '🇧🇩' },
+            { code: 'ta', name: 'Tamil', native: 'தமிழ்', flag: '🇮🇳' },
+            { code: 'te', name: 'Telugu', native: 'తెలుగు', flag: '🇮🇳' },
+            { code: 'mr', name: 'Marathi', native: 'मराठी', flag: '🇮🇳' },
+            { code: 'gu', name: 'Gujarati', native: 'ગુજરાતી', flag: '🇮🇳' },
+            { code: 'kn', name: 'Kannada', native: 'ಕನ್ನಡ', flag: '🇮🇳' },
+            { code: 'ml', name: 'Malayalam', native: 'മലയാളം', flag: '🇮🇳' },
+            { code: 'pa', name: 'Punjabi', native: 'ਪੰਜਾਬੀ', flag: '🇮🇳' },
+            { code: 'or', name: 'Odia', native: 'ଓଡ଼ିଆ', flag: '🇮🇳' },
+            { code: 'as', name: 'Assamese', native: 'অসমীয়া', flag: '🇮🇳' },
+            { code: 'ne', name: 'Nepali', native: 'नेपाली', flag: '🇳🇵' },
+            { code: 'si', name: 'Sinhala', native: 'සිංහල', flag: '🇱🇰' },
+            { code: 'my', name: 'Myanmar (Burmese)', native: 'မြန်မာ', flag: '🇲🇲' },
+            { code: 'km', name: 'Khmer', native: 'ខ្មែរ', flag: '🇰🇭' },
+            { code: 'lo', name: 'Lao', native: 'ລາວ', flag: '🇱🇦' },
+            { code: 'ka', name: 'Georgian', native: 'ქართული', flag: '🇬🇪' },
+            { code: 'hy', name: 'Armenian', native: 'Հայերdelays', flag: '🇦🇲' },
+            { code: 'az', name: 'Azerbaijani', native: 'Azərbaycan', flag: '🇦🇿' },
+            { code: 'kk', name: 'Kazakh', native: 'Қазақша', flag: '🇰🇿' },
+            { code: 'uz', name: 'Uzbek', native: 'Oʻzbek', flag: '🇺🇿' },
+            { code: 'ky', name: 'Kyrgyz', native: 'Кыргызча', flag: '🇰🇬' },
+            { code: 'tg', name: 'Tajik', native: 'Тоҷикӣ', flag: '🇹🇯' },
+            { code: 'tk', name: 'Turkmen', native: 'Türkmen', flag: '🇹🇲' },
+            { code: 'mn', name: 'Mongolian', native: 'Монгол', flag: '🇲🇳' },
+            // Middle Eastern Languages
+            { code: 'he', name: 'Hebrew', native: 'עברית', flag: '🇮🇱' },
+            { code: 'fa', name: 'Persian', native: 'فارسی', flag: '🇮🇷' },
+            { code: 'ur', name: 'Urdu', native: 'اردو', flag: '🇵🇰' },
+            { code: 'ps', name: 'Pashto', native: 'پښتو', flag: '🇦🇫' },
+            { code: 'ku', name: 'Kurdish', native: 'Kurdî', flag: '🇮🇶' },
+            { code: 'sd', name: 'Sindhi', native: 'سنڌي', flag: '🇵🇰' },
+            // Pacific & Other Languages
+            { code: 'mi', name: 'Maori', native: 'Te Reo Māori', flag: '🇳🇿' },
+            { code: 'haw', name: 'Hawaiian', native: 'ʻŌlelo Hawaiʻi', flag: '🇺🇸' },
+            { code: 'sm', name: 'Samoan', native: 'Gagana Samoa', flag: '🇼🇸' },
+            { code: 'ceb', name: 'Cebuano', native: 'Cebuano', flag: '🇵🇭' },
+            { code: 'jw', name: 'Javanese', native: 'Basa Jawa', flag: '🇮🇩' },
+            { code: 'su', name: 'Sundanese', native: 'Basa Sunda', flag: '🇮🇩' },
+            // Classical & Historical Languages
+            { code: 'la', name: 'Latin', native: 'Latina', flag: '🇻🇦' },
+            { code: 'eo', name: 'Esperanto', native: 'Esperanto', flag: '🌍' },
+            // Other Languages
+            { code: 'ht', name: 'Haitian Creole', native: 'Kreyòl Ayisyen', flag: '🇭🇹' },
+            { code: 'hmn', name: 'Hmong', native: 'Hmoob', flag: '🌏' },
+            { code: 'yi', name: 'Yiddish', native: 'ייִדיש', flag: '🇮🇱' },
+            { code: 'iw', name: 'Hebrew (Alt)', native: 'עברית', flag: '🇮🇱' },
+        ];
+
+        let currentLang = 'en';
+
+        function toggleLangMenu() {
+            const menu = document.getElementById('langMenu');
+            const userMenu = document.getElementById('userMenu');
+            userMenu?.classList.add('hidden');
+            menu.classList.toggle('hidden');
+            if (!menu.classList.contains('hidden')) {
+                renderLangList();
+            }
+        }
+
+        function filterLangs(query) {
+            renderLangList(query.toLowerCase());
+        }
+
+        function renderLangList(filter = '') {
+            const list = document.getElementById('langList');
+            const filtered = LANGUAGES.filter(l =>
+                l.name.toLowerCase().includes(filter) ||
+                l.native.toLowerCase().includes(filter) ||
+                l.code.toLowerCase().includes(filter)
+            );
+
+            if (filtered.length === 0) {
+                list.innerHTML = '<div class="px-4 py-6 text-center text-slate-500 text-sm">No languages found</div>';
+                return;
+            }
+
+            list.innerHTML = filtered.map(lang => `
+                <button onclick="selectLang('${lang.code}', '${lang.flag}')"
+                        class="w-full flex items-center gap-3 px-3 py-2 hover:bg-white/10 transition rounded-lg ${currentLang === lang.code ? 'bg-secondary/10 border border-secondary/30' : ''}">
+                    <span class="text-xl">${lang.flag}</span>
+                    <div class="flex-1 text-left min-w-0">
+                        <p class="text-white text-sm font-medium truncate">${lang.native}</p>
+                        <p class="text-slate-500 text-xs truncate">${lang.name}</p>
+                    </div>
+                    ${currentLang === lang.code ? '<svg class="w-4 h-4 text-secondary" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path></svg>' : ''}
+                </button>
+            `).join('');
+
+            document.getElementById('langCountLabel').textContent = `${filtered.length} languages`;
+        }
+
+        function selectLang(code, flag) {
+            currentLang = code;
+            document.getElementById('langBtnFlag').textContent = flag;
+            document.getElementById('langMenu').classList.add('hidden');
+
+            // Trigger Google Translate
+            if (typeof google !== 'undefined' && google.translate) {
+                const select = document.querySelector('.goog-te-combo');
+                if (select) {
+                    select.value = code;
+                    select.dispatchEvent(new Event('change'));
+                }
+            }
+
+            // Store preference
+            localStorage.setItem('forgeforth_lang', code);
+            localStorage.setItem('forgeforth_lang_flag', flag);
+
+            renderLangList();
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            const savedLang = localStorage.getItem('forgeforth_lang');
+            const savedFlag = localStorage.getItem('forgeforth_lang_flag');
+            if (savedLang && savedFlag) {
+                currentLang = savedLang;
+                document.getElementById('langBtnFlag').textContent = savedFlag;
+            }
+            renderLangList();
+        });
+    </script>
+
+    <!-- Google Translate (hidden) -->
+    <div id="google_translate_element" style="display:none;"></div>
+    <script>
+        function googleTranslateElementInit() {
+            new google.translate.TranslateElement({
+                pageLanguage: 'en',
+                autoDisplay: false
+            }, 'google_translate_element');
+        }
+    </script>
+    <script src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+
+    <!-- Hide Google Translate UI -->
+    <style>
+        .goog-te-banner-frame, .goog-te-gadget-icon, #goog-gt-tt, .goog-te-balloon-frame,
+        .goog-te-spinner-pos, .goog-te-ftab, .goog-te-menu-frame, .skiptranslate.goog-te-gadget,
+        .goog-te-gadget, .VIpgJd-ZVi9od-ORHb-OEVmcd, .VIpgJd-ZVi9od-l4eHX-hSRGPd {
+            display: none !important;
+        }
+        body { top: 0 !important; }
+        .goog-text-highlight { background: none !important; box-shadow: none !important; }
+    </style>
+
+    {% block scripts %}{% endblock %}
+</body>
+</html>

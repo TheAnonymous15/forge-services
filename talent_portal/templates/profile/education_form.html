@@ -1,0 +1,112 @@
+{% extends "base.html" %}
+
+{% block title %}{{ page_title }}{% endblock %}
+
+{% block content %}
+<div class="max-w-2xl mx-auto">
+    <!-- Header -->
+    <div class="mb-8">
+        <div class="flex items-center justify-between">
+            <div>
+                <h1 class="text-2xl font-bold text-white">{{ page_title }}</h1>
+                <p class="text-gray-400 mt-1">Add your educational background</p>
+            </div>
+            <a href="/profile/edit" class="btn-secondary">
+                ← Back
+            </a>
+        </div>
+    </div>
+
+    {% if error %}
+    <div class="mb-6 p-4 bg-red-500/10 border border-red-500/30 rounded-lg">
+        <p class="text-sm text-red-400">{{ error }}</p>
+    </div>
+    {% endif %}
+
+    <!-- Form -->
+    <form method="post" class="card space-y-6">
+        <div>
+            <label class="block text-sm font-medium text-gray-300 mb-2">Institution *</label>
+            <input type="text" name="institution" value="{{ education.institution if education else '' }}"
+                   class="input-field" placeholder="e.g., University of Cape Town" required>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+                <label class="block text-sm font-medium text-gray-300 mb-2">Degree *</label>
+                <select name="degree" class="input-field" required>
+                    <option value="">Select Degree</option>
+                    <option value="High School" {% if education and education.degree == 'High School' %}selected{% endif %}>High School Diploma</option>
+                    <option value="Certificate" {% if education and education.degree == 'Certificate' %}selected{% endif %}>Certificate</option>
+                    <option value="Diploma" {% if education and education.degree == 'Diploma' %}selected{% endif %}>Diploma</option>
+                    <option value="Associate" {% if education and education.degree == 'Associate' %}selected{% endif %}>Associate Degree</option>
+                    <option value="Bachelor" {% if education and education.degree == 'Bachelor' %}selected{% endif %}>Bachelor's Degree</option>
+                    <option value="Honours" {% if education and education.degree == 'Honours' %}selected{% endif %}>Honours Degree</option>
+                    <option value="Master" {% if education and education.degree == 'Master' %}selected{% endif %}>Master's Degree</option>
+                    <option value="PhD" {% if education and education.degree == 'PhD' %}selected{% endif %}>PhD / Doctorate</option>
+                    <option value="Other" {% if education and education.degree == 'Other' %}selected{% endif %}>Other</option>
+                </select>
+            </div>
+            <div>
+                <label class="block text-sm font-medium text-gray-300 mb-2">Field of Study *</label>
+                <input type="text" name="field_of_study" value="{{ education.field_of_study if education else '' }}"
+                       class="input-field" placeholder="e.g., Computer Science" required>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+                <label class="block text-sm font-medium text-gray-300 mb-2">Start Year *</label>
+                <input type="number" name="start_year" value="{{ education.start_year if education else '' }}"
+                       class="input-field" min="1950" max="2030" placeholder="2020" required>
+            </div>
+            <div id="end-year-container">
+                <label class="block text-sm font-medium text-gray-300 mb-2">End Year</label>
+                <input type="number" name="end_year" value="{{ education.end_year if education else '' }}"
+                       class="input-field" min="1950" max="2030" placeholder="2024" id="end-year-input">
+            </div>
+        </div>
+
+        <div class="flex items-center space-x-2">
+            <input type="checkbox" name="is_current" id="is_current"
+                   class="w-4 h-4 rounded bg-dark-700 border-gray-600"
+                   {% if education and education.is_current %}checked{% endif %}
+                   onchange="toggleEndYear()">
+            <label for="is_current" class="text-sm text-gray-300">I'm currently studying here</label>
+        </div>
+
+        <div>
+            <label class="block text-sm font-medium text-gray-300 mb-2">Grade / GPA</label>
+            <input type="text" name="grade" value="{{ education.grade if education else '' }}"
+                   class="input-field" placeholder="e.g., 3.8 GPA, First Class Honours">
+        </div>
+
+        <div>
+            <label class="block text-sm font-medium text-gray-300 mb-2">Activities & Achievements</label>
+            <textarea name="description" rows="4" class="input-field"
+                      placeholder="Any notable activities, clubs, or achievements...">{{ education.description if education else '' }}</textarea>
+        </div>
+
+        <div class="flex justify-end space-x-4 pt-4">
+            <a href="/profile/edit" class="btn-secondary">Cancel</a>
+            <button type="submit" class="btn-primary">
+                {{ 'Update Education' if education else 'Add Education' }}
+            </button>
+        </div>
+    </form>
+</div>
+
+<script>
+function toggleEndYear() {
+    const isCurrent = document.getElementById('is_current').checked;
+    const endYearInput = document.getElementById('end-year-input');
+    endYearInput.disabled = isCurrent;
+    if (isCurrent) {
+        endYearInput.value = '';
+    }
+}
+
+// Initialize on load
+document.addEventListener('DOMContentLoaded', toggleEndYear);
+</script>
+{% endblock %}

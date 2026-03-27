@@ -1,0 +1,23 @@
+{% extends "emails/base.html" %}
+{% block title %}New Application - {{ site_name }}{% endblock %}
+{% block content %}
+<h1>New Application Received</h1>
+
+<p>Hi {{ user.first_name|default:user.email }},</p>
+
+<p>A new application has been submitted for:</p>
+
+<div class="highlight">
+    <strong>{{ opportunity.title }}</strong><br>
+    {{ organization.name }}
+</div>
+
+<p><strong>Applicant:</strong> {{ applicant.full_name }} ({{ applicant.email }})</p>
+
+<p style="text-align: center;">
+    <a href="{{ site_url }}/dashboard/opportunities/{{ opportunity.id }}/applications" class="button">Review Application</a>
+</p>
+
+<p>Best regards,<br>The {{ site_name }} Team</p>
+{% endblock %}
+

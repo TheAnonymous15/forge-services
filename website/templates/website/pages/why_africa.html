@@ -1,0 +1,243 @@
+{% extends "layouts/base.html" %}
+
+{% block content %}
+<!-- ═══════════════════════════════════════════════════════════════════════════
+     HERO SECTION
+═══════════════════════════════════════════════════════════════════════════ -->
+<section class="relative min-h-[70vh] flex items-center overflow-hidden">
+    <!-- Background -->
+    <div class="absolute inset-0 z-0">
+        <img src="{{ static('images/one.jpg') }}" alt="" class="w-full h-full object-cover opacity-30">
+        <div class="absolute inset-0 bg-gradient-to-b from-[#0a0a0f]/80 via-[#0a0a0f]/70 to-[#0a0a0f]"></div>
+    </div>
+
+    <!-- Content -->
+    <div class="relative z-10 w-full max-w-7xl mx-auto px-6 lg:px-8 py-32 text-center">
+        <div data-aos="fade-up">
+            <span class="inline-flex items-center gap-2 px-4 py-2 rounded-full glass text-xs font-medium text-slate-300 mb-6">
+                <svg class="w-4 h-4 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                </svg>
+                Why Africa
+            </span>
+            <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6">
+                What if I told you<br>
+                <span class="gradient-text">Africa is rich?</span>
+            </h1>
+            <p class="text-slate-400 text-lg max-w-2xl mx-auto">
+                From Cairo, Egypt to Cape Town, South Africa — Africa holds the key to the world's future workforce.
+            </p>
+        </div>
+    </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════════════════
+     AFRICA'S WEALTH
+═══════════════════════════════════════════════════════════════════════════ -->
+<section class="py-20 px-6 lg:px-8">
+    <div class="max-w-7xl mx-auto">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+
+            <!-- Africa Map Visual -->
+            <div class="flex justify-center" data-aos="fade-right">
+                <div class="relative">
+                    <img src="{{ static('images/africa.png') }}" alt="Africa Map" class="w-full max-w-md opacity-80">
+                    <div class="absolute inset-0 bg-gradient-to-t from-[#0a0a0f] via-transparent to-transparent"></div>
+                </div>
+            </div>
+
+            <!-- Content -->
+            <div data-aos="fade-left">
+                <h2 class="text-3xl font-bold text-white mb-6">
+                    From Cairo, Egypt to Cape Town, South Africa
+                </h2>
+                <p class="text-slate-400 mb-6">
+                    Africa is not just a continent — it's a powerhouse of untapped potential. With 1.4 billion people,
+                    54 diverse nations, and the world's youngest population, Africa represents the future of global talent.
+                </p>
+
+                <div class="grid grid-cols-2 gap-4 mb-8">
+                    <div class="glass rounded-xl p-4 text-center">
+                        <p class="text-3xl font-bold gradient-text mb-1">1.4B</p>
+                        <p class="text-slate-400 text-sm">Population</p>
+                    </div>
+                    <div class="glass rounded-xl p-4 text-center">
+                        <p class="text-3xl font-bold gradient-text mb-1">54</p>
+                        <p class="text-slate-400 text-sm">Countries</p>
+                    </div>
+                    <div class="glass rounded-xl p-4 text-center">
+                        <p class="text-3xl font-bold gradient-text mb-1">60%</p>
+                        <p class="text-slate-400 text-sm">Under 25</p>
+                    </div>
+                    <div class="glass rounded-xl p-4 text-center">
+                        <p class="text-3xl font-bold gradient-text mb-1">2K+</p>
+                        <p class="text-slate-400 text-sm">Languages</p>
+                    </div>
+                </div>
+
+                <p class="text-slate-500 text-sm italic">
+                    The question isn't whether Africa has talent. It's whether the world is ready to see it.
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════════════════
+     AFRICA'S RESOURCES
+═══════════════════════════════════════════════════════════════════════════ -->
+<section class="py-20 px-6 lg:px-8">
+    <div class="max-w-7xl mx-auto">
+        <div class="text-center mb-12" data-aos="fade-up">
+            <h2 class="text-3xl font-bold text-white mb-4">Africa's Wealth Goes Beyond Resources</h2>
+            <p class="text-slate-400 max-w-2xl mx-auto">
+                While the world focuses on Africa's minerals, we focus on its most valuable asset: its people.
+            </p>
+        </div>
+
+        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
+            <!-- Minerals -->
+            <div class="glass rounded-xl p-6 text-center card-hover" data-aos="fade-up" data-aos-delay="100">
+                <div class="w-14 h-14 mx-auto rounded-xl bg-amber-500/20 flex items-center justify-center mb-4">
+                    <svg class="w-7 h-7 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/>
+                    </svg>
+                </div>
+                <h3 class="text-white font-semibold mb-1">Minerals</h3>
+                <p class="text-slate-500 text-xs">30% of world's reserves</p>
+            </div>
+
+            <!-- Oil & Gas -->
+            <div class="glass rounded-xl p-6 text-center card-hover" data-aos="fade-up" data-aos-delay="150">
+                <div class="w-14 h-14 mx-auto rounded-xl bg-orange-500/20 flex items-center justify-center mb-4">
+                    <svg class="w-7 h-7 text-orange-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 18.657A8 8 0 016.343 7.343S7 9 9 10c0-2 .5-5 2.986-7C14 5 16.09 5.777 17.656 7.343A7.975 7.975 0 0120 13a7.975 7.975 0 01-2.343 5.657z"/>
+                    </svg>
+                </div>
+                <h3 class="text-white font-semibold mb-1">Energy</h3>
+                <p class="text-slate-500 text-xs">Vast oil & renewable</p>
+            </div>
+
+            <!-- TALENT (Highlighted) -->
+            <div class="relative glass rounded-xl p-6 text-center card-hover border-purple-500/30" data-aos="fade-up" data-aos-delay="200">
+                <div class="absolute -top-2 -right-2 px-2 py-1 bg-gradient-to-r from-purple-500 to-cyan-500 rounded-full text-[10px] font-bold text-white">OUR FOCUS</div>
+                <div class="w-14 h-14 mx-auto rounded-xl bg-gradient-to-br from-purple-500/30 to-cyan-500/30 flex items-center justify-center mb-4">
+                    <svg class="w-7 h-7 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/>
+                    </svg>
+                </div>
+                <h3 class="gradient-text font-bold mb-1">Talent</h3>
+                <p class="text-slate-400 text-xs">1.4B brilliant minds</p>
+            </div>
+
+            <!-- Agriculture -->
+            <div class="glass rounded-xl p-6 text-center card-hover" data-aos="fade-up" data-aos-delay="250">
+                <div class="w-14 h-14 mx-auto rounded-xl bg-emerald-500/20 flex items-center justify-center mb-4">
+                    <svg class="w-7 h-7 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"/>
+                    </svg>
+                </div>
+                <h3 class="text-white font-semibold mb-1">Agriculture</h3>
+                <p class="text-slate-500 text-xs">60% of arable land</p>
+            </div>
+
+            <!-- Innovation -->
+            <div class="glass rounded-xl p-6 text-center card-hover" data-aos="fade-up" data-aos-delay="300">
+                <div class="w-14 h-14 mx-auto rounded-xl bg-cyan-500/20 flex items-center justify-center mb-4">
+                    <svg class="w-7 h-7 text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/>
+                    </svg>
+                </div>
+                <h3 class="text-white font-semibold mb-1">Innovation</h3>
+                <p class="text-slate-500 text-xs">Growing tech hubs</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════════════════
+     THE OPPORTUNITY
+═══════════════════════════════════════════════════════════════════════════ -->
+<section class="py-20 px-6 lg:px-8">
+    <div class="max-w-7xl mx-auto">
+        <div class="gradient-border p-8 lg:p-12 rounded-2xl" data-aos="fade-up">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+                <div>
+                    <h2 class="text-2xl lg:text-3xl font-bold text-white mb-4">
+                        The World's Youngest Workforce
+                    </h2>
+                    <p class="text-slate-400 mb-6">
+                        By 2030, Africa will be home to more than 1/4 of the world's under-25 population.
+                        This isn't just a statistic — it's an unprecedented opportunity for global growth and innovation.
+                    </p>
+                    <ul class="space-y-3">
+                        <li class="flex items-start gap-3">
+                            <svg class="w-5 h-5 text-emerald-400 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                            </svg>
+                            <span class="text-slate-300 text-sm">Largest pool of digital natives entering the workforce</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <svg class="w-5 h-5 text-emerald-400 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                            </svg>
+                            <span class="text-slate-300 text-sm">Rapidly growing tech ecosystem with 700+ hubs</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <svg class="w-5 h-5 text-emerald-400 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                            </svg>
+                            <span class="text-slate-300 text-sm">Multilingual talent spanning 2,000+ languages</span>
+                        </li>
+                    </ul>
+                </div>
+                <div class="grid grid-cols-2 gap-4">
+                    <div class="glass rounded-xl p-6 text-center">
+                        <p class="text-4xl font-bold text-purple-400 mb-2">25%</p>
+                        <p class="text-slate-400 text-sm">of global workforce by 2050</p>
+                    </div>
+                    <div class="glass rounded-xl p-6 text-center">
+                        <p class="text-4xl font-bold text-cyan-400 mb-2">700+</p>
+                        <p class="text-slate-400 text-sm">tech hubs & accelerators</p>
+                    </div>
+                    <div class="glass rounded-xl p-6 text-center">
+                        <p class="text-4xl font-bold text-emerald-400 mb-2">$5.6T</p>
+                        <p class="text-slate-400 text-sm">projected GDP by 2025</p>
+                    </div>
+                    <div class="glass rounded-xl p-6 text-center">
+                        <p class="text-4xl font-bold text-pink-400 mb-2">300M+</p>
+                        <p class="text-slate-400 text-sm">internet users</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════════════════
+     CTA
+═══════════════════════════════════════════════════════════════════════════ -->
+<section class="py-20 px-6 lg:px-8">
+    <div class="max-w-4xl mx-auto">
+        <div class="glass rounded-2xl p-8 lg:p-12 text-center" data-aos="fade-up">
+            <h2 class="text-2xl lg:text-3xl font-bold text-white mb-4">
+                Be Part of Africa's Story
+            </h2>
+            <p class="text-slate-400 mb-8 max-w-xl mx-auto">
+                Whether you're African talent ready to showcase your skills, or an organization
+                looking to tap into this incredible resource, we're here to help.
+            </p>
+            <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+                <button onclick="openRegistrationModal('individual')"
+                        class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-3 rounded-xl bg-gradient-to-r from-purple-600 to-cyan-600 text-white font-medium hover:shadow-lg hover:shadow-purple-500/25 transition-all">
+                    Join as Talent
+                </button>
+                <a href="/for-employers" class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-3 rounded-xl glass text-slate-300 hover:text-white transition-all">
+                    Partner With Us
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+

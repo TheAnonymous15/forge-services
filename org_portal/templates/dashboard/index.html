@@ -1,0 +1,162 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="max-w-7xl mx-auto">
+    <!-- Header -->
+    <div class="mb-8">
+        <h1 class="text-2xl font-bold text-white">Dashboard</h1>
+        <p class="text-gray-400 mt-1">Welcome back{% if organization %}, {{ organization.name }}{% endif %}</p>
+    </div>
+
+    <!-- Stats Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+        <div class="card">
+            <div class="flex items-center justify-between">
+                <div>
+                    <p class="text-gray-400 text-sm">Total Opportunities</p>
+                    <p class="text-3xl font-bold text-white mt-1">{{ stats.total_opportunities }}</p>
+                </div>
+                <div class="w-12 h-12 bg-primary-600/20 rounded-xl flex items-center justify-center">
+                    <svg class="w-6 h-6 text-primary-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="flex items-center justify-between">
+                <div>
+                    <p class="text-gray-400 text-sm">Active Listings</p>
+                    <p class="text-3xl font-bold text-white mt-1">{{ stats.active_opportunities }}</p>
+                </div>
+                <div class="w-12 h-12 bg-green-600/20 rounded-xl flex items-center justify-center">
+                    <svg class="w-6 h-6 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="flex items-center justify-between">
+                <div>
+                    <p class="text-gray-400 text-sm">Total Applications</p>
+                    <p class="text-3xl font-bold text-white mt-1">{{ stats.total_applications }}</p>
+                </div>
+                <div class="w-12 h-12 bg-purple-600/20 rounded-xl flex items-center justify-center">
+                    <svg class="w-6 h-6 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="flex items-center justify-between">
+                <div>
+                    <p class="text-gray-400 text-sm">Pending Review</p>
+                    <p class="text-3xl font-bold text-white mt-1">{{ stats.pending_review }}</p>
+                </div>
+                <div class="w-12 h-12 bg-yellow-600/20 rounded-xl flex items-center justify-center">
+                    <svg class="w-6 h-6 text-yellow-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quick Actions -->
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+        <a href="/opportunities/new" class="card hover:border-primary-500/50 transition-colors group">
+            <div class="flex items-center gap-4">
+                <div class="w-12 h-12 bg-primary-600/20 rounded-xl flex items-center justify-center group-hover:bg-primary-600/30 transition-colors">
+                    <svg class="w-6 h-6 text-primary-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                    </svg>
+                </div>
+                <div>
+                    <h3 class="text-white font-medium">Post New Opportunity</h3>
+                    <p class="text-gray-400 text-sm">Create a new job listing</p>
+                </div>
+            </div>
+        </a>
+
+        <a href="/applications" class="card hover:border-primary-500/50 transition-colors group">
+            <div class="flex items-center gap-4">
+                <div class="w-12 h-12 bg-primary-600/20 rounded-xl flex items-center justify-center group-hover:bg-primary-600/30 transition-colors">
+                    <svg class="w-6 h-6 text-primary-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
+                    </svg>
+                </div>
+                <div>
+                    <h3 class="text-white font-medium">Review Applications</h3>
+                    <p class="text-gray-400 text-sm">View pending candidates</p>
+                </div>
+            </div>
+        </a>
+
+        <a href="/team/invite" class="card hover:border-primary-500/50 transition-colors group">
+            <div class="flex items-center gap-4">
+                <div class="w-12 h-12 bg-primary-600/20 rounded-xl flex items-center justify-center group-hover:bg-primary-600/30 transition-colors">
+                    <svg class="w-6 h-6 text-primary-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"></path>
+                    </svg>
+                </div>
+                <div>
+                    <h3 class="text-white font-medium">Invite Team Member</h3>
+                    <p class="text-gray-400 text-sm">Add colleagues to help</p>
+                </div>
+            </div>
+        </a>
+    </div>
+
+    <!-- Recent Applications -->
+    <div class="card">
+        <div class="flex items-center justify-between mb-6">
+            <h2 class="text-lg font-semibold text-white">Recent Applications</h2>
+            <a href="/applications" class="text-primary-400 text-sm hover:underline">View All →</a>
+        </div>
+
+        {% if recent_applications %}
+        <div class="space-y-4">
+            {% for app in recent_applications %}
+            <div class="flex items-center justify-between p-4 bg-dark-900/50 rounded-lg">
+                <div class="flex items-center gap-4">
+                    <div class="w-10 h-10 bg-primary-600/20 rounded-full flex items-center justify-center">
+                        <span class="text-primary-400 font-medium">{{ app.applicant.first_name[0] if app.applicant else '?' }}</span>
+                    </div>
+                    <div>
+                        <p class="text-white font-medium">{{ app.applicant.first_name }} {{ app.applicant.last_name }}</p>
+                        <p class="text-gray-400 text-sm">Applied for: {{ app.opportunity.title }}</p>
+                    </div>
+                </div>
+                <div class="flex items-center gap-4">
+                    <span class="px-3 py-1 rounded-full text-xs
+                        {% if app.status == 'pending' %}bg-yellow-500/20 text-yellow-400
+                        {% elif app.status == 'reviewed' %}bg-blue-500/20 text-blue-400
+                        {% elif app.status == 'shortlisted' %}bg-green-500/20 text-green-400
+                        {% elif app.status == 'rejected' %}bg-red-500/20 text-red-400
+                        {% else %}bg-gray-500/20 text-gray-400{% endif %}">
+                        {{ app.status|title }}
+                    </span>
+                    <a href="/applications/{{ app.id }}" class="text-primary-400 hover:underline text-sm">View</a>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <div class="text-center py-8">
+            <svg class="w-12 h-12 text-gray-600 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+            </svg>
+            <p class="text-gray-400">No applications yet</p>
+            <p class="text-gray-500 text-sm mt-1">Post an opportunity to start receiving applications</p>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
+

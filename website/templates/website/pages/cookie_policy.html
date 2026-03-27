@@ -1,0 +1,499 @@
+{% extends "layouts/base.html" %}
+
+{% block content %}
+
+<!-- ═══════════════════════════════════════════════════
+     HERO SECTION - COOKIE POLICY
+════════════════════════════════════════════════════ -->
+<section class="relative flex items-center overflow-hidden" style="min-height:calc(100vh - 0px);">
+    <!-- Background -->
+    <div class="absolute inset-0 z-0">
+        <img src="{{ static('images/one.jpg') }}"
+             alt=""
+             class="w-full h-full object-cover object-center"
+             aria-hidden="true">
+        <div class="absolute inset-0 bg-gradient-to-br from-slate-900/95 via-amber-900/90 to-slate-900/95"></div>
+
+        <!-- Animated geometric patterns -->
+        <div class="absolute inset-0 overflow-hidden opacity-20">
+            <div class="absolute top-20 left-10 w-72 h-72 bg-amber-500/30 rounded-full blur-3xl animate-pulse"></div>
+            <div class="absolute bottom-20 right-20 w-96 h-96 bg-orange-500/20 rounded-full blur-3xl animate-pulse" style="animation-delay: 1s;"></div>
+        </div>
+    </div>
+
+    <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 text-center">
+        <!-- Cookie Icon -->
+        <div class="inline-flex items-center justify-center w-20 h-20 rounded-2xl bg-gradient-to-br from-amber-500/20 to-orange-500/20 backdrop-blur-xl border border-white/10 mb-8">
+            <svg class="w-10 h-10 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+            </svg>
+        </div>
+
+        <h1 class="font-display font-bold text-5xl md:text-6xl lg:text-7xl text-white mb-6">
+            Cookie <span class="bg-gradient-to-r from-amber-400 to-orange-400 bg-clip-text text-transparent">Policy</span>
+        </h1>
+        <p class="text-xl md:text-2xl text-gray-300 max-w-3xl mx-auto mb-6">
+            How we use cookies and similar technologies to enhance your experience.
+        </p>
+
+        <!-- Compliance Badges -->
+        <div class="flex flex-wrap justify-center gap-3 mb-4">
+            <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-green-500/20 backdrop-blur-sm border border-green-500/30 text-sm text-green-300">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                </svg>
+                POPIA Compliant
+            </div>
+            <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-amber-500/20 backdrop-blur-sm border border-amber-500/30 text-sm text-amber-300">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"></path>
+                </svg>
+                Your Choice
+            </div>
+            <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 backdrop-blur-sm border border-white/10 text-sm text-gray-300">
+                <svg class="w-4 h-4 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                </svg>
+                Last Updated: March 2, 2026
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════
+     CONTENT SECTION
+════════════════════════════════════════════════════ -->
+<section class="relative py-20 bg-gradient-to-b from-slate-900 via-slate-800 to-slate-900">
+    <!-- Background decoration -->
+    <div class="absolute inset-0 overflow-hidden">
+        <div class="absolute top-0 left-1/4 w-px h-full bg-gradient-to-b from-transparent via-amber-500/20 to-transparent"></div>
+        <div class="absolute top-0 right-1/4 w-px h-full bg-gradient-to-b from-transparent via-orange-500/20 to-transparent"></div>
+    </div>
+
+    <div class="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+
+        <!-- Quick Navigation -->
+        <div class="mb-16 p-8 rounded-3xl bg-gradient-to-br from-white/5 to-white/[0.02] backdrop-blur-xl border border-white/10">
+            <h2 class="text-2xl font-bold text-white mb-6 flex items-center gap-3">
+                <span class="w-10 h-10 rounded-xl bg-gradient-to-br from-amber-500 to-orange-500 flex items-center justify-center">
+                    <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16"></path>
+                    </svg>
+                </span>
+                Quick Navigation
+            </h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+                {% for item in [
+                    ('what-are-cookies', '1. What Are Cookies?'),
+                    ('types', '2. Types of Cookies'),
+                    ('how-we-use', '3. How We Use Cookies'),
+                    ('third-party', '4. Third-Party Cookies'),
+                    ('managing', '5. Managing Cookies'),
+                    ('consent', '6. Consent & POPIA'),
+                    ('contact', '7. Contact Us')
+                ] %}
+                <a href="#{{ item[0] }}" class="flex items-center gap-3 p-3 rounded-xl bg-white/5 hover:bg-white/10 border border-white/5 hover:border-amber-500/30 transition-all duration-300 group">
+                    <svg class="w-5 h-5 text-amber-400 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                    </svg>
+                    <span class="text-gray-300 group-hover:text-white text-sm">{{ item[1] }}</span>
+                </a>
+                {% endfor %}
+            </div>
+        </div>
+
+        <!-- Introduction -->
+        <div class="mb-16 prose prose-lg prose-invert max-w-none">
+            <div class="p-8 rounded-3xl bg-gradient-to-br from-amber-500/10 to-orange-500/10 border border-amber-500/20">
+                <p class="text-gray-300 text-lg leading-relaxed m-0">
+                    This Cookie Policy explains how <strong class="text-white">ForgeForth Africa</strong> uses cookies and similar tracking technologies on our platform. This policy should be read in conjunction with our <a href="/privacy-policy/" class="text-amber-400 hover:underline">Privacy Policy</a>. We respect your right to privacy and control over your data in accordance with the <strong class="text-amber-400">Protection of Personal Information Act (POPIA)</strong>.
+                </p>
+            </div>
+        </div>
+
+        <!-- Section 1: What Are Cookies -->
+        <div id="what-are-cookies" class="mb-16 scroll-mt-24">
+            <div class="flex items-center gap-4 mb-8">
+                <span class="flex-shrink-0 w-14 h-14 rounded-2xl bg-gradient-to-br from-amber-500 to-orange-500 flex items-center justify-center text-white font-bold text-xl shadow-lg shadow-amber-500/25">1</span>
+                <h2 class="text-3xl md:text-4xl font-bold text-white">What Are Cookies?</h2>
+            </div>
+
+            <div class="p-6 rounded-2xl bg-white/5 border border-white/10">
+                <p class="text-gray-300 mb-6">
+                    Cookies are small text files that are stored on your device (computer, smartphone, or tablet) when you visit our website. They help our website remember your preferences, authenticate you, analyze usage patterns, and provide a personalized experience.
+                </p>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="p-4 rounded-xl bg-white/5">
+                        <h4 class="font-semibold text-white mb-2">Cookies</h4>
+                        <p class="text-gray-400 text-sm">Small text files stored in your browser that remember your preferences and activities.</p>
+                    </div>
+                    <div class="p-4 rounded-xl bg-white/5">
+                        <h4 class="font-semibold text-white mb-2">Pixels/Beacons</h4>
+                        <p class="text-gray-400 text-sm">Tiny images that track when a page is viewed or an email is opened.</p>
+                    </div>
+                    <div class="p-4 rounded-xl bg-white/5">
+                        <h4 class="font-semibold text-white mb-2">Local Storage</h4>
+                        <p class="text-gray-400 text-sm">Browser storage that saves data locally on your device for faster loading.</p>
+                    </div>
+                    <div class="p-4 rounded-xl bg-white/5">
+                        <h4 class="font-semibold text-white mb-2">Session Storage</h4>
+                        <p class="text-gray-400 text-sm">Temporary storage that clears when you close your browser tab.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 2: Types of Cookies -->
+        <div id="types" class="mb-16 scroll-mt-24">
+            <div class="flex items-center gap-4 mb-8">
+                <span class="flex-shrink-0 w-14 h-14 rounded-2xl bg-gradient-to-br from-blue-500 to-cyan-500 flex items-center justify-center text-white font-bold text-xl shadow-lg shadow-blue-500/25">2</span>
+                <h2 class="text-3xl md:text-4xl font-bold text-white">Types of Cookies We Use</h2>
+            </div>
+
+            <div class="space-y-6">
+                <!-- Essential -->
+                <div class="p-6 rounded-2xl bg-gradient-to-br from-green-500/10 to-emerald-500/10 border border-green-500/20">
+                    <div class="flex items-start gap-4">
+                        <div class="w-12 h-12 rounded-xl bg-green-500/20 flex items-center justify-center flex-shrink-0">
+                            <svg class="w-6 h-6 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
+                            </svg>
+                        </div>
+                        <div class="flex-1">
+                            <div class="flex items-center justify-between mb-2">
+                                <h3 class="text-xl font-semibold text-white">Essential Cookies</h3>
+                                <span class="px-3 py-1 rounded-full bg-green-500/20 text-green-300 text-xs font-medium">Always Active</span>
+                            </div>
+                            <p class="text-gray-300 mb-4">
+                                These cookies are necessary for the website to function properly. They enable core features like security, authentication, and accessibility. You cannot disable these cookies.
+                            </p>
+                            <div class="flex flex-wrap gap-2">
+                                <span class="px-2 py-1 rounded bg-white/5 text-gray-400 text-xs">Session management</span>
+                                <span class="px-2 py-1 rounded bg-white/5 text-gray-400 text-xs">Authentication</span>
+                                <span class="px-2 py-1 rounded bg-white/5 text-gray-400 text-xs">Security tokens</span>
+                                <span class="px-2 py-1 rounded bg-white/5 text-gray-400 text-xs">Load balancing</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Functional -->
+                <div class="p-6 rounded-2xl bg-gradient-to-br from-blue-500/10 to-cyan-500/10 border border-blue-500/20">
+                    <div class="flex items-start gap-4">
+                        <div class="w-12 h-12 rounded-xl bg-blue-500/20 flex items-center justify-center flex-shrink-0">
+                            <svg class="w-6 h-6 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path>
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                            </svg>
+                        </div>
+                        <div class="flex-1">
+                            <div class="flex items-center justify-between mb-2">
+                                <h3 class="text-xl font-semibold text-white">Functional Cookies</h3>
+                                <span class="px-3 py-1 rounded-full bg-blue-500/20 text-blue-300 text-xs font-medium">Optional</span>
+                            </div>
+                            <p class="text-gray-300 mb-4">
+                                These cookies enable enhanced functionality and personalization. They remember your preferences such as language, region, and display settings.
+                            </p>
+                            <div class="flex flex-wrap gap-2">
+                                <span class="px-2 py-1 rounded bg-white/5 text-gray-400 text-xs">Language preference</span>
+                                <span class="px-2 py-1 rounded bg-white/5 text-gray-400 text-xs">Theme settings</span>
+                                <span class="px-2 py-1 rounded bg-white/5 text-gray-400 text-xs">Recent searches</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Analytics -->
+                <div class="p-6 rounded-2xl bg-gradient-to-br from-purple-500/10 to-violet-500/10 border border-purple-500/20">
+                    <div class="flex items-start gap-4">
+                        <div class="w-12 h-12 rounded-xl bg-purple-500/20 flex items-center justify-center flex-shrink-0">
+                            <svg class="w-6 h-6 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+                            </svg>
+                        </div>
+                        <div class="flex-1">
+                            <div class="flex items-center justify-between mb-2">
+                                <h3 class="text-xl font-semibold text-white">Analytics Cookies</h3>
+                                <span class="px-3 py-1 rounded-full bg-purple-500/20 text-purple-300 text-xs font-medium">Optional</span>
+                            </div>
+                            <p class="text-gray-300 mb-4">
+                                These cookies help us understand how visitors interact with our website by collecting and reporting information anonymously. This helps us improve our services.
+                            </p>
+                            <div class="flex flex-wrap gap-2">
+                                <span class="px-2 py-1 rounded bg-white/5 text-gray-400 text-xs">Page views</span>
+                                <span class="px-2 py-1 rounded bg-white/5 text-gray-400 text-xs">User journeys</span>
+                                <span class="px-2 py-1 rounded bg-white/5 text-gray-400 text-xs">Performance metrics</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Marketing -->
+                <div class="p-6 rounded-2xl bg-gradient-to-br from-orange-500/10 to-amber-500/10 border border-orange-500/20">
+                    <div class="flex items-start gap-4">
+                        <div class="w-12 h-12 rounded-xl bg-orange-500/20 flex items-center justify-center flex-shrink-0">
+                            <svg class="w-6 h-6 text-orange-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 3.055A9.001 9.001 0 1020.945 13H11V3.055z"></path>
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.488 9H15V3.512A9.025 9.025 0 0120.488 9z"></path>
+                            </svg>
+                        </div>
+                        <div class="flex-1">
+                            <div class="flex items-center justify-between mb-2">
+                                <h3 class="text-xl font-semibold text-white">Marketing Cookies</h3>
+                                <span class="px-3 py-1 rounded-full bg-orange-500/20 text-orange-300 text-xs font-medium">Optional</span>
+                            </div>
+                            <p class="text-gray-300 mb-4">
+                                These cookies are used to track visitors across websites to display relevant advertisements. They may be set by our advertising partners.
+                            </p>
+                            <div class="flex flex-wrap gap-2">
+                                <span class="px-2 py-1 rounded bg-white/5 text-gray-400 text-xs">Ad targeting</span>
+                                <span class="px-2 py-1 rounded bg-white/5 text-gray-400 text-xs">Social media</span>
+                                <span class="px-2 py-1 rounded bg-white/5 text-gray-400 text-xs">Remarketing</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 3: How We Use Cookies -->
+        <div id="how-we-use" class="mb-16 scroll-mt-24">
+            <div class="flex items-center gap-4 mb-8">
+                <span class="flex-shrink-0 w-14 h-14 rounded-2xl bg-gradient-to-br from-emerald-500 to-teal-500 flex items-center justify-center text-white font-bold text-xl shadow-lg shadow-emerald-500/25">3</span>
+                <h2 class="text-3xl md:text-4xl font-bold text-white">How We Use Cookies</h2>
+            </div>
+
+            <div class="p-6 rounded-2xl bg-white/5 border border-white/10">
+                <p class="text-gray-300 mb-6">We use cookies to:</p>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    {% for use in [
+                        ('Keep you signed in', 'Remember your login status so you do not have to sign in repeatedly.'),
+                        ('Remember preferences', 'Store your language, theme, and other display preferences.'),
+                        ('Improve security', 'Detect and prevent fraudulent activity and security threats.'),
+                        ('Analyze usage', 'Understand how users interact with our platform to improve it.'),
+                        ('Personalize content', 'Show you relevant opportunities and recommendations.'),
+                        ('Measure performance', 'Track page load times and optimize our website speed.')
+                    ] %}
+                    <div class="p-4 rounded-xl bg-white/5 hover:bg-white/[0.07] transition-colors">
+                        <h4 class="font-semibold text-white mb-2 flex items-center gap-2">
+                            <svg class="w-4 h-4 text-emerald-400" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                            </svg>
+                            {{ use[0] }}
+                        </h4>
+                        <p class="text-gray-400 text-sm">{{ use[1] }}</p>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 4: Third-Party Cookies -->
+        <div id="third-party" class="mb-16 scroll-mt-24">
+            <div class="flex items-center gap-4 mb-8">
+                <span class="flex-shrink-0 w-14 h-14 rounded-2xl bg-gradient-to-br from-pink-500 to-rose-500 flex items-center justify-center text-white font-bold text-xl shadow-lg shadow-pink-500/25">4</span>
+                <h2 class="text-3xl md:text-4xl font-bold text-white">Third-Party Cookies</h2>
+            </div>
+
+            <div class="p-6 rounded-2xl bg-white/5 border border-white/10">
+                <p class="text-gray-300 mb-6">
+                    Some cookies on our website are placed by third-party services. We only partner with reputable providers who comply with data protection regulations:
+                </p>
+                <div class="space-y-4">
+                    <div class="p-4 rounded-xl bg-white/5 flex items-center justify-between">
+                        <div>
+                            <h4 class="font-semibold text-white">Google Analytics</h4>
+                            <p class="text-gray-400 text-sm">Website analytics and performance tracking</p>
+                        </div>
+                        <span class="px-3 py-1 rounded-full bg-purple-500/20 text-purple-300 text-xs">Analytics</span>
+                    </div>
+                    <div class="p-4 rounded-xl bg-white/5 flex items-center justify-between">
+                        <div>
+                            <h4 class="font-semibold text-white">Cloudflare</h4>
+                            <p class="text-gray-400 text-sm">Security and performance optimization</p>
+                        </div>
+                        <span class="px-3 py-1 rounded-full bg-green-500/20 text-green-300 text-xs">Essential</span>
+                    </div>
+                    <div class="p-4 rounded-xl bg-white/5 flex items-center justify-between">
+                        <div>
+                            <h4 class="font-semibold text-white">Sentry</h4>
+                            <p class="text-gray-400 text-sm">Error monitoring and performance tracking</p>
+                        </div>
+                        <span class="px-3 py-1 rounded-full bg-purple-500/20 text-purple-300 text-xs">Analytics</span>
+                    </div>
+                </div>
+                <p class="text-gray-400 text-sm mt-6">
+                    These third parties may collect data according to their own privacy policies. We encourage you to review their policies for more information.
+                </p>
+            </div>
+        </div>
+
+        <!-- Section 5: Managing Cookies -->
+        <div id="managing" class="mb-16 scroll-mt-24">
+            <div class="flex items-center gap-4 mb-8">
+                <span class="flex-shrink-0 w-14 h-14 rounded-2xl bg-gradient-to-br from-indigo-500 to-purple-500 flex items-center justify-center text-white font-bold text-xl shadow-lg shadow-indigo-500/25">5</span>
+                <h2 class="text-3xl md:text-4xl font-bold text-white">Managing Your Cookie Preferences</h2>
+            </div>
+
+            <div class="space-y-6">
+                <div class="p-6 rounded-2xl bg-gradient-to-br from-indigo-500/10 to-purple-500/10 border border-indigo-500/20">
+                    <h3 class="text-xl font-semibold text-white mb-4">Cookie Consent Banner</h3>
+                    <p class="text-gray-300 mb-4">
+                        When you first visit our website, you will see a cookie consent banner that allows you to choose which types of cookies you accept. You can change your preferences at any time.
+                    </p>
+                    <button class="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-white/10 hover:bg-white/20 border border-white/10 text-white text-sm transition-all duration-300">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                        </svg>
+                        Manage Cookie Settings
+                    </button>
+                </div>
+
+                <div class="p-6 rounded-2xl bg-white/5 border border-white/10">
+                    <h3 class="text-xl font-semibold text-white mb-4">Browser Settings</h3>
+                    <p class="text-gray-300 mb-4">
+                        You can also control cookies through your browser settings. Most browsers allow you to:
+                    </p>
+                    <ul class="space-y-2 text-gray-300">
+                        <li class="flex items-center gap-2">
+                            <svg class="w-4 h-4 text-indigo-400" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                            </svg>
+                            View and delete existing cookies
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <svg class="w-4 h-4 text-indigo-400" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                            </svg>
+                            Block cookies from specific sites
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <svg class="w-4 h-4 text-indigo-400" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                            </svg>
+                            Block all cookies (may affect functionality)
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <svg class="w-4 h-4 text-indigo-400" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                            </svg>
+                            Delete cookies automatically when closing your browser
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="p-5 rounded-xl bg-amber-500/10 border border-amber-500/20">
+                    <div class="flex items-start gap-3">
+                        <svg class="w-6 h-6 text-amber-400 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
+                        </svg>
+                        <p class="text-amber-200 text-sm">
+                            <strong class="text-amber-100">Note:</strong> Disabling certain cookies may affect the functionality of our website. Some features may not work properly without essential cookies.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 6: Consent & POPIA -->
+        <div id="consent" class="mb-16 scroll-mt-24">
+            <div class="flex items-center gap-4 mb-8">
+                <span class="flex-shrink-0 w-14 h-14 rounded-2xl bg-gradient-to-br from-green-500 to-emerald-500 flex items-center justify-center text-white font-bold text-xl shadow-lg shadow-green-500/25">6</span>
+                <h2 class="text-3xl md:text-4xl font-bold text-white">Consent & POPIA Compliance</h2>
+            </div>
+
+            <div class="p-8 rounded-3xl bg-gradient-to-br from-green-500/10 to-emerald-500/10 border border-green-500/20">
+                <p class="text-gray-300 mb-6">
+                    In accordance with the <strong class="text-white">Protection of Personal Information Act (POPIA)</strong> and international best practices:
+                </p>
+                <div class="space-y-4">
+                    <div class="p-4 rounded-xl bg-white/5">
+                        <h4 class="font-semibold text-white mb-2">Informed Consent</h4>
+                        <p class="text-gray-400 text-sm">We obtain your consent before placing non-essential cookies. You are informed about what cookies we use and why.</p>
+                    </div>
+                    <div class="p-4 rounded-xl bg-white/5">
+                        <h4 class="font-semibold text-white mb-2">Right to Withdraw</h4>
+                        <p class="text-gray-400 text-sm">You can withdraw your consent at any time by adjusting your cookie preferences or deleting cookies from your browser.</p>
+                    </div>
+                    <div class="p-4 rounded-xl bg-white/5">
+                        <h4 class="font-semibold text-white mb-2">Data Minimization</h4>
+                        <p class="text-gray-400 text-sm">We only collect data that is necessary for the stated purposes and do not retain it longer than required.</p>
+                    </div>
+                    <div class="p-4 rounded-xl bg-white/5">
+                        <h4 class="font-semibold text-white mb-2">Transparency</h4>
+                        <p class="text-gray-400 text-sm">This policy clearly explains what cookies we use, why we use them, and how you can control them.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 7: Contact -->
+        <div id="contact" class="scroll-mt-24">
+            <div class="flex items-center gap-4 mb-8">
+                <span class="flex-shrink-0 w-14 h-14 rounded-2xl bg-gradient-to-br from-violet-500 to-purple-500 flex items-center justify-center text-white font-bold text-xl shadow-lg shadow-violet-500/25">7</span>
+                <h2 class="text-3xl md:text-4xl font-bold text-white">Contact Us</h2>
+            </div>
+
+            <div class="p-8 rounded-3xl bg-gradient-to-br from-violet-500/10 to-purple-500/10 border border-violet-500/20">
+                <p class="text-gray-300 mb-6">If you have any questions about our use of cookies or this Cookie Policy, please contact us:</p>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                    <div class="bg-white/5 rounded-xl p-5 border border-white/10">
+                        <h4 class="font-semibold text-white mb-3">Privacy Team</h4>
+                        <p class="text-gray-400 text-sm mb-2">ForgeForth Africa (Pty) Ltd</p>
+                        <p class="text-gray-400 text-sm">Johannesburg, Gauteng, South Africa</p>
+                    </div>
+                    <div class="bg-white/5 rounded-xl p-5 border border-white/10">
+                        <h4 class="font-semibold text-white mb-3">Contact Details</h4>
+                        <p class="text-gray-400 text-sm mb-1">
+                            <strong class="text-gray-300">Email:</strong>
+                            <a href="mailto:privacy@forgeforthafrica.com" class="text-amber-400 hover:underline">privacy@forgeforthafrica.com</a>
+                        </p>
+                        <p class="text-gray-400 text-sm">
+                            <strong class="text-gray-300">Phone:</strong> +27 69 297 3425
+                        </p>
+                    </div>
+                </div>
+                <div class="flex flex-wrap gap-4">
+                    <a href="mailto:privacy@forgeforthafrica.com" class="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-white/10 hover:bg-white/20 border border-white/10 text-white transition-all duration-300">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+                        </svg>
+                        Email Privacy Team
+                    </a>
+                    <a href="/contact/" class="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-gradient-to-r from-amber-500 to-orange-500 text-white font-semibold hover:shadow-lg hover:shadow-amber-500/25 transition-all duration-300">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path>
+                        </svg>
+                        Contact Form
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Policy Updates -->
+        <div class="mt-16 p-6 rounded-2xl bg-white/5 border border-white/10">
+            <h3 class="text-lg font-bold text-white mb-3">Changes to This Policy</h3>
+            <p class="text-gray-400 text-sm">
+                We may update this Cookie Policy from time to time. We will notify you of any material changes by posting the new policy on our website and updating the "Last Updated" date.
+            </p>
+        </div>
+
+        <!-- Related Policies -->
+        <div class="mt-8 pt-8 border-t border-white/10">
+            <h3 class="text-xl font-bold text-white mb-6 text-center">Related Policies</h3>
+            <div class="flex flex-wrap justify-center gap-4">
+                <a href="/privacy-policy/" class="px-6 py-3 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-gray-300 hover:text-white transition-all duration-300">
+                    Privacy Policy
+                </a>
+                <a href="/terms-of-service/" class="px-6 py-3 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-gray-300 hover:text-white transition-all duration-300">
+                    Terms of Service
+                </a>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+{% endblock %}
+

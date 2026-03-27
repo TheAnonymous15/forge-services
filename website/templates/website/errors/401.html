@@ -1,0 +1,44 @@
+{% extends "layouts/base.html" %}
+
+{% block content %}
+<!-- 401 Unauthorized Page - Minimal & Fun -->
+<section class="min-h-screen flex items-center justify-center bg-gradient-to-br from-purple-600 via-indigo-600 to-primary px-4">
+    <div class="max-w-2xl mx-auto text-center">
+        <!-- Error Code -->
+        <div class="mb-8">
+            <h1 class="font-display font-black text-[180px] md:text-[240px] leading-none text-white/20 select-none">
+                401
+            </h1>
+            <div class="relative -mt-32 md:-mt-40">
+                <div class="text-6xl md:text-8xl mb-4">🔐</div>
+                <h2 class="font-display font-bold text-4xl md:text-5xl text-white mb-4">
+                    Ready to Join Us?
+                </h2>
+                <p class="text-xl md:text-2xl text-gray-200 mb-8">
+                    Sign in to continue your journey.<br>
+                    <span class="text-secondary">Let's forge Africa's future together.</span>
+                </p>
+            </div>
+        </div>
+
+        <!-- Actions -->
+        <div class="flex flex-col sm:flex-row gap-4 justify-center mb-8">
+            <button onclick="openRegistrationModal('individual')" class="inline-flex items-center justify-center gap-2 bg-white text-primary px-8 py-4 rounded-xl font-bold text-lg hover:shadow-2xl hover:scale-105 transition-all">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1"></path>
+                </svg>
+                Sign In
+            </button>
+            <a href="/" class="inline-flex items-center justify-center gap-2 bg-secondary text-white px-8 py-4 rounded-xl font-bold text-lg hover:shadow-2xl hover:scale-105 transition-all">
+                Go to Homepage
+            </a>
+        </div>
+
+        <!-- Help Link -->
+        <p class="text-gray-200 text-sm">
+            New here? <a href="/for-talent" class="text-secondary hover:underline font-semibold">Discover how we're transforming Africa</a>
+        </p>
+    </div>
+</section>
+{% endblock %}
+

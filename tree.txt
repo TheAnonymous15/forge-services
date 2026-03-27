@@ -1,0 +1,818 @@
+.
+├── README_POSTGRES_SETUP.md
+├── accounts
+│   ├── __init__.py
+│   ├── __pycache__
+│   │   ├── __init__.cpython-312.pyc
+│   │   ├── admin.cpython-312.pyc
+│   │   ├── apps.cpython-312.pyc
+│   │   ├── models.cpython-312.pyc
+│   │   ├── serializers.cpython-312.pyc
+│   │   ├── urls.cpython-312.pyc
+│   │   └── views.cpython-312.pyc
+│   ├── admin.py
+│   ├── apps.py
+│   ├── migrations
+│   │   ├── 0001_initial.py
+│   │   ├── 0002_user_avatar_user_consent_marketing_and_more.py
+│   │   ├── __init__.py
+│   │   └── __pycache__
+│   │       ├── 0001_initial.cpython-312.pyc
+│   │       ├── 0002_user_avatar_user_consent_marketing_and_more.cpython-312.pyc
+│   │       └── __init__.cpython-312.pyc
+│   ├── models.py
+│   ├── permissions.py
+│   ├── serializers.py
+│   ├── services.py
+│   ├── tests.py
+│   ├── urls.py
+│   └── views.py
+├── administration
+│   ├── __init__.py
+│   ├── __pycache__
+│   │   ├── __init__.cpython-312.pyc
+│   │   ├── admin.cpython-312.pyc
+│   │   ├── apps.cpython-312.pyc
+│   │   ├── models.cpython-312.pyc
+│   │   └── urls.cpython-312.pyc
+│   ├── admin.py
+│   ├── apps.py
+│   ├── migrations
+│   │   ├── 0001_initial.py
+│   │   ├── __init__.py
+│   │   └── __pycache__
+│   │       ├── 0001_initial.cpython-312.pyc
+│   │       └── __init__.cpython-312.pyc
+│   ├── models.py
+│   ├── tests.py
+│   ├── urls.py
+│   └── views.py
+├── analytics
+│   ├── __init__.py
+│   ├── __pycache__
+│   │   ├── __init__.cpython-312.pyc
+│   │   ├── admin.cpython-312.pyc
+│   │   ├── apps.cpython-312.pyc
+│   │   ├── models.cpython-312.pyc
+│   │   └── urls.cpython-312.pyc
+│   ├── admin.py
+│   ├── apps.py
+│   ├── migrations
+│   │   ├── 0001_initial.py
+│   │   ├── __init__.py
+│   │   └── __pycache__
+│   │       ├── 0001_initial.cpython-312.pyc
+│   │       └── __init__.cpython-312.pyc
+│   ├── models.py
+│   ├── tests.py
+│   ├── urls.py
+│   └── views.py
+├── applications
+│   ├── __init__.py
+│   ├── __pycache__
+│   │   ├── __init__.cpython-312.pyc
+│   │   ├── admin.cpython-312.pyc
+│   │   ├── apps.cpython-312.pyc
+│   │   ├── models.cpython-312.pyc
+│   │   ├── serializers.cpython-312.pyc
+│   │   ├── urls.cpython-312.pyc
+│   │   └── views.cpython-312.pyc
+│   ├── admin.py
+│   ├── apps.py
+│   ├── migrations
+│   │   ├── 0001_initial.py
+│   │   ├── __init__.py
+│   │   └── __pycache__
+│   │       ├── 0001_initial.cpython-312.pyc
+│   │       └── __init__.cpython-312.pyc
+│   ├── models.py
+│   ├── serializers.py
+│   ├── tests.py
+│   ├── urls.py
+│   └── views.py
+├── auth_service
+│   ├── __init__.py
+│   ├── __pycache__
+│   │   ├── __init__.cpython-312.pyc
+│   │   ├── client.cpython-312.pyc
+│   │   ├── config.cpython-312.pyc
+│   │   ├── database.cpython-312.pyc
+│   │   └── security.cpython-312.pyc
+│   ├── app.py
+│   ├── client.py
+│   ├── config.py
+│   ├── database.py
+│   ├── handlers.py
+│   ├── models.py
+│   ├── routes.py
+│   ├── security.py
+│   └── service.py
+├── communications
+│   ├── __init__.py
+│   ├── __pycache__
+│   │   ├── __init__.cpython-312.pyc
+│   │   ├── admin.cpython-312.pyc
+│   │   ├── apps.cpython-312.pyc
+│   │   ├── models.cpython-312.pyc
+│   │   ├── services.cpython-312.pyc
+│   │   └── urls.cpython-312.pyc
+│   ├── admin.py
+│   ├── apps.py
+│   ├── migrations
+│   │   ├── 0001_initial.py
+│   │   ├── __init__.py
+│   │   └── __pycache__
+│   │       ├── 0001_initial.cpython-312.pyc
+│   │       └── __init__.cpython-312.pyc
+│   ├── models.py
+│   ├── services.py
+│   ├── templates
+│   │   └── emails
+│   │       ├── application_status.html
+│   │       ├── application_submitted.html
+│   │       ├── base.html
+│   │       ├── interview_scheduled.html
+│   │       ├── new_application.html
+│   │       ├── password_changed.html
+│   │       ├── password_reset.html
+│   │       ├── verification.html
+│   │       └── welcome.html
+│   ├── tests.py
+│   ├── urls.py
+│   └── views.py
+├── config.json
+├── core
+│   ├── __init__.py
+│   ├── __pycache__
+│   │   ├── __init__.cpython-312.pyc
+│   │   ├── apps.cpython-312.pyc
+│   │   ├── models.cpython-312.pyc
+│   │   ├── urls.cpython-312.pyc
+│   │   └── views.cpython-312.pyc
+│   ├── apps.py
+│   ├── auth_middleware.py
+│   ├── consumers.py
+│   ├── middleware.py
+│   ├── migrations
+│   │   ├── 0001_initial.py
+│   │   ├── __init__.py
+│   │   └── __pycache__
+│   │       ├── 0001_initial.cpython-312.pyc
+│   │       └── __init__.cpython-312.pyc
+│   ├── models.py
+│   ├── routing.py
+│   ├── security.py
+│   ├── services
+│   │   ├── __init__.py
+│   │   ├── accounts.py
+│   │   ├── cache.py
+│   │   ├── federation.py
+│   │   ├── organizations.py
+│   │   └── profiles.py
+│   ├── urls.py
+│   └── views.py
+├── create_databases.sql
+├── db.sqlite3
+├── db_accounts.sqlite3
+├── db_administration.sqlite3
+├── db_analytics.sqlite3
+├── db_applications.sqlite3
+├── db_central.sqlite3
+├── db_communications.sqlite3
+├── db_intelligence.sqlite3
+├── db_media.sqlite3
+├── db_organizations.sqlite3
+├── db_profiles.sqlite3
+├── db_security.sqlite3
+├── devops
+│   ├── __init__.py
+│   ├── __pycache__
+│   │   ├── __init__.cpython-312.pyc
+│   │   ├── admin.cpython-312.pyc
+│   │   ├── apps.cpython-312.pyc
+│   │   ├── models.cpython-312.pyc
+│   │   └── urls.cpython-312.pyc
+│   ├── admin.py
+│   ├── apps.py
+│   ├── migrations
+│   │   ├── 0001_initial.py
+│   │   ├── __init__.py
+│   │   └── __pycache__
+│   │       ├── 0001_initial.cpython-312.pyc
+│   │       └── __init__.cpython-312.pyc
+│   ├── models.py
+│   ├── tests.py
+│   ├── urls.py
+│   └── views.py
+├── diagnose.py
+├── docs
+│   ├── CPANEL_DEPLOYMENT.md
+│   ├── DEVELOPMENT COST.docx
+│   ├── DEVELOPMENT_COST.docx
+│   ├── Doc2.docx
+│   ├── ForgeForth_Africa_MVP1_Documentation.docx
+│   ├── MVP1_DOCUMENTATION.md
+│   ├── MVP2_MVP3_COMPRESSED_PLAN.md
+│   ├── synavue_template.docx
+│   └── ~$rgeForth_Africa_MVP1_Documentation.docx
+├── forgeforth
+│   ├── __init__.py
+│   ├── __pycache__
+│   │   ├── __init__.cpython-312.pyc
+│   │   ├── db_router.cpython-312.pyc
+│   │   ├── settings.cpython-312.pyc
+│   │   ├── urls.cpython-312.pyc
+│   │   └── wsgi.cpython-312.pyc
+│   ├── asgi.py
+│   ├── db_router.py
+│   ├── settings.py
+│   ├── urls.py
+│   └── wsgi.py
+├── intelligence
+│   ├── __init__.py
+│   ├── __pycache__
+│   │   ├── __init__.cpython-312.pyc
+│   │   ├── admin.cpython-312.pyc
+│   │   ├── apps.cpython-312.pyc
+│   │   ├── models.cpython-312.pyc
+│   │   └── urls.cpython-312.pyc
+│   ├── admin.py
+│   ├── apps.py
+│   ├── migrations
+│   │   ├── 0001_initial.py
+│   │   ├── __init__.py
+│   │   └── __pycache__
+│   │       ├── 0001_initial.cpython-312.pyc
+│   │       └── __init__.cpython-312.pyc
+│   ├── models.py
+│   ├── tests.py
+│   ├── urls.py
+│   └── views.py
+├── logs
+│   └── forgeforth.log
+├── manage.py
+├── matching
+│   ├── __init__.py
+│   ├── __pycache__
+│   │   ├── __init__.cpython-312.pyc
+│   │   ├── admin.cpython-312.pyc
+│   │   ├── apps.cpython-312.pyc
+│   │   ├── models.cpython-312.pyc
+│   │   └── urls.cpython-312.pyc
+│   ├── admin.py
+│   ├── apps.py
+│   ├── migrations
+│   │   ├── 0001_initial.py
+│   │   ├── __init__.py
+│   │   └── __pycache__
+│   │       ├── 0001_initial.cpython-312.pyc
+│   │       └── __init__.cpython-312.pyc
+│   ├── models.py
+│   ├── tests.py
+│   ├── urls.py
+│   └── views.py
+├── media
+│   ├── __init__.py
+│   ├── __pycache__
+│   │   ├── __init__.cpython-312.pyc
+│   │   ├── admin.cpython-312.pyc
+│   │   ├── apps.cpython-312.pyc
+│   │   ├── models.cpython-312.pyc
+│   │   └── urls.cpython-312.pyc
+│   ├── admin.py
+│   ├── apps.py
+│   ├── migrations
+│   │   ├── 0001_initial.py
+│   │   ├── __init__.py
+│   │   └── __pycache__
+│   │       ├── 0001_initial.cpython-312.pyc
+│   │       └── __init__.cpython-312.pyc
+│   ├── models.py
+│   ├── serializers.py
+│   ├── services
+│   │   ├── __init__.py
+│   │   ├── audio_processor.py
+│   │   ├── base.py
+│   │   ├── document_processor.py
+│   │   ├── image_processor.py
+│   │   ├── router.py
+│   │   ├── storage_service.py
+│   │   └── video_processor.py
+│   ├── tasks.py
+│   ├── tests.py
+│   ├── urls.py
+│   └── views.py
+├── migrate_sqlite_to_postgres.py
+├── orchestration
+│   ├── __init__.py
+│   ├── __pycache__
+│   │   ├── __init__.cpython-312.pyc
+│   │   ├── admin.cpython-312.pyc
+│   │   ├── apps.cpython-312.pyc
+│   │   ├── event_bus.cpython-312.pyc
+│   │   ├── models.cpython-312.pyc
+│   │   ├── registry.cpython-312.pyc
+│   │   └── signals.cpython-312.pyc
+│   ├── admin.py
+│   ├── apps.py
+│   ├── event_bus.py
+│   ├── migrations
+│   │   ├── 0001_add_full_subsystem_mirrors.py
+│   │   ├── __init__.py
+│   │   └── __pycache__
+│   │       ├── 0001_add_full_subsystem_mirrors.cpython-312.pyc
+│   │       └── __init__.cpython-312.pyc
+│   ├── models.py
+│   ├── registry.py
+│   ├── signals.py
+│   ├── tasks.py
+│   ├── tests.py
+│   └── views.py
+├── organizations
+│   ├── __init__.py
+│   ├── __pycache__
+│   │   ├── __init__.cpython-312.pyc
+│   │   ├── admin.cpython-312.pyc
+│   │   ├── apps.cpython-312.pyc
+│   │   ├── models.cpython-312.pyc
+│   │   ├── serializers.cpython-312.pyc
+│   │   ├── urls.cpython-312.pyc
+│   │   └── views.cpython-312.pyc
+│   ├── admin.py
+│   ├── apps.py
+│   ├── migrations
+│   │   ├── 0001_initial.py
+│   │   ├── __init__.py
+│   │   └── __pycache__
+│   │       ├── 0001_initial.cpython-312.pyc
+│   │       └── __init__.cpython-312.pyc
+│   ├── models.py
+│   ├── serializers.py
+│   ├── tests.py
+│   ├── urls.py
+│   └── views.py
+├── passenger_wsgi.py
+├── passenger_wsgi_test.py
+├── pip_installer.py
+├── profiles
+│   ├── __init__.py
+│   ├── __pycache__
+│   │   ├── __init__.cpython-312.pyc
+│   │   ├── admin.cpython-312.pyc
+│   │   ├── apps.cpython-312.pyc
+│   │   ├── models.cpython-312.pyc
+│   │   ├── serializers.cpython-312.pyc
+│   │   ├── urls.cpython-312.pyc
+│   │   └── views.cpython-312.pyc
+│   ├── admin.py
+│   ├── apps.py
+│   ├── migrations
+│   │   ├── 0001_initial.py
+│   │   ├── __init__.py
+│   │   └── __pycache__
+│   │       ├── 0001_initial.cpython-312.pyc
+│   │       └── __init__.cpython-312.pyc
+│   ├── models.py
+│   ├── serializers.py
+│   ├── tests.py
+│   ├── urls.py
+│   └── views.py
+├── public_html.htaccess
+├── requirements.production.txt
+├── requirements.txt
+├── security
+│   ├── __init__.py
+│   ├── __pycache__
+│   │   ├── __init__.cpython-312.pyc
+│   │   ├── admin.cpython-312.pyc
+│   │   ├── apps.cpython-312.pyc
+│   │   ├── models.cpython-312.pyc
+│   │   └── urls.cpython-312.pyc
+│   ├── admin.py
+│   ├── apps.py
+│   ├── migrations
+│   │   ├── 0001_initial.py
+│   │   ├── __init__.py
+│   │   └── __pycache__
+│   │       ├── 0001_initial.cpython-312.pyc
+│   │       └── __init__.cpython-312.pyc
+│   ├── models.py
+│   ├── tests.py
+│   ├── urls.py
+│   └── views.py
+├── services.py
+├── start.py
+├── start_auth.py
+├── start_talent.py
+├── staticfiles
+│   ├── admin
+│   │   ├── css
+│   │   │   ├── autocomplete.css
+│   │   │   ├── base.css
+│   │   │   ├── changelists.css
+│   │   │   ├── dark_mode.css
+│   │   │   ├── dashboard.css
+│   │   │   ├── forms.css
+│   │   │   ├── login.css
+│   │   │   ├── nav_sidebar.css
+│   │   │   ├── responsive.css
+│   │   │   ├── responsive_rtl.css
+│   │   │   ├── rtl.css
+│   │   │   ├── unusable_password_field.css
+│   │   │   ├── vendor
+│   │   │   │   └── select2
+│   │   │   │       ├── LICENSE-SELECT2.md
+│   │   │   │       ├── select2.css
+│   │   │   │       └── select2.min.css
+│   │   │   └── widgets.css
+│   │   ├── img
+│   │   │   ├── LICENSE
+│   │   │   ├── README.txt
+│   │   │   ├── calendar-icons.svg
+│   │   │   ├── gis
+│   │   │   │   ├── move_vertex_off.svg
+│   │   │   │   └── move_vertex_on.svg
+│   │   │   ├── icon-addlink.svg
+│   │   │   ├── icon-alert.svg
+│   │   │   ├── icon-calendar.svg
+│   │   │   ├── icon-changelink.svg
+│   │   │   ├── icon-clock.svg
+│   │   │   ├── icon-deletelink.svg
+│   │   │   ├── icon-hidelink.svg
+│   │   │   ├── icon-no.svg
+│   │   │   ├── icon-unknown-alt.svg
+│   │   │   ├── icon-unknown.svg
+│   │   │   ├── icon-viewlink.svg
+│   │   │   ├── icon-yes.svg
+│   │   │   ├── inline-delete.svg
+│   │   │   ├── search.svg
+│   │   │   ├── selector-icons.svg
+│   │   │   ├── sorting-icons.svg
+│   │   │   ├── tooltag-add.svg
+│   │   │   └── tooltag-arrowright.svg
+│   │   └── js
+│   │       ├── SelectBox.js
+│   │       ├── SelectFilter2.js
+│   │       ├── actions.js
+│   │       ├── admin
+│   │       │   ├── DateTimeShortcuts.js
+│   │       │   └── RelatedObjectLookups.js
+│   │       ├── autocomplete.js
+│   │       ├── calendar.js
+│   │       ├── cancel.js
+│   │       ├── change_form.js
+│   │       ├── core.js
+│   │       ├── filters.js
+│   │       ├── inlines.js
+│   │       ├── jquery.init.js
+│   │       ├── nav_sidebar.js
+│   │       ├── popup_response.js
+│   │       ├── prepopulate.js
+│   │       ├── prepopulate_init.js
+│   │       ├── theme.js
+│   │       ├── unusable_password_field.js
+│   │       ├── urlify.js
+│   │       └── vendor
+│   │           ├── jquery
+│   │           │   ├── LICENSE.txt
+│   │           │   ├── jquery.js
+│   │           │   └── jquery.min.js
+│   │           ├── select2
+│   │           │   ├── LICENSE.md
+│   │           │   ├── i18n
+│   │           │   │   ├── af.js
+│   │           │   │   ├── ar.js
+│   │           │   │   ├── az.js
+│   │           │   │   ├── bg.js
+│   │           │   │   ├── bn.js
+│   │           │   │   ├── bs.js
+│   │           │   │   ├── ca.js
+│   │           │   │   ├── cs.js
+│   │           │   │   ├── da.js
+│   │           │   │   ├── de.js
+│   │           │   │   ├── dsb.js
+│   │           │   │   ├── el.js
+│   │           │   │   ├── en.js
+│   │           │   │   ├── es.js
+│   │           │   │   ├── et.js
+│   │           │   │   ├── eu.js
+│   │           │   │   ├── fa.js
+│   │           │   │   ├── fi.js
+│   │           │   │   ├── fr.js
+│   │           │   │   ├── gl.js
+│   │           │   │   ├── he.js
+│   │           │   │   ├── hi.js
+│   │           │   │   ├── hr.js
+│   │           │   │   ├── hsb.js
+│   │           │   │   ├── hu.js
+│   │           │   │   ├── hy.js
+│   │           │   │   ├── id.js
+│   │           │   │   ├── is.js
+│   │           │   │   ├── it.js
+│   │           │   │   ├── ja.js
+│   │           │   │   ├── ka.js
+│   │           │   │   ├── km.js
+│   │           │   │   ├── ko.js
+│   │           │   │   ├── lt.js
+│   │           │   │   ├── lv.js
+│   │           │   │   ├── mk.js
+│   │           │   │   ├── ms.js
+│   │           │   │   ├── nb.js
+│   │           │   │   ├── ne.js
+│   │           │   │   ├── nl.js
+│   │           │   │   ├── pl.js
+│   │           │   │   ├── ps.js
+│   │           │   │   ├── pt-BR.js
+│   │           │   │   ├── pt.js
+│   │           │   │   ├── ro.js
+│   │           │   │   ├── ru.js
+│   │           │   │   ├── sk.js
+│   │           │   │   ├── sl.js
+│   │           │   │   ├── sq.js
+│   │           │   │   ├── sr-Cyrl.js
+│   │           │   │   ├── sr.js
+│   │           │   │   ├── sv.js
+│   │           │   │   ├── th.js
+│   │           │   │   ├── tk.js
+│   │           │   │   ├── tr.js
+│   │           │   │   ├── uk.js
+│   │           │   │   ├── vi.js
+│   │           │   │   ├── zh-CN.js
+│   │           │   │   └── zh-TW.js
+│   │           │   ├── select2.full.js
+│   │           │   └── select2.full.min.js
+│   │           └── xregexp
+│   │               ├── LICENSE.txt
+│   │               ├── xregexp.js
+│   │               └── xregexp.min.js
+│   ├── css
+│   │   ├── advanced.css
+│   │   └── style.css
+│   ├── django_extensions
+│   │   ├── css
+│   │   │   └── jquery.autocomplete.css
+│   │   ├── img
+│   │   │   └── indicator.gif
+│   │   └── js
+│   │       ├── jquery.ajaxQueue.js
+│   │       ├── jquery.autocomplete.js
+│   │       └── jquery.bgiframe.js
+│   ├── images
+│   │   └── one.jpg
+│   ├── js
+│   │   ├── main.js
+│   │   ├── spa-router.js
+│   │   ├── waitlist-modal.js
+│   │   └── waitlist.js
+│   ├── rest_framework
+│   │   ├── css
+│   │   │   ├── bootstrap-theme.min.css
+│   │   │   ├── bootstrap-theme.min.css.map
+│   │   │   ├── bootstrap-tweaks.css
+│   │   │   ├── bootstrap.min.css
+│   │   │   ├── bootstrap.min.css.map
+│   │   │   ├── default.css
+│   │   │   ├── font-awesome-4.0.3.css
+│   │   │   └── prettify.css
+│   │   ├── docs
+│   │   │   ├── css
+│   │   │   │   ├── base.css
+│   │   │   │   ├── highlight.css
+│   │   │   │   └── jquery.json-view.min.css
+│   │   │   ├── img
+│   │   │   │   ├── favicon.ico
+│   │   │   │   └── grid.png
+│   │   │   └── js
+│   │   │       ├── api.js
+│   │   │       ├── highlight.pack.js
+│   │   │       └── jquery.json-view.min.js
+│   │   ├── fonts
+│   │   │   ├── fontawesome-webfont.eot
+│   │   │   ├── fontawesome-webfont.svg
+│   │   │   ├── fontawesome-webfont.ttf
+│   │   │   ├── fontawesome-webfont.woff
+│   │   │   ├── glyphicons-halflings-regular.eot
+│   │   │   ├── glyphicons-halflings-regular.svg
+│   │   │   ├── glyphicons-halflings-regular.ttf
+│   │   │   ├── glyphicons-halflings-regular.woff
+│   │   │   └── glyphicons-halflings-regular.woff2
+│   │   ├── img
+│   │   │   ├── glyphicons-halflings-white.png
+│   │   │   ├── glyphicons-halflings.png
+│   │   │   └── grid.png
+│   │   └── js
+│   │       ├── ajax-form.js
+│   │       ├── bootstrap.min.js
+│   │       ├── coreapi-0.1.1.js
+│   │       ├── csrf.js
+│   │       ├── default.js
+│   │       ├── jquery-3.7.1.min.js
+│   │       ├── load-ajax-form.js
+│   │       └── prettify-min.js
+│   └── website
+│       ├── css
+│       │   ├── advanced.css
+│       │   └── style.css
+│       ├── images
+│       │   └── one.jpg
+│       └── js
+│           ├── main.js
+│           ├── spa-router.js
+│           ├── waitlist-modal.js
+│           └── waitlist.js
+├── storage
+│   ├── __init__.py
+│   ├── apps.py
+│   ├── management
+│   │   ├── __init__.py
+│   │   └── commands
+│   │       └── __init__.py
+│   ├── migrations
+│   │   └── __init__.py
+│   ├── models.py
+│   └── services
+├── talent_portal
+│   ├── __init__.py
+│   ├── __pycache__
+│   │   ├── __init__.cpython-312.pyc
+│   │   └── config.cpython-312.pyc
+│   ├── api
+│   ├── api_client.py
+│   ├── app.py
+│   ├── auth.py
+│   ├── config.py
+│   ├── routes.py
+│   ├── static
+│   │   ├── css
+│   │   ├── images
+│   │   └── js
+│   └── templates
+│       ├── applications
+│       ├── auth
+│       │   ├── login.html
+│       │   └── register.html
+│       ├── base.html
+│       ├── dashboard
+│       │   └── index.html
+│       ├── errors
+│       │   ├── 404.html
+│       │   └── 500.html
+│       ├── matches
+│       ├── opportunities
+│       │   └── list.html
+│       ├── profile
+│       │   └── view.html
+│       └── settings
+├── tests
+│   ├── __init__.py
+│   └── auth_service
+│       ├── __init__.py
+│       ├── test_client.py
+│       └── test_security.py
+├── tree.txt
+└── website
+    ├── __init__.py
+    ├── __pycache__
+    │   ├── __init__.cpython-312.pyc
+    │   ├── admin.cpython-312.pyc
+    │   ├── apps.cpython-312.pyc
+    │   ├── blog_data.cpython-312.pyc
+    │   ├── context_processors.cpython-312.pyc
+    │   ├── jinja2_env.cpython-312.pyc
+    │   ├── middleware.cpython-312.pyc
+    │   ├── models.cpython-312.pyc
+    │   ├── urls.cpython-312.pyc
+    │   └── views.cpython-312.pyc
+    ├── admin.py
+    ├── apps.py
+    ├── blog_data.py
+    ├── blog_media
+    │   ├── 32a5652h
+    │   │   └── featured_a375e4f05187658e.webp
+    │   ├── test-blog
+    │   │   ├── img_04e2397f0bc17cb1.webp
+    │   │   └── img_722c7e76db433a98.webp
+    │   └── w72qah4n
+    │       └── featured_4fe4436c0c9d62e4.png
+    ├── context_processors.py
+    ├── jinja2_env.py
+    ├── management
+    │   ├── __init__.py
+    │   ├── __pycache__
+    │   │   └── __init__.cpython-312.pyc
+    │   └── commands
+    │       ├── __init__.py
+    │       ├── __pycache__
+    │       │   ├── __init__.cpython-312.pyc
+    │       │   └── migrate_blogs_to_db.cpython-312.pyc
+    │       └── migrate_blogs_to_db.py
+    ├── middleware.py
+    ├── migrations
+    │   ├── 0001_initial.py
+    │   ├── 0002_add_blogpost_model.py
+    │   ├── 0003_blogimage_remove_blogpost_featured_image_and_more.py
+    │   ├── __init__.py
+    │   └── __pycache__
+    │       ├── 0001_initial.cpython-312.pyc
+    │       ├── 0002_add_blogpost_model.cpython-312.pyc
+    │       ├── 0003_blogimage_remove_blogpost_featured_image_and_more.cpython-312.pyc
+    │       └── __init__.cpython-312.pyc
+    ├── models.py
+    ├── services
+    │   ├── __init__.py
+    │   ├── __pycache__
+    │   │   ├── __init__.cpython-312.pyc
+    │   │   ├── blog_service.cpython-312.pyc
+    │   │   └── image_processor.cpython-312.pyc
+    │   ├── blog_service.py
+    │   └── image_processor.py
+    ├── static
+    │   └── website
+    │       ├── css
+    │       │   ├── advanced.css
+    │       │   └── style.css
+    │       ├── fonts
+    │       ├── images
+    │       │   ├── africa.png
+    │       │   ├── lg.png
+    │       │   ├── lm.png
+    │       │   ├── logo.png
+    │       │   ├── one.jpg
+    │       │   └── talentra.png
+    │       └── js
+    │           ├── main.js
+    │           ├── spa-router.js
+    │           ├── translations.js
+    │           ├── waitlist-modal.js
+    │           └── waitlist.js
+    ├── templates
+    │   ├── admin_view
+    │   │   ├── dashboard.html
+    │   │   └── login.html
+    │   └── website
+    │       ├── coming_soon.html
+    │       ├── components
+    │       │   ├── floating_language_switcher.html
+    │       │   ├── footer.html
+    │       │   ├── language_switcher.html
+    │       │   ├── navbar.html
+    │       │   └── registration_modal.html
+    │       ├── data
+    │       │   ├── earlyaccess.db
+    │       │   └── messages.db
+    │       ├── errors
+    │       │   ├── 401.html
+    │       │   ├── 403.html
+    │       │   ├── 404.html
+    │       │   ├── 500.html
+    │       │   └── 503.html
+    │       ├── index.php
+    │       ├── layouts
+    │       │   ├── base.html
+    │       │   └── partial.html
+    │       ├── maintenance.html
+    │       ├── one.jpg
+    │       ├── pages
+    │       │   ├── about.html
+    │       │   ├── auth
+    │       │   │   └── register.html
+    │       │   ├── blog.html
+    │       │   ├── blog_article.html
+    │       │   ├── blog_create.html
+    │       │   ├── contact.html
+    │       │   ├── cookie_policy.html
+    │       │   ├── for_employers.html
+    │       │   ├── for_talent.html
+    │       │   ├── gallery.html
+    │       │   ├── index.html
+    │       │   ├── platform.html
+    │       │   ├── privacy_policy.html
+    │       │   ├── terms_of_service.html
+    │       │   └── why_africa.html
+    │       └── view
+    │           ├── dashboard.html
+    │           ├── index.php
+    │           ├── login.html
+    │           └── view.html
+    ├── tests.py
+    ├── translations
+    │   ├── __init__.py
+    │   ├── __pycache__
+    │   │   ├── __init__.cpython-312.pyc
+    │   │   ├── api.cpython-312.pyc
+    │   │   ├── jinja2_ext.cpython-312.pyc
+    │   │   ├── languages.cpython-312.pyc
+    │   │   ├── middleware.cpython-312.pyc
+    │   │   └── translator.cpython-312.pyc
+    │   ├── api.py
+    │   ├── cache
+    │   │   └── translations.json
+    │   ├── en.py
+    │   ├── jinja2_ext.py
+    │   ├── languages.py
+    │   ├── middleware.py
+    │   └── translator.py
+    ├── urls.py
+    └── views.py
+
+157 directories, 659 files

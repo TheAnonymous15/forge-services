@@ -1,0 +1,227 @@
+ {% extends "website/layouts/portal_base.html" %}
+
+{% block title %}AI Recommendations - Talent Portal{% endblock %}
+
+{% block portal_content %}
+<div class="mb-8">
+    <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+        <div>
+            <h1 class="text-2xl md:text-3xl font-bold text-white mb-2 flex items-center gap-3">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-secondary to-accent flex items-center justify-center">
+                    <svg class="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/>
+                    </svg>
+                </div>
+                AI Recommendations
+            </h1>
+            <p class="text-blue-200/70">Personalized opportunities matched to your skills and preferences</p>
+        </div>
+        <div class="flex items-center gap-2 text-sm text-blue-200/60">
+            <svg class="w-5 h-5 text-accent" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+            </svg>
+            <span>Powered by ForgeForth AI</span>
+        </div>
+    </div>
+</div>
+
+<!-- AI Insights Card -->
+<div class="glass-card rounded-2xl p-6 mb-8 border border-secondary/20 bg-gradient-to-r from-secondary/10 to-transparent">
+    <div class="flex items-start gap-4">
+        <div class="w-12 h-12 rounded-xl bg-secondary/20 flex items-center justify-center flex-shrink-0">
+            <svg class="w-6 h-6 text-secondary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/>
+            </svg>
+        </div>
+        <div>
+            <h2 class="text-white font-semibold mb-1">How AI Matching Works</h2>
+            <p class="text-blue-200/70 text-sm">Our AI analyzes your profile, skills, experience, and preferences to find opportunities that match your career goals. Complete your profile for better recommendations.</p>
+        </div>
+    </div>
+</div>
+
+{% if recommendations %}
+<!-- Recommendations Grid -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    {% for rec in recommendations %}
+    <div class="glass-card rounded-2xl p-6 group hover:border-secondary/30 transition-all duration-300">
+        <!-- Match Score Badge -->
+        <div class="flex items-center justify-between mb-4">
+            <div class="flex items-center gap-2">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-white/10 to-white/5 flex items-center justify-center">
+                    <span class="text-white font-bold text-sm">{{ rec.relevance_score|floatformat:0 }}%</span>
+                </div>
+                <span class="text-blue-200/60 text-xs">Match Score</span>
+            </div>
+            <button onclick="dismissRecommendation('{{ rec.id }}')" class="opacity-0 group-hover:opacity-100 text-blue-200/40 hover:text-blue-200/70 transition" title="Dismiss">
+                <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                </svg>
+            </button>
+        </div>
+
+        <!-- Content -->
+        <h3 class="text-white font-semibold text-lg mb-1 group-hover:text-secondary transition">{{ rec.title|default:"Opportunity" }}</h3>
+        <p class="text-secondary text-sm mb-2">{{ rec.organization_name|default:"Company" }}</p>
+
+        {% if rec.reason %}
+        <div class="flex items-start gap-2 mb-4 p-3 rounded-xl bg-accent/10 border border-accent/20">
+            <svg class="w-4 h-4 text-accent flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/>
+            </svg>
+            <p class="text-accent text-xs">{{ rec.reason }}</p>
+        </div>
+        {% endif %}
+
+        <div class="flex items-center gap-3 text-sm text-blue-200/60 mb-4">
+            <span class="flex items-center gap-1">
+                <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+                </svg>
+                {{ rec.location|default:"Remote" }}
+            </span>
+            <span class="flex items-center gap-1">
+                <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+                </svg>
+                {{ rec.rec_type|default:"Job" }}
+            </span>
+        </div>
+
+        <div class="flex gap-2">
+            <a href="/portal/talent/opportunities/?id={{ rec.target_id }}" class="flex-1 px-4 py-2 rounded-xl bg-gradient-to-r from-secondary to-accent text-white text-sm text-center font-medium hover:opacity-90 transition">
+                View Details
+            </a>
+            <button onclick="saveOpportunity('{{ rec.target_id }}')" class="px-4 py-2 rounded-xl bg-white/5 text-white hover:bg-white/10 transition" title="Save">
+                <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"/>
+                </svg>
+            </button>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+<!-- Pagination -->
+{% if recommendations.has_other_pages %}
+<div class="flex justify-center gap-2 mt-8">
+    {% if recommendations.has_previous %}
+    <a href="?page={{ recommendations.previous_page_number }}" class="px-4 py-2 rounded-xl bg-white/5 text-white hover:bg-white/10 transition">
+        Previous
+    </a>
+    {% endif %}
+    <span class="px-4 py-2 text-blue-200/60">
+        Page {{ recommendations.number }} of {{ recommendations.paginator.num_pages }}
+    </span>
+    {% if recommendations.has_next %}
+    <a href="?page={{ recommendations.next_page_number }}" class="px-4 py-2 rounded-xl bg-white/5 text-white hover:bg-white/10 transition">
+        Next
+    </a>
+    {% endif %}
+</div>
+{% endif %}
+
+{% else %}
+<!-- Empty State -->
+<div class="glass-card rounded-2xl p-12 text-center">
+    <div class="w-20 h-20 rounded-full bg-gradient-to-br from-secondary/20 to-accent/20 flex items-center justify-center mx-auto mb-6">
+        <svg class="w-10 h-10 text-secondary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/>
+        </svg>
+    </div>
+    <h2 class="text-2xl font-bold text-white mb-3">No Recommendations Yet</h2>
+    <p class="text-blue-200/70 mb-6 max-w-md mx-auto">Complete your profile and add your skills to receive personalized AI-powered job recommendations.</p>
+    <div class="flex flex-col sm:flex-row gap-3 justify-center">
+        <a href="/portal/talent/profile/" class="px-6 py-3 rounded-xl bg-gradient-to-r from-secondary to-accent text-white font-semibold hover:opacity-90 transition">
+            Complete Profile
+        </a>
+        <a href="/portal/talent/opportunities/" class="px-6 py-3 rounded-xl bg-white/10 text-white font-semibold hover:bg-white/20 transition">
+            Browse All Opportunities
+        </a>
+    </div>
+</div>
+{% endif %}
+
+<!-- Improve Recommendations Section -->
+<div class="mt-10 glass-card rounded-2xl p-6">
+    <h2 class="text-xl font-semibold text-white mb-4">Improve Your Recommendations</h2>
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+        <a href="/portal/talent/profile/" class="p-4 rounded-xl bg-white/5 hover:bg-white/10 transition group">
+            <div class="w-10 h-10 rounded-lg bg-secondary/20 flex items-center justify-center mb-3 group-hover:scale-110 transition">
+                <svg class="w-5 h-5 text-secondary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
+                </svg>
+            </div>
+            <h3 class="text-white font-medium mb-1">Complete Profile</h3>
+            <p class="text-blue-200/60 text-sm">Add more details about your experience</p>
+        </a>
+        <a href="/portal/talent/skills/" class="p-4 rounded-xl bg-white/5 hover:bg-white/10 transition group">
+            <div class="w-10 h-10 rounded-lg bg-accent/20 flex items-center justify-center mb-3 group-hover:scale-110 transition">
+                <svg class="w-5 h-5 text-accent" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"/>
+                </svg>
+            </div>
+            <h3 class="text-white font-medium mb-1">Add Skills</h3>
+            <p class="text-blue-200/60 text-sm">List your technical and soft skills</p>
+        </a>
+        <a href="/portal/talent/settings/" class="p-4 rounded-xl bg-white/5 hover:bg-white/10 transition group">
+            <div class="w-10 h-10 rounded-lg bg-forgeforth-blue-light/20 flex items-center justify-center mb-3 group-hover:scale-110 transition">
+                <svg class="w-5 h-5 text-forgeforth-blue-light" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/>
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                </svg>
+            </div>
+            <h3 class="text-white font-medium mb-1">Set Preferences</h3>
+            <p class="text-blue-200/60 text-sm">Define your ideal job criteria</p>
+        </a>
+        <a href="/portal/talent/certifications/" class="p-4 rounded-xl bg-white/5 hover:bg-white/10 transition group">
+            <div class="w-10 h-10 rounded-lg bg-forgeforth-orange/20 flex items-center justify-center mb-3 group-hover:scale-110 transition">
+                <svg class="w-5 h-5 text-forgeforth-orange" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
+                </svg>
+            </div>
+            <h3 class="text-white font-medium mb-1">Add Certifications</h3>
+            <p class="text-blue-200/60 text-sm">Showcase your credentials</p>
+        </a>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+function dismissRecommendation(recId) {
+    if (confirm('Dismiss this recommendation?')) {
+        fetch(`/portal/talent/api/recommendation/dismiss/${recId}/`, {
+            method: 'POST',
+            headers: {
+                'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]')?.value || '',
+                'Content-Type': 'application/json'
+            }
+        })
+        .then(res => res.json())
+        .then(data => {
+            if (data.success) {
+                location.reload();
+            }
+        });
+    }
+}
+
+function saveOpportunity(oppId) {
+    fetch(`/portal/talent/api/save/${oppId}/`, {
+        method: 'POST',
+        headers: {
+            'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]')?.value || '',
+            'Content-Type': 'application/json'
+        }
+    })
+    .then(res => res.json())
+    .then(data => {
+        if (data.success) {
+            alert(data.saved ? 'Opportunity saved!' : 'Removed from saved');
+        }
+    });
+}
+</script>
+{% endblock %}
+

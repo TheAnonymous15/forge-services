@@ -1,0 +1,32 @@
+{% extends "emails/base.html" %}
+{% block title %}Application Update - {{ site_name }}{% endblock %}
+{% block content %}
+<h1>Application Update</h1>
+
+<p>Hi {{ user.first_name|default:user.email }},</p>
+
+<p>There's an update on your application:</p>
+
+<div class="highlight">
+    <strong>{{ opportunity.title }}</strong><br>
+    {{ organization.name }}<br><br>
+    <strong>Status:</strong> {{ status|title }}
+</div>
+
+{% if status == 'shortlisted' %}
+<p>Congratulations! You've been shortlisted. The hiring team may reach out to you soon for the next steps.</p>
+{% elif status == 'interview' %}
+<p>Great news! You've been moved to the interview stage. Check your dashboard for interview details.</p>
+{% elif status == 'offer' %}
+<p>🎉 Congratulations! An offer has been extended to you. Please log in to view the details.</p>
+{% elif status == 'rejected' %}
+<p>Thank you for your interest. Unfortunately, they've decided to move forward with other candidates. Don't give up - there are many more opportunities waiting for you!</p>
+{% endif %}
+
+<p style="text-align: center;">
+    <a href="{{ site_url }}/dashboard/applications" class="button">View Application</a>
+</p>
+
+<p>Best regards,<br>The {{ site_name }} Team</p>
+{% endblock %}
+

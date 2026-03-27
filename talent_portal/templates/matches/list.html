@@ -1,0 +1,105 @@
+{% extends "base.html" %}
+
+{% block title %}Recommended For You{% endblock %}
+
+{% block content %}
+<div class="max-w-4xl mx-auto">
+    <!-- Header -->
+    <div class="mb-8">
+        <h1 class="text-2xl font-bold text-white">Recommended For You</h1>
+        <p class="text-gray-400 mt-1">Opportunities matched to your skills and preferences</p>
+    </div>
+
+    {% if matches and matches.results %}
+    <div class="space-y-4">
+        {% for match in matches.results %}
+        <div class="card hover:border-gray-600 transition-colors">
+            <div class="flex items-start gap-4">
+                <div class="w-14 h-14 bg-primary-600/20 rounded-xl flex items-center justify-center">
+                    {% if match.opportunity.organization and match.opportunity.organization.logo_url %}
+                    <img src="{{ match.opportunity.organization.logo_url }}" alt="" class="w-14 h-14 rounded-xl object-cover">
+                    {% else %}
+                    <svg class="w-7 h-7 text-primary-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+                    </svg>
+                    {% endif %}
+                </div>
+                <div class="flex-1">
+                    <div class="flex items-start justify-between">
+                        <div>
+                            <h3 class="text-lg font-semibold text-white">{{ match.opportunity.title }}</h3>
+                            <p class="text-primary-400">{{ match.opportunity.organization.name if match.opportunity.organization else '' }}</p>
+                        </div>
+                        <div class="text-right">
+                            <div class="inline-flex items-center gap-1 px-3 py-1 bg-green-500/20 rounded-full">
+                                <svg class="w-4 h-4 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                </svg>
+                                <span class="text-green-400 text-sm font-medium">{{ match.score }}% Match</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flex flex-wrap gap-4 mt-2 text-sm text-gray-400">
+                        <span class="flex items-center gap-1">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                            </svg>
+                            {{ match.opportunity.location }}
+                        </span>
+                        <span>{{ match.opportunity.opportunity_type|replace('_', ' ')|title }}</span>
+                        {% if match.opportunity.salary_max %}
+                        <span>Up to R{{ "{:,.0f}".format(match.opportunity.salary_max) }}/year</span>
+                        {% endif %}
+                    </div>
+
+                    {% if match.matching_skills %}
+                    <div class="mt-3">
+                        <p class="text-gray-500 text-xs mb-2">Matching skills:</p>
+                        <div class="flex flex-wrap gap-2">
+                            {% for skill in match.matching_skills[:5] %}
+                            <span class="px-2 py-1 bg-primary-600/20 text-primary-400 rounded text-xs">{{ skill }}</span>
+                            {% endfor %}
+                            {% if match.matching_skills|length > 5 %}
+                            <span class="px-2 py-1 bg-gray-700 text-gray-400 rounded text-xs">+{{ match.matching_skills|length - 5 }} more</span>
+                            {% endif %}
+                        </div>
+                    </div>
+                    {% endif %}
+
+                    <div class="mt-4 flex items-center gap-3">
+                        <a href="/opportunities/{{ match.opportunity.id }}" class="btn-primary text-sm">View Details</a>
+                        <a href="/opportunities/{{ match.opportunity.id }}/apply" class="btn-secondary text-sm">Apply Now</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    <!-- Pagination -->
+    {% if matches.count > 20 %}
+    <div class="mt-8 flex justify-center gap-2">
+        {% if current_page > 1 %}
+        <a href="?page={{ current_page - 1 }}" class="btn-secondary">← Previous</a>
+        {% endif %}
+        <span class="px-4 py-2 text-gray-400">Page {{ current_page }}</span>
+        {% if matches.results|length == 20 %}
+        <a href="?page={{ current_page + 1 }}" class="btn-secondary">Next →</a>
+        {% endif %}
+    </div>
+    {% endif %}
+
+    {% else %}
+    <div class="card text-center py-12">
+        <svg class="w-16 h-16 text-gray-600 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path>
+        </svg>
+        <h3 class="text-white font-medium mb-2">No matches yet</h3>
+        <p class="text-gray-400 text-sm mb-6">Complete your profile to get personalized recommendations</p>
+        <a href="/profile/edit" class="btn-primary">Complete Profile</a>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}
+

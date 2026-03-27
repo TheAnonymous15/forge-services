@@ -1,0 +1,91 @@
+# ============================================================
+# ForgeForth Africa - Production Requirements
+# Compatible with Python 3.9+
+# Using Django 4.2 LTS (supports Python 3.8 - 3.12)
+# All communications use SSL/TLS
+# ============================================================
+
+# Core
+Django>=4.2,<4.3
+django-environ==0.11.2
+
+# REST API
+djangorestframework==3.14.0
+drf-spectacular==0.27.1
+djangorestframework-simplejwt==5.3.1
+
+# CORS
+django-cors-headers==4.3.1
+
+# Filtering
+django-filter==23.5
+
+# WebSockets / Channels (WSS support)
+channels==4.0.0
+channels-redis==4.2.0
+daphne==4.1.0
+
+# Celery - Background Tasks
+celery==5.3.6
+django-celery-beat==2.6.0
+django-celery-results==2.5.1
+redis==5.0.1
+
+# Audit
+django-auditlog==2.3.0
+
+# Utilities
+django-extensions==3.2.3
+python-dotenv==1.0.0
+python-slugify==8.0.4
+
+# Images & Media Processing
+Pillow>=10.2.0
+pillow-avif-plugin>=1.4.0
+
+# Document Processing (PDF, DOCX)
+PyMuPDF>=1.23.0           # PDF text extraction & thumbnails
+python-docx==1.1.0        # DOCX text extraction
+python-magic==0.4.27      # MIME type detection
+
+# Audio Processing
+mutagen>=1.47.0           # Audio metadata handling
+pydub>=0.25.1             # Audio processing (requires ffmpeg on server)
+
+# Video Processing
+ffmpeg-python>=0.2.0      # Video processing (requires ffmpeg on server)
+
+# Note: ffmpeg must be installed on the server for video/audio processing
+# On cPanel: usually available, or request from hosting provider
+
+# HTTP Client with SSL support
+httpx==0.27.0
+requests==2.31.0
+
+# Static Files
+whitenoise==6.6.0
+
+# Jinja2 (used for website templates)
+Jinja2>=3.1
+
+# Production WSGI/ASGI
+gunicorn==21.2.0
+uvicorn[standard]==0.27.0
+
+# Database driver
+# cPanel shared hosting uses MySQL/MariaDB natively — no installation needed.
+# mysqlclient compiles against the system's libmysqlclient (available on cPanel).
+# PyMySQL is a pure-Python fallback if mysqlclient can't compile on the host.
+mysqlclient>=2.2.0
+PyMySQL>=1.1.0
+
+# Caching - Redis with SSL
+django-redis==5.4.0
+
+# Cryptography for SSL/TLS
+cryptography>=42.0.0
+# psycopg2-binary==2.9.9
+
+# Sentry (optional - error tracking)
+# sentry-sdk==1.40.5
+

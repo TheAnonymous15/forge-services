@@ -1,0 +1,124 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="max-w-3xl mx-auto">
+    <!-- Header -->
+    <div class="mb-8">
+        <a href="/opportunities" class="text-gray-400 hover:text-white flex items-center gap-2 mb-4">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+            </svg>
+            Back to Opportunities
+        </a>
+        <h1 class="text-2xl font-bold text-white">{{ page_title }}</h1>
+    </div>
+
+    {% if error %}
+    <div class="mb-6 p-4 bg-red-500/10 border border-red-500/30 rounded-lg">
+        <p class="text-sm text-red-400">{{ error }}</p>
+    </div>
+    {% endif %}
+
+    <!-- Form -->
+    <form method="post" class="space-y-6">
+        <div class="card">
+            <h2 class="text-lg font-semibold text-white mb-4">Basic Information</h2>
+
+            <div class="space-y-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-300 mb-2">Job Title *</label>
+                    <input type="text" name="title" value="{{ opportunity.title if opportunity else '' }}"
+                           class="input-field" placeholder="e.g., Senior Software Engineer" required>
+                </div>
+
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-300 mb-2">Type *</label>
+                        <select name="opportunity_type" class="input-field" required>
+                            <option value="full_time" {% if opportunity and opportunity.opportunity_type == 'full_time' %}selected{% endif %}>Full-time</option>
+                            <option value="part_time" {% if opportunity and opportunity.opportunity_type == 'part_time' %}selected{% endif %}>Part-time</option>
+                            <option value="contract" {% if opportunity and opportunity.opportunity_type == 'contract' %}selected{% endif %}>Contract</option>
+                            <option value="internship" {% if opportunity and opportunity.opportunity_type == 'internship' %}selected{% endif %}>Internship</option>
+                            <option value="freelance" {% if opportunity and opportunity.opportunity_type == 'freelance' %}selected{% endif %}>Freelance</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-300 mb-2">Remote Option</label>
+                        <select name="remote_option" class="input-field">
+                            <option value="onsite" {% if opportunity and opportunity.remote_option == 'onsite' %}selected{% endif %}>On-site Only</option>
+                            <option value="hybrid" {% if opportunity and opportunity.remote_option == 'hybrid' %}selected{% endif %}>Hybrid</option>
+                            <option value="remote" {% if opportunity and opportunity.remote_option == 'remote' %}selected{% endif %}>Fully Remote</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium text-gray-300 mb-2">Location *</label>
+                    <input type="text" name="location" value="{{ opportunity.location if opportunity else '' }}"
+                           class="input-field" placeholder="e.g., Cape Town, South Africa" required>
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium text-gray-300 mb-2">Description *</label>
+                    <textarea name="description" rows="6" class="input-field"
+                              placeholder="Describe the role, responsibilities, and what a typical day looks like..." required>{{ opportunity.description if opportunity else '' }}</textarea>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2 class="text-lg font-semibold text-white mb-4">Compensation</h2>
+
+            <div class="grid grid-cols-2 gap-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-300 mb-2">Minimum Salary (Annual)</label>
+                    <input type="number" name="salary_min" value="{{ opportunity.salary_min if opportunity else '' }}"
+                           class="input-field" placeholder="e.g., 300000">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-300 mb-2">Maximum Salary (Annual)</label>
+                    <input type="number" name="salary_max" value="{{ opportunity.salary_max if opportunity else '' }}"
+                           class="input-field" placeholder="e.g., 500000">
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2 class="text-lg font-semibold text-white mb-4">Requirements & Benefits</h2>
+
+            <div class="space-y-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-300 mb-2">Requirements</label>
+                    <textarea name="requirements" rows="4" class="input-field"
+                              placeholder="List the required skills, experience, and qualifications...">{{ opportunity.requirements if opportunity else '' }}</textarea>
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium text-gray-300 mb-2">Benefits</label>
+                    <textarea name="benefits" rows="4" class="input-field"
+                              placeholder="What benefits do you offer? (Healthcare, remote work, learning budget, etc.)">{{ opportunity.benefits if opportunity else '' }}</textarea>
+                </div>
+            </div>
+        </div>
+
+        {% if opportunity %}
+        <div class="card">
+            <h2 class="text-lg font-semibold text-white mb-4">Status</h2>
+            <select name="status" class="input-field">
+                <option value="active" {% if opportunity.status == 'active' %}selected{% endif %}>Active - Accepting applications</option>
+                <option value="paused" {% if opportunity.status == 'paused' %}selected{% endif %}>Paused - Not visible</option>
+                <option value="closed" {% if opportunity.status == 'closed' %}selected{% endif %}>Closed - Position filled</option>
+            </select>
+        </div>
+        {% endif %}
+
+        <div class="flex justify-end gap-4">
+            <a href="/opportunities" class="btn-secondary">Cancel</a>
+            <button type="submit" class="btn-primary">
+                {{ 'Update Opportunity' if opportunity else 'Create Opportunity' }}
+            </button>
+        </div>
+    </form>
+</div>
+{% endblock %}
+

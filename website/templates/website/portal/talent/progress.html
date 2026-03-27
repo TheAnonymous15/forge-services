@@ -1,0 +1,225 @@
+{% extends "website/layouts/portal_base.html" %}
+{% load humanize %}
+
+{% block title %}My Progress{% endblock %}
+
+{% block portal_content %}
+<div class="space-y-6">
+    <!-- Page Header -->
+    <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+        <div>
+            <h1 class="text-2xl font-bold text-white flex items-center gap-3">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-emerald-500/20 to-emerald-500/5 flex items-center justify-center">
+                    <svg class="w-5 h-5 text-emerald-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/>
+                    </svg>
+                </div>
+                My Progress
+            </h1>
+            <p class="text-blue-200/60 mt-1">Track your career journey and achievements</p>
+        </div>
+    </div>
+
+    <!-- Progress Overview Cards -->
+    <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+        <!-- Profile Completion -->
+        <div class="glass-card rounded-xl p-5">
+            <div class="flex items-center justify-between mb-3">
+                <span class="text-blue-200/60 text-sm">Profile Completion</span>
+                <span class="text-emerald-400 text-lg font-bold">{{ profile_completion|default:0 }}%</span>
+            </div>
+            <div class="w-full h-2 bg-white/10 rounded-full overflow-hidden">
+                <div class="h-full bg-gradient-to-r from-emerald-500 to-emerald-400 rounded-full transition-all" style="width: {{ profile_completion|default:0 }}%"></div>
+            </div>
+            <a href="/portal/talent/profile/" class="text-emerald-400 text-xs mt-2 inline-block hover:underline">Complete profile →</a>
+        </div>
+
+        <!-- Applications -->
+        <div class="glass-card rounded-xl p-5">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-lg bg-blue-500/20 flex items-center justify-center">
+                    <svg class="w-5 h-5 text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                    </svg>
+                </div>
+                <div>
+                    <div class="text-2xl font-bold text-white">{{ applications_count|default:0 }}</div>
+                    <div class="text-blue-200/60 text-xs">Total Applications</div>
+                </div>
+            </div>
+            <div class="text-blue-200/40 text-xs mt-2">{{ applications_this_month|default:0 }} this month</div>
+        </div>
+
+        <!-- Skills -->
+        <div class="glass-card rounded-xl p-5">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-lg bg-secondary/20 flex items-center justify-center">
+                    <svg class="w-5 h-5 text-secondary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/>
+                    </svg>
+                </div>
+                <div>
+                    <div class="text-2xl font-bold text-white">{{ skills_count|default:0 }}</div>
+                    <div class="text-blue-200/60 text-xs">Skills Added</div>
+                </div>
+            </div>
+            <a href="/portal/talent/skillsets/" class="text-secondary text-xs mt-2 inline-block hover:underline">Add more →</a>
+        </div>
+
+        <!-- Interviews -->
+        <div class="glass-card rounded-xl p-5">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-lg bg-purple-500/20 flex items-center justify-center">
+                    <svg class="w-5 h-5 text-purple-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                    </svg>
+                </div>
+                <div>
+                    <div class="text-2xl font-bold text-white">{{ interviews_count|default:0 }}</div>
+                    <div class="text-blue-200/60 text-xs">Interviews</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Milestones -->
+    <div class="glass-card rounded-2xl p-6">
+        <h2 class="text-lg font-semibold text-white mb-6 flex items-center gap-2">
+            <svg class="w-5 h-5 text-secondary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"/>
+            </svg>
+            Career Milestones
+        </h2>
+
+        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
+            <!-- Profile Created -->
+            <div class="text-center p-4 rounded-xl bg-white/5 border border-emerald-500/30">
+                <div class="w-12 h-12 rounded-full bg-emerald-500/20 flex items-center justify-center mx-auto mb-3">
+                    <svg class="w-6 h-6 text-emerald-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                    </svg>
+                </div>
+                <h4 class="text-white text-sm font-medium">Profile Created</h4>
+                <p class="text-emerald-400 text-xs mt-1">Completed</p>
+            </div>
+
+            <!-- First Application -->
+            <div class="text-center p-4 rounded-xl bg-white/5 border {% if applications_count > 0 %}border-emerald-500/30{% else %}border-white/5{% endif %}">
+                <div class="w-12 h-12 rounded-full {% if applications_count > 0 %}bg-emerald-500/20{% else %}bg-white/5{% endif %} flex items-center justify-center mx-auto mb-3">
+                    {% if applications_count > 0 %}
+                    <svg class="w-6 h-6 text-emerald-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                    </svg>
+                    {% else %}
+                    <svg class="w-6 h-6 text-blue-200/30" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                    </svg>
+                    {% endif %}
+                </div>
+                <h4 class="text-white text-sm font-medium">First Application</h4>
+                <p class="{% if applications_count > 0 %}text-emerald-400{% else %}text-blue-200/40{% endif %} text-xs mt-1">
+                    {% if applications_count > 0 %}Completed{% else %}Pending{% endif %}
+                </p>
+            </div>
+
+            <!-- Resume Uploaded -->
+            <div class="text-center p-4 rounded-xl bg-white/5 border {% if has_resume %}border-emerald-500/30{% else %}border-white/5{% endif %}">
+                <div class="w-12 h-12 rounded-full {% if has_resume %}bg-emerald-500/20{% else %}bg-white/5{% endif %} flex items-center justify-center mx-auto mb-3">
+                    {% if has_resume %}
+                    <svg class="w-6 h-6 text-emerald-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                    </svg>
+                    {% else %}
+                    <svg class="w-6 h-6 text-blue-200/30" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"/>
+                    </svg>
+                    {% endif %}
+                </div>
+                <h4 class="text-white text-sm font-medium">Resume Ready</h4>
+                <p class="{% if has_resume %}text-emerald-400{% else %}text-blue-200/40{% endif %} text-xs mt-1">
+                    {% if has_resume %}Completed{% else %}Pending{% endif %}
+                </p>
+            </div>
+
+            <!-- 5+ Skills -->
+            <div class="text-center p-4 rounded-xl bg-white/5 border {% if skills_count >= 5 %}border-emerald-500/30{% else %}border-white/5{% endif %}">
+                <div class="w-12 h-12 rounded-full {% if skills_count >= 5 %}bg-emerald-500/20{% else %}bg-white/5{% endif %} flex items-center justify-center mx-auto mb-3">
+                    {% if skills_count >= 5 %}
+                    <svg class="w-6 h-6 text-emerald-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                    </svg>
+                    {% else %}
+                    <span class="text-blue-200/30 font-bold">{{ skills_count|default:0 }}/5</span>
+                    {% endif %}
+                </div>
+                <h4 class="text-white text-sm font-medium">5 Skills Added</h4>
+                <p class="{% if skills_count >= 5 %}text-emerald-400{% else %}text-blue-200/40{% endif %} text-xs mt-1">
+                    {% if skills_count >= 5 %}Completed{% else %}{{ skills_count|default:0 }} of 5{% endif %}
+                </p>
+            </div>
+
+            <!-- First Interview -->
+            <div class="text-center p-4 rounded-xl bg-white/5 border {% if interviews_count > 0 %}border-emerald-500/30{% else %}border-white/5{% endif %}">
+                <div class="w-12 h-12 rounded-full {% if interviews_count > 0 %}bg-emerald-500/20{% else %}bg-white/5{% endif %} flex items-center justify-center mx-auto mb-3">
+                    {% if interviews_count > 0 %}
+                    <svg class="w-6 h-6 text-emerald-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                    </svg>
+                    {% else %}
+                    <svg class="w-6 h-6 text-blue-200/30" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                    </svg>
+                    {% endif %}
+                </div>
+                <h4 class="text-white text-sm font-medium">First Interview</h4>
+                <p class="{% if interviews_count > 0 %}text-emerald-400{% else %}text-blue-200/40{% endif %} text-xs mt-1">
+                    {% if interviews_count > 0 %}Completed{% else %}Pending{% endif %}
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quick Actions -->
+    <div class="glass-card rounded-2xl p-6">
+        <h2 class="text-lg font-semibold text-white mb-4">Next Steps to Boost Your Progress</h2>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <a href="/portal/talent/profile/" class="flex items-center gap-4 p-4 bg-white/5 rounded-xl border border-white/5 hover:border-secondary/30 transition group">
+                <div class="w-10 h-10 rounded-lg bg-secondary/20 flex items-center justify-center group-hover:scale-110 transition">
+                    <svg class="w-5 h-5 text-secondary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
+                    </svg>
+                </div>
+                <div>
+                    <h3 class="text-white font-medium text-sm">Complete Your Profile</h3>
+                    <p class="text-blue-200/60 text-xs">Make yourself more discoverable</p>
+                </div>
+            </a>
+
+            <a href="/portal/talent/opportunities/" class="flex items-center gap-4 p-4 bg-white/5 rounded-xl border border-white/5 hover:border-secondary/30 transition group">
+                <div class="w-10 h-10 rounded-lg bg-blue-500/20 flex items-center justify-center group-hover:scale-110 transition">
+                    <svg class="w-5 h-5 text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+                    </svg>
+                </div>
+                <div>
+                    <h3 class="text-white font-medium text-sm">Browse Opportunities</h3>
+                    <p class="text-blue-200/60 text-xs">Find your next opportunity</p>
+                </div>
+            </a>
+
+            <a href="/portal/talent/skillsets/" class="flex items-center gap-4 p-4 bg-white/5 rounded-xl border border-white/5 hover:border-secondary/30 transition group">
+                <div class="w-10 h-10 rounded-lg bg-accent/20 flex items-center justify-center group-hover:scale-110 transition">
+                    <svg class="w-5 h-5 text-accent" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/>
+                    </svg>
+                </div>
+                <div>
+                    <h3 class="text-white font-medium text-sm">Add More Skills</h3>
+                    <p class="text-blue-200/60 text-xs">Showcase your expertise</p>
+                </div>
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock portal_content %}
+

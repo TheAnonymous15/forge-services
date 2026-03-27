@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+
+{% block title %}Two-Factor Authentication{% endblock %}
+
+{% block body %}
+<div class="min-h-screen gradient-bg flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-md w-full">
+        <!-- 2FA Card -->
+        <div class="card">
+            <!-- Header -->
+            <div class="text-center mb-8">
+                <div class="mx-auto w-14 h-14 bg-primary-600/20 rounded-full flex items-center justify-center mb-4">
+                    <svg class="w-7 h-7 text-primary-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
+                    </svg>
+                </div>
+                <h1 class="text-2xl font-bold text-white">Two-Factor Authentication</h1>
+                <p class="text-gray-400 mt-2">Enter the code from your authenticator app</p>
+            </div>
+
+            <!-- Form -->
+            <form method="post" action="/auth/login">
+                <input type="hidden" name="email" value="{{ email }}">
+                <input type="hidden" name="password" value="{{ password }}">
+                <input type="hidden" name="next_url" value="{{ next_url }}">
+
+                <!-- OTP Input -->
+                <div class="mb-6">
+                    <label class="block text-sm font-medium text-gray-300 mb-2">
+                        Authentication Code
+                    </label>
+                    <input
+                        type="text"
+                        name="otp_code"
+                        class="input-field text-center text-2xl tracking-widest"
+                        placeholder="000000"
+                        maxlength="6"
+                        pattern="[0-9]{6}"
+                        autocomplete="one-time-code"
+                        required
+                        autofocus
+                    >
+                </div>
+
+                <!-- Submit -->
+                <button type="submit" class="btn-primary w-full">
+                    Verify
+                </button>
+            </form>
+
+            <!-- Recovery Option -->
+            <div class="mt-6 text-center">
+                <p class="text-sm text-gray-500">
+                    Lost access to your authenticator?
+                </p>
+                <a href="/auth/2fa-recovery" class="text-sm text-primary-400 hover:underline">
+                    Use a recovery code
+                </a>
+            </div>
+
+            <!-- Back Link -->
+            <div class="mt-4 text-center">
+                <a href="/auth/login" class="text-sm text-gray-400 hover:text-gray-300">
+                    ← Try different account
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Auto-focus and auto-submit on 6 digits
+    const otpInput = document.querySelector('input[name="otp_code"]');
+    otpInput.addEventListener('input', (e) => {
+        e.target.value = e.target.value.replace(/\D/g, '');
+        if (e.target.value.length === 6) {
+            e.target.form.submit();
+        }
+    });
+</script>
+{% endblock %}
+

@@ -1,0 +1,562 @@
+{% extends "layouts/base.html" %}
+
+{% block content %}
+
+<!-- ═══════════════════════════════════════════════════
+     HERO SECTION - TERMS OF SERVICE
+════════════════════════════════════════════════════ -->
+<section class="relative flex items-center overflow-hidden" style="min-height:calc(100vh - 0px);">
+    <!-- Background -->
+    <div class="absolute inset-0 z-0">
+        <img src="{{ static('images/one.jpg') }}"
+             alt=""
+             class="w-full h-full object-cover object-center"
+             aria-hidden="true">
+        <div class="absolute inset-0 bg-gradient-to-br from-slate-900/95 via-indigo-900/90 to-slate-900/95"></div>
+
+        <!-- Animated geometric patterns -->
+        <div class="absolute inset-0 overflow-hidden opacity-20">
+            <div class="absolute top-20 left-10 w-72 h-72 bg-indigo-500/30 rounded-full blur-3xl animate-pulse"></div>
+            <div class="absolute bottom-20 right-20 w-96 h-96 bg-purple-500/20 rounded-full blur-3xl animate-pulse" style="animation-delay: 1s;"></div>
+        </div>
+    </div>
+
+    <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 text-center">
+        <!-- Document Icon -->
+        <div class="inline-flex items-center justify-center w-20 h-20 rounded-2xl bg-gradient-to-br from-indigo-500/20 to-purple-500/20 backdrop-blur-xl border border-white/10 mb-8">
+            <svg class="w-10 h-10 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+            </svg>
+        </div>
+
+        <h1 class="font-display font-bold text-5xl md:text-6xl lg:text-7xl text-white mb-6">
+            Terms of <span class="bg-gradient-to-r from-indigo-400 to-purple-400 bg-clip-text text-transparent">Service</span>
+        </h1>
+        <p class="text-xl md:text-2xl text-gray-300 max-w-3xl mx-auto mb-6">
+            The rules and guidelines for using our platform.
+        </p>
+
+        <!-- Compliance Badges -->
+        <div class="flex flex-wrap justify-center gap-3 mb-4">
+            <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-green-500/20 backdrop-blur-sm border border-green-500/30 text-sm text-green-300">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                </svg>
+                SA Law Compliant
+            </div>
+            <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-indigo-500/20 backdrop-blur-sm border border-indigo-500/30 text-sm text-indigo-300">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 6l3 1m0 0l-3 9a5.002 5.002 0 006.001 0M6 7l3 9M6 7l6-2m6 2l3-1m-3 1l-3 9a5.002 5.002 0 006.001 0M18 7l3 9m-3-9l-6-2m0-2v2m0 16V5m0 16H9m3 0h3"></path>
+                </svg>
+                Consumer Protection
+            </div>
+            <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 backdrop-blur-sm border border-white/10 text-sm text-gray-300">
+                <svg class="w-4 h-4 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                </svg>
+                Last Updated: March 2, 2026
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════
+     CONTENT SECTION
+════════════════════════════════════════════════════ -->
+<section class="relative py-20 bg-gradient-to-b from-slate-900 via-slate-800 to-slate-900">
+    <!-- Background decoration -->
+    <div class="absolute inset-0 overflow-hidden">
+        <div class="absolute top-0 left-1/4 w-px h-full bg-gradient-to-b from-transparent via-indigo-500/20 to-transparent"></div>
+        <div class="absolute top-0 right-1/4 w-px h-full bg-gradient-to-b from-transparent via-purple-500/20 to-transparent"></div>
+    </div>
+
+    <div class="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+
+        <!-- Service Provider Notice -->
+        <div class="mb-16 p-8 rounded-3xl bg-gradient-to-br from-indigo-500/10 to-purple-500/10 border border-indigo-500/20">
+            <div class="flex items-start gap-4">
+                <div class="w-12 h-12 rounded-xl bg-indigo-500/20 flex items-center justify-center flex-shrink-0">
+                    <svg class="w-6 h-6 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
+                    </svg>
+                </div>
+                <div>
+                    <h2 class="text-xl font-bold text-white mb-2">Service Provider</h2>
+                    <p class="text-gray-300 mb-4">
+                        These Terms of Service constitute a legally binding agreement between you and:
+                    </p>
+                    <div class="bg-white/5 rounded-xl p-4 border border-white/10">
+                        <p class="text-white font-semibold">ForgeForth Africa (Pty) Ltd</p>
+                        <p class="text-gray-400 text-sm">A company registered in the Republic of South Africa</p>
+                        <p class="text-gray-400 text-sm">Johannesburg, Gauteng, South Africa</p>
+                        <p class="text-gray-400 text-sm mt-2">
+                            <strong class="text-gray-300">Contact:</strong> legal@forgeforthafrica.com
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quick Navigation -->
+        <div class="mb-16 p-8 rounded-3xl bg-gradient-to-br from-white/5 to-white/[0.02] backdrop-blur-xl border border-white/10">
+            <h2 class="text-2xl font-bold text-white mb-6 flex items-center gap-3">
+                <span class="w-10 h-10 rounded-xl bg-gradient-to-br from-indigo-500 to-purple-500 flex items-center justify-center">
+                    <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16"></path>
+                    </svg>
+                </span>
+                Quick Navigation
+            </h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+                {% for item in [
+                    ('acceptance', '1. Acceptance of Terms'),
+                    ('eligibility', '2. Eligibility'),
+                    ('account', '3. Account & Security'),
+                    ('services', '4. Our Services'),
+                    ('user-conduct', '5. User Conduct'),
+                    ('content', '6. Content & IP'),
+                    ('payments', '7. Payments & Fees'),
+                    ('termination', '8. Termination'),
+                    ('disclaimers', '9. Disclaimers'),
+                    ('liability', '10. Limitation of Liability'),
+                    ('disputes', '11. Disputes & Governing Law'),
+                    ('contact', '12. Contact Us')
+                ] %}
+                <a href="#{{ item[0] }}" class="flex items-center gap-3 p-3 rounded-xl bg-white/5 hover:bg-white/10 border border-white/5 hover:border-indigo-500/30 transition-all duration-300 group">
+                    <svg class="w-5 h-5 text-indigo-400 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                    </svg>
+                    <span class="text-gray-300 group-hover:text-white text-sm">{{ item[1] }}</span>
+                </a>
+                {% endfor %}
+            </div>
+        </div>
+
+        <!-- Introduction -->
+        <div class="mb-16 prose prose-lg prose-invert max-w-none">
+            <div class="p-8 rounded-3xl bg-gradient-to-br from-indigo-500/10 to-purple-500/10 border border-indigo-500/20">
+                <p class="text-gray-300 text-lg leading-relaxed m-0">
+                    Welcome to <strong class="text-white">ForgeForth Africa</strong>. These Terms of Service ("Terms") govern your access to and use of our platform, services, and features. By creating an account or using our services, you agree to be bound by these Terms, our <a href="/privacy-policy/" class="text-indigo-400 hover:underline">Privacy Policy</a>, and our <a href="/cookie-policy/" class="text-indigo-400 hover:underline">Cookie Policy</a>. These Terms comply with South African law, including the <strong class="text-indigo-400">Consumer Protection Act 68 of 2008 (CPA)</strong>, the <strong class="text-purple-400">Electronic Communications and Transactions Act 25 of 2002 (ECTA)</strong>, and <strong class="text-cyan-400">POPIA</strong>.
+                </p>
+            </div>
+        </div>
+
+        <!-- Section 1: Acceptance -->
+        <div id="acceptance" class="mb-16 scroll-mt-24">
+            <div class="flex items-center gap-4 mb-8">
+                <span class="flex-shrink-0 w-14 h-14 rounded-2xl bg-gradient-to-br from-indigo-500 to-purple-500 flex items-center justify-center text-white font-bold text-xl shadow-lg shadow-indigo-500/25">1</span>
+                <h2 class="text-3xl md:text-4xl font-bold text-white">Acceptance of Terms</h2>
+            </div>
+
+            <div class="space-y-4">
+                <div class="p-5 rounded-xl bg-white/5 border border-white/10">
+                    <p class="text-gray-300">
+                        By accessing or using ForgeForth Africa, you confirm that you have read, understood, and agree to be bound by these Terms. If you do not agree, you must not use our services.
+                    </p>
+                </div>
+                <div class="p-5 rounded-xl bg-white/5 border border-white/10">
+                    <p class="text-gray-300">
+                        We may update these Terms from time to time. We will notify you of material changes via email or a notice on our platform. Your continued use after changes take effect means you accept the new Terms.
+                    </p>
+                </div>
+                <div class="p-5 rounded-xl bg-amber-500/10 border border-amber-500/20">
+                    <div class="flex items-start gap-3">
+                        <svg class="w-6 h-6 text-amber-400 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
+                        </svg>
+                        <p class="text-amber-200 text-sm">
+                            <strong class="text-amber-100">Important (ECTA Section 11):</strong> This is an electronic agreement. By clicking "I Accept," "Sign Up," or similar, you are electronically signing this agreement with the same legal effect as a handwritten signature.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 2: Eligibility -->
+        <div id="eligibility" class="mb-16 scroll-mt-24">
+            <div class="flex items-center gap-4 mb-8">
+                <span class="flex-shrink-0 w-14 h-14 rounded-2xl bg-gradient-to-br from-blue-500 to-cyan-500 flex items-center justify-center text-white font-bold text-xl shadow-lg shadow-blue-500/25">2</span>
+                <h2 class="text-3xl md:text-4xl font-bold text-white">Eligibility</h2>
+            </div>
+
+            <div class="p-6 rounded-2xl bg-white/5 border border-white/10">
+                <p class="text-gray-300 mb-6">To use ForgeForth Africa, you must:</p>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    {% for req in [
+                        ('Be at least 18 years old', 'You must be a legal adult to enter into contracts.'),
+                        ('Have legal capacity', 'You must be able to form a binding legal agreement.'),
+                        ('Not be prohibited', 'You are not prohibited from using our services under any applicable law.'),
+                        ('Provide accurate information', 'All information you provide must be true, accurate, and complete.'),
+                        ('One account only', 'You may only maintain one active personal account.'),
+                        ('Act in good faith', 'You agree to use our services honestly and in good faith.')
+                    ] %}
+                    <div class="p-4 rounded-xl bg-white/5 border border-white/5">
+                        <div class="flex items-center gap-2 mb-2">
+                            <svg class="w-5 h-5 text-cyan-400" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                            </svg>
+                            <span class="font-semibold text-white text-sm">{{ req[0] }}</span>
+                        </div>
+                        <p class="text-gray-400 text-xs">{{ req[1] }}</p>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 3: Account & Security -->
+        <div id="account" class="mb-16 scroll-mt-24">
+            <div class="flex items-center gap-4 mb-8">
+                <span class="flex-shrink-0 w-14 h-14 rounded-2xl bg-gradient-to-br from-emerald-500 to-teal-500 flex items-center justify-center text-white font-bold text-xl shadow-lg shadow-emerald-500/25">3</span>
+                <h2 class="text-3xl md:text-4xl font-bold text-white">Account Registration & Security</h2>
+            </div>
+
+            <div class="space-y-6">
+                <div class="p-6 rounded-2xl bg-white/5 border border-white/10">
+                    <h3 class="text-xl font-semibold text-white mb-4">Account Creation</h3>
+                    <ul class="space-y-3 text-gray-300">
+                        <li class="flex items-start gap-3">
+                            <span class="w-5 h-5 rounded-full bg-emerald-500/20 flex items-center justify-center flex-shrink-0 mt-0.5">
+                                <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
+                            </span>
+                            <span>You must provide accurate, current, and complete information during registration.</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <span class="w-5 h-5 rounded-full bg-emerald-500/20 flex items-center justify-center flex-shrink-0 mt-0.5">
+                                <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
+                            </span>
+                            <span>You must keep your account information updated.</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <span class="w-5 h-5 rounded-full bg-emerald-500/20 flex items-center justify-center flex-shrink-0 mt-0.5">
+                                <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
+                            </span>
+                            <span>We may verify your identity and credentials as part of our services.</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="p-6 rounded-2xl bg-white/5 border border-white/10">
+                    <h3 class="text-xl font-semibold text-white mb-4">Account Security</h3>
+                    <ul class="space-y-3 text-gray-300">
+                        <li class="flex items-start gap-3">
+                            <span class="w-5 h-5 rounded-full bg-teal-500/20 flex items-center justify-center flex-shrink-0 mt-0.5">
+                                <span class="w-1.5 h-1.5 rounded-full bg-teal-400"></span>
+                            </span>
+                            <span>You are responsible for maintaining the confidentiality of your login credentials.</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <span class="w-5 h-5 rounded-full bg-teal-500/20 flex items-center justify-center flex-shrink-0 mt-0.5">
+                                <span class="w-1.5 h-1.5 rounded-full bg-teal-400"></span>
+                            </span>
+                            <span>You are responsible for all activities that occur under your account.</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <span class="w-5 h-5 rounded-full bg-teal-500/20 flex items-center justify-center flex-shrink-0 mt-0.5">
+                                <span class="w-1.5 h-1.5 rounded-full bg-teal-400"></span>
+                            </span>
+                            <span>You must notify us immediately of any unauthorized access or security breach.</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 4: Our Services -->
+        <div id="services" class="mb-16 scroll-mt-24">
+            <div class="flex items-center gap-4 mb-8">
+                <span class="flex-shrink-0 w-14 h-14 rounded-2xl bg-gradient-to-br from-orange-500 to-amber-500 flex items-center justify-center text-white font-bold text-xl shadow-lg shadow-orange-500/25">4</span>
+                <h2 class="text-3xl md:text-4xl font-bold text-white">Our Services</h2>
+            </div>
+
+            <div class="p-6 rounded-2xl bg-white/5 border border-white/10">
+                <p class="text-gray-300 mb-6">ForgeForth Africa provides a talent management and opportunity matching platform that includes:</p>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    {% for service in [
+                        ('Profile Creation', 'Create and manage your professional profile showcasing your skills and experience.'),
+                        ('Opportunity Matching', 'AI-powered matching to connect you with relevant opportunities.'),
+                        ('Skill Development', 'Access to skill-building resources and programs.'),
+                        ('Verification Services', 'Optional verification of credentials and qualifications.'),
+                        ('Communication Tools', 'Secure messaging with potential employers and partners.'),
+                        ('Analytics & Insights', 'Track your profile performance and opportunity matches.')
+                    ] %}
+                    <div class="p-4 rounded-xl bg-white/5">
+                        <h4 class="font-semibold text-white mb-2">{{ service[0] }}</h4>
+                        <p class="text-gray-400 text-sm">{{ service[1] }}</p>
+                    </div>
+                    {% endfor %}
+                </div>
+                <div class="mt-6 p-4 rounded-xl bg-amber-500/10 border border-amber-500/20">
+                    <p class="text-amber-200 text-sm">
+                        <strong class="text-amber-100">Note:</strong> We do not guarantee employment or opportunities. We are a platform that facilitates connections between talent and organizations.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 5: User Conduct -->
+        <div id="user-conduct" class="mb-16 scroll-mt-24">
+            <div class="flex items-center gap-4 mb-8">
+                <span class="flex-shrink-0 w-14 h-14 rounded-2xl bg-gradient-to-br from-red-500 to-pink-500 flex items-center justify-center text-white font-bold text-xl shadow-lg shadow-red-500/25">5</span>
+                <h2 class="text-3xl md:text-4xl font-bold text-white">User Conduct</h2>
+            </div>
+
+            <div class="p-8 rounded-3xl bg-gradient-to-br from-red-500/10 to-pink-500/10 border border-red-500/20">
+                <h3 class="text-xl font-semibold text-white mb-4">You agree NOT to:</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    {% for prohibited in [
+                        'Provide false, misleading, or fraudulent information',
+                        'Impersonate another person or entity',
+                        'Violate any applicable laws or regulations',
+                        'Harass, abuse, or harm other users',
+                        'Upload malicious software or content',
+                        'Attempt to gain unauthorized access to our systems',
+                        'Use the platform for illegal activities',
+                        'Scrape, copy, or harvest user data without permission',
+                        'Interfere with or disrupt the platform',
+                        'Circumvent security measures or access controls'
+                    ] %}
+                    <div class="flex items-start gap-3 p-3 rounded-xl bg-white/5">
+                        <svg class="w-5 h-5 text-red-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636"></path>
+                        </svg>
+                        <span class="text-gray-300 text-sm">{{ prohibited }}</span>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 6: Content & IP -->
+        <div id="content" class="mb-16 scroll-mt-24">
+            <div class="flex items-center gap-4 mb-8">
+                <span class="flex-shrink-0 w-14 h-14 rounded-2xl bg-gradient-to-br from-purple-500 to-violet-500 flex items-center justify-center text-white font-bold text-xl shadow-lg shadow-purple-500/25">6</span>
+                <h2 class="text-3xl md:text-4xl font-bold text-white">Content & Intellectual Property</h2>
+            </div>
+
+            <div class="space-y-6">
+                <div class="p-6 rounded-2xl bg-white/5 border border-white/10">
+                    <h3 class="text-xl font-semibold text-white mb-4">Your Content</h3>
+                    <p class="text-gray-300 mb-4">You retain ownership of content you upload. By uploading, you grant us a non-exclusive, worldwide, royalty-free license to use, display, and share your content as necessary to provide our services.</p>
+                    <p class="text-gray-400 text-sm">You are solely responsible for your content and must ensure it does not infringe on any third-party rights.</p>
+                </div>
+
+                <div class="p-6 rounded-2xl bg-white/5 border border-white/10">
+                    <h3 class="text-xl font-semibold text-white mb-4">Our Content</h3>
+                    <p class="text-gray-300 mb-4">ForgeForth Africa owns all rights to our platform, branding, software, algorithms, and original content. You may not copy, modify, distribute, or create derivative works without our written permission.</p>
+                    <p class="text-gray-400 text-sm">All trademarks, logos, and service marks are the property of ForgeForth Africa (Pty) Ltd.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 7: Payments & Fees -->
+        <div id="payments" class="mb-16 scroll-mt-24">
+            <div class="flex items-center gap-4 mb-8">
+                <span class="flex-shrink-0 w-14 h-14 rounded-2xl bg-gradient-to-br from-green-500 to-emerald-500 flex items-center justify-center text-white font-bold text-xl shadow-lg shadow-green-500/25">7</span>
+                <h2 class="text-3xl md:text-4xl font-bold text-white">Payments & Fees</h2>
+            </div>
+
+            <div class="p-6 rounded-2xl bg-white/5 border border-white/10">
+                <p class="text-gray-300 mb-6">ForgeForth Africa offers both free and premium services:</p>
+                <div class="space-y-4">
+                    <div class="p-4 rounded-xl bg-white/5">
+                        <h4 class="font-semibold text-white mb-2">Free Services</h4>
+                        <p class="text-gray-400 text-sm">Basic profile creation, opportunity browsing, and limited matching features are available at no cost.</p>
+                    </div>
+                    <div class="p-4 rounded-xl bg-white/5">
+                        <h4 class="font-semibold text-white mb-2">Premium Services</h4>
+                        <p class="text-gray-400 text-sm">Enhanced features, verification services, and priority matching may be subject to fees. All prices are displayed in South African Rand (ZAR) and include VAT where applicable.</p>
+                    </div>
+                    <div class="p-4 rounded-xl bg-emerald-500/10 border border-emerald-500/20">
+                        <p class="text-emerald-200 text-sm">
+                            <strong class="text-emerald-100">Consumer Protection (CPA Section 14):</strong> You have the right to cancel direct marketing agreements within 5 business days without penalty.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 8: Termination -->
+        <div id="termination" class="mb-16 scroll-mt-24">
+            <div class="flex items-center gap-4 mb-8">
+                <span class="flex-shrink-0 w-14 h-14 rounded-2xl bg-gradient-to-br from-gray-500 to-slate-500 flex items-center justify-center text-white font-bold text-xl shadow-lg shadow-gray-500/25">8</span>
+                <h2 class="text-3xl md:text-4xl font-bold text-white">Termination</h2>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="p-6 rounded-2xl bg-white/5 border border-white/10">
+                    <h3 class="text-lg font-semibold text-white mb-4">By You</h3>
+                    <p class="text-gray-300 text-sm">You may close your account at any time by contacting us or using the account settings. Upon termination, your access to our services will cease.</p>
+                </div>
+                <div class="p-6 rounded-2xl bg-white/5 border border-white/10">
+                    <h3 class="text-lg font-semibold text-white mb-4">By Us</h3>
+                    <p class="text-gray-300 text-sm">We may suspend or terminate your account if you violate these Terms, engage in fraudulent activity, or for any other reason at our discretion with notice.</p>
+                </div>
+            </div>
+            <div class="mt-6 p-5 rounded-xl bg-white/5 border border-white/10">
+                <h4 class="font-semibold text-white mb-2">Effect of Termination</h4>
+                <p class="text-gray-400 text-sm">Upon termination, your right to use our services immediately ceases. We may retain certain data as required by law or for legitimate business purposes, in accordance with our Privacy Policy.</p>
+            </div>
+        </div>
+
+        <!-- Section 9: Disclaimers -->
+        <div id="disclaimers" class="mb-16 scroll-mt-24">
+            <div class="flex items-center gap-4 mb-8">
+                <span class="flex-shrink-0 w-14 h-14 rounded-2xl bg-gradient-to-br from-amber-500 to-yellow-500 flex items-center justify-center text-white font-bold text-xl shadow-lg shadow-amber-500/25">9</span>
+                <h2 class="text-3xl md:text-4xl font-bold text-white">Disclaimers</h2>
+            </div>
+
+            <div class="p-8 rounded-3xl bg-gradient-to-br from-amber-500/10 to-yellow-500/10 border border-amber-500/20">
+                <div class="space-y-4">
+                    <div class="p-4 rounded-xl bg-white/5">
+                        <h4 class="font-semibold text-white mb-2">"As Is" Basis</h4>
+                        <p class="text-gray-400 text-sm">Our services are provided "as is" and "as available" without warranties of any kind, to the maximum extent permitted by law.</p>
+                    </div>
+                    <div class="p-4 rounded-xl bg-white/5">
+                        <h4 class="font-semibold text-white mb-2">No Employment Guarantee</h4>
+                        <p class="text-gray-400 text-sm">We do not guarantee that you will receive job offers, opportunities, or any specific outcomes from using our platform.</p>
+                    </div>
+                    <div class="p-4 rounded-xl bg-white/5">
+                        <h4 class="font-semibold text-white mb-2">Third-Party Content</h4>
+                        <p class="text-gray-400 text-sm">We are not responsible for the accuracy, legality, or appropriateness of third-party content, including employer postings and user-generated content.</p>
+                    </div>
+                    <div class="p-4 rounded-xl bg-white/5">
+                        <h4 class="font-semibold text-white mb-2">Service Availability</h4>
+                        <p class="text-gray-400 text-sm">We do not guarantee uninterrupted, secure, or error-free operation of our platform.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 10: Limitation of Liability -->
+        <div id="liability" class="mb-16 scroll-mt-24">
+            <div class="flex items-center gap-4 mb-8">
+                <span class="flex-shrink-0 w-14 h-14 rounded-2xl bg-gradient-to-br from-red-500 to-orange-500 flex items-center justify-center text-white font-bold text-xl shadow-lg shadow-red-500/25">10</span>
+                <h2 class="text-3xl md:text-4xl font-bold text-white">Limitation of Liability</h2>
+            </div>
+
+            <div class="p-6 rounded-2xl bg-white/5 border border-white/10">
+                <p class="text-gray-300 mb-6">To the maximum extent permitted by South African law, including the CPA:</p>
+                <ul class="space-y-3 text-gray-300">
+                    <li class="flex items-start gap-3">
+                        <svg class="w-5 h-5 text-orange-400 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                        </svg>
+                        <span>We shall not be liable for any indirect, incidental, special, consequential, or punitive damages.</span>
+                    </li>
+                    <li class="flex items-start gap-3">
+                        <svg class="w-5 h-5 text-orange-400 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                        </svg>
+                        <span>Our total liability shall not exceed the amount you paid us in the 12 months preceding the claim, or R1,000, whichever is greater.</span>
+                    </li>
+                    <li class="flex items-start gap-3">
+                        <svg class="w-5 h-5 text-orange-400 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                        </svg>
+                        <span>These limitations do not affect your statutory rights under the CPA or other applicable consumer protection laws.</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Section 11: Disputes & Governing Law -->
+        <div id="disputes" class="mb-16 scroll-mt-24">
+            <div class="flex items-center gap-4 mb-8">
+                <span class="flex-shrink-0 w-14 h-14 rounded-2xl bg-gradient-to-br from-sky-500 to-blue-500 flex items-center justify-center text-white font-bold text-xl shadow-lg shadow-sky-500/25">11</span>
+                <h2 class="text-3xl md:text-4xl font-bold text-white">Disputes & Governing Law</h2>
+            </div>
+
+            <div class="space-y-6">
+                <div class="p-6 rounded-2xl bg-white/5 border border-white/10">
+                    <h3 class="text-xl font-semibold text-white mb-4">Governing Law</h3>
+                    <p class="text-gray-300">These Terms are governed by and construed in accordance with the laws of the <strong class="text-white">Republic of South Africa</strong>.</p>
+                </div>
+
+                <div class="p-6 rounded-2xl bg-white/5 border border-white/10">
+                    <h3 class="text-xl font-semibold text-white mb-4">Dispute Resolution</h3>
+                    <ol class="space-y-3 text-gray-300">
+                        <li class="flex items-start gap-3">
+                            <span class="w-6 h-6 rounded-full bg-sky-500/20 flex items-center justify-center flex-shrink-0 text-sky-400 text-sm font-bold">1</span>
+                            <span><strong class="text-white">Informal Resolution:</strong> We encourage you to contact us first to resolve any disputes amicably.</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <span class="w-6 h-6 rounded-full bg-sky-500/20 flex items-center justify-center flex-shrink-0 text-sky-400 text-sm font-bold">2</span>
+                            <span><strong class="text-white">Mediation:</strong> If informal resolution fails, disputes may be submitted to mediation under the rules of the Arbitration Foundation of Southern Africa (AFSA).</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <span class="w-6 h-6 rounded-full bg-sky-500/20 flex items-center justify-center flex-shrink-0 text-sky-400 text-sm font-bold">3</span>
+                            <span><strong class="text-white">Legal Action:</strong> Either party may pursue legal remedies in the courts of South Africa, Gauteng Division, Johannesburg.</span>
+                        </li>
+                    </ol>
+                </div>
+
+                <div class="p-5 rounded-xl bg-cyan-500/10 border border-cyan-500/20">
+                    <p class="text-cyan-200 text-sm">
+                        <strong class="text-cyan-100">Consumer Rights:</strong> Nothing in these Terms limits your rights to lodge complaints with the National Consumer Commission or pursue remedies under the Consumer Protection Act.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 12: Contact -->
+        <div id="contact" class="scroll-mt-24">
+            <div class="flex items-center gap-4 mb-8">
+                <span class="flex-shrink-0 w-14 h-14 rounded-2xl bg-gradient-to-br from-violet-500 to-purple-500 flex items-center justify-center text-white font-bold text-xl shadow-lg shadow-violet-500/25">12</span>
+                <h2 class="text-3xl md:text-4xl font-bold text-white">Contact Us</h2>
+            </div>
+
+            <div class="p-8 rounded-3xl bg-gradient-to-br from-violet-500/10 to-purple-500/10 border border-violet-500/20">
+                <p class="text-gray-300 mb-6">For questions about these Terms of Service, please contact us:</p>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                    <div class="bg-white/5 rounded-xl p-5 border border-white/10">
+                        <h4 class="font-semibold text-white mb-3">Legal Department</h4>
+                        <p class="text-gray-400 text-sm mb-2">ForgeForth Africa (Pty) Ltd</p>
+                        <p class="text-gray-400 text-sm">Johannesburg, Gauteng, South Africa</p>
+                    </div>
+                    <div class="bg-white/5 rounded-xl p-5 border border-white/10">
+                        <h4 class="font-semibold text-white mb-3">Contact Details</h4>
+                        <p class="text-gray-400 text-sm mb-1">
+                            <strong class="text-gray-300">Email:</strong>
+                            <a href="mailto:legal@forgeforthafrica.com" class="text-indigo-400 hover:underline">legal@forgeforthafrica.com</a>
+                        </p>
+                        <p class="text-gray-400 text-sm">
+                            <strong class="text-gray-300">Phone:</strong> +27 69 297 3425
+                        </p>
+                    </div>
+                </div>
+                <div class="flex flex-wrap gap-4">
+                    <a href="mailto:legal@forgeforthafrica.com" class="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-white/10 hover:bg-white/20 border border-white/10 text-white transition-all duration-300">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+                        </svg>
+                        Email Legal Team
+                    </a>
+                    <a href="/contact/" class="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-gradient-to-r from-indigo-500 to-purple-500 text-white font-semibold hover:shadow-lg hover:shadow-indigo-500/25 transition-all duration-300">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path>
+                        </svg>
+                        Contact Form
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Related Policies -->
+        <div class="mt-16 pt-8 border-t border-white/10">
+            <h3 class="text-xl font-bold text-white mb-6 text-center">Related Policies</h3>
+            <div class="flex flex-wrap justify-center gap-4">
+                <a href="/privacy-policy/" class="px-6 py-3 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-gray-300 hover:text-white transition-all duration-300">
+                    Privacy Policy
+                </a>
+                <a href="/cookie-policy/" class="px-6 py-3 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-gray-300 hover:text-white transition-all duration-300">
+                    Cookie Policy
+                </a>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+{% endblock %}
+

@@ -1,0 +1,96 @@
+{% extends "website/layouts/portal_base.html" %}
+
+{% block title %}My Applications - Talent Portal{% endblock %}
+
+{% block portal_content %}
+<div class="mb-8">
+    <h1 class="text-2xl md:text-3xl font-bold text-white mb-2">My Applications</h1>
+    <p class="text-slate-400">Track the status of your job applications</p>
+</div>
+
+<!-- Filters -->
+<div class="glass-card rounded-2xl p-4 mb-8">
+    <div class="flex flex-wrap gap-2">
+        <a href="/portal/talent/applications/"
+           class="px-4 py-2 rounded-lg text-sm font-medium transition {% if not status_filter %}bg-forgeforth-blue-light/20 text-forgeforth-blue-light{% else %}text-slate-400 hover:bg-white/5{% endif %}">
+            All
+        </a>
+        <a href="/portal/talent/applications/?status=pending"
+           class="px-4 py-2 rounded-lg text-sm font-medium transition {% if status_filter == 'pending' %}bg-secondary/20 text-secondary{% else %}text-slate-400 hover:bg-white/5{% endif %}">
+            Pending
+        </a>
+        <a href="/portal/talent/applications/?status=interview"
+           class="px-4 py-2 rounded-lg text-sm font-medium transition {% if status_filter == 'interview' %}bg-accent/20 text-accent{% else %}text-slate-400 hover:bg-white/5{% endif %}">
+            Interview
+        </a>
+        <a href="/portal/talent/applications/?status=accepted"
+           class="px-4 py-2 rounded-lg text-sm font-medium transition {% if status_filter == 'accepted' %}bg-forgeforth-green/20 text-forgeforth-green{% else %}text-slate-400 hover:bg-white/5{% endif %}">
+            Accepted
+        </a>
+        <a href="/portal/talent/applications/?status=rejected"
+           class="px-4 py-2 rounded-lg text-sm font-medium transition {% if status_filter == 'rejected' %}bg-red-500/20 text-red-400{% else %}text-slate-400 hover:bg-white/5{% endif %}">
+            Rejected
+        </a>
+    </div>
+</div>
+
+<!-- Applications List -->
+{% if applications %}
+<div class="space-y-4">
+    {% for app in applications %}
+    <div class="glass-card rounded-2xl p-6 hover:bg-white/10 transition border border-transparent hover:border-secondary/20">
+        <div class="flex flex-col md:flex-row md:items-center gap-4">
+            <div class="flex items-center gap-4 flex-1">
+                <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-primary to-forgeforth-blue-light flex items-center justify-center flex-shrink-0">
+                    <span class="text-white font-bold">{{ app.opportunity.organization.name|slice:":2"|upper }}</span>
+                </div>
+                <div class="flex-1 min-w-0">
+                    <h3 class="text-white font-semibold truncate">{{ app.opportunity.title }}</h3>
+                    <p class="text-slate-400 text-sm">{{ app.opportunity.organization.name }}</p>
+                </div>
+            </div>
+
+            <div class="flex items-center gap-4">
+                <span class="px-3 py-1.5 rounded-full text-xs font-medium
+                    {% if app.status == 'pending' %}bg-secondary/20 text-secondary
+                    {% elif app.status == 'interview' %}bg-accent/20 text-accent
+                    {% elif app.status == 'accepted' %}bg-forgeforth-green/20 text-forgeforth-green
+                    {% elif app.status == 'rejected' %}bg-red-500/20 text-red-400
+                    {% else %}bg-slate-500/20 text-slate-400{% endif %}">
+                    {{ app.status|title }}
+                </span>
+                <span class="text-slate-500 text-sm">Applied {{ app.created_at|date:"M d, Y" }}</span>
+            </div>
+        </div>
+
+        {% if app.status == 'interview' %}
+        <div class="mt-4 pt-4 border-t border-white/10">
+            <div class="flex items-center gap-2 text-accent">
+                <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                </svg>
+                <span class="text-sm font-medium">Interview scheduled - check your email for details</span>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+    {% endfor %}
+</div>
+{% else %}
+<div class="text-center py-16">
+    <div class="w-20 h-20 rounded-full bg-primary/20 flex items-center justify-center mx-auto mb-6">
+        <svg class="w-10 h-10 text-forgeforth-blue-light/50" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+        </svg>
+    </div>
+    <h3 class="text-xl font-semibold text-white mb-2">No Applications Yet</h3>
+    <p class="text-slate-500 mb-6">Start applying to opportunities and track your progress here</p>
+    <a href="/portal/talent/opportunities/" class="inline-flex items-center gap-2 px-6 py-3 bg-secondary hover:bg-secondary/90 text-primary font-semibold rounded-xl transition">
+        Browse Opportunities
+        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+        </svg>
+    </a>
+</div>
+{% endif %}
+{% endblock %}

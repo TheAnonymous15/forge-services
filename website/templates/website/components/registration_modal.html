@@ -1,0 +1,1571 @@
+<!-- ═══════════════════════════════════════════════════════════════════════════════
+     UNIFIED REGISTRATION MODAL - Individual & Partner
+     Modern, 2-column layout, max 80% viewport
+═══════════════════════════════════════════════════════════════════════════════ -->
+<div id="registration-modal"
+     class="fixed inset-0 z-[9999] hidden items-center justify-center p-4 opacity-0 transition-opacity duration-300">
+
+    <!-- Background Image -->
+    <div class="absolute inset-0">
+        <img src="{{ static('images/one.jpg') }}" alt="" class="w-full h-full object-cover">
+        <div class="absolute inset-0 bg-black/80 backdrop-blur-sm"></div>
+    </div>
+
+    <!-- Ambient glows -->
+    <div class="absolute inset-0 pointer-events-none overflow-hidden">
+        <div class="absolute top-1/4 left-1/4 w-72 h-72 bg-purple-600/10 rounded-full blur-3xl"></div>
+        <div class="absolute bottom-1/4 right-1/4 w-72 h-72 bg-cyan-600/8 rounded-full blur-3xl"></div>
+    </div>
+
+    <!-- Modal Card - Responsive max height -->
+    <div id="reg-modal-content"
+         class="relative w-full max-w-3xl max-h-[95vh] md:max-h-[85vh] overflow-hidden
+                transform-gpu scale-95 opacity-0 transition-all duration-300
+                rounded-xl md:rounded-2xl border border-white/10
+                bg-gradient-to-br from-[#0c1322] via-[#0f1729] to-[#0c1322]
+                shadow-[0_20px_60px_rgba(0,0,0,0.5)]
+                backdrop-blur-xl flex flex-col">
+
+        <!-- Top accent line -->
+        <div class="absolute inset-x-0 top-0 h-0.5 bg-gradient-to-r from-purple-500 via-pink-500 to-cyan-500"></div>
+
+        <!-- ══════════════════════════════════════════════════════
+             HEADER - Type Selector
+        ══════════════════════════════════════════════════════ -->
+        <div class="relative px-4 md:px-5 py-3 md:py-4 border-b border-white/5 flex-shrink-0">
+            <!-- Close button -->
+            <button onclick="closeRegistrationModal()"
+                    class="absolute top-2 md:top-3 right-2 md:right-3 z-20 w-7 h-7 md:w-8 md:h-8 flex items-center justify-center
+                           rounded-lg bg-white/5 border border-white/10
+                           hover:bg-red-500/20 hover:border-red-500/30
+                           transition-all duration-200 group">
+                <svg class="w-3.5 h-3.5 md:w-4 md:h-4 text-slate-400 group-hover:text-red-400 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                </svg>
+            </button>
+
+            <!-- Title & Type Toggle - Stack on mobile -->
+            <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-3 pr-8 md:pr-10">
+                <div class="flex items-center gap-2 md:gap-3">
+                    <div class="w-8 h-8 md:w-10 md:h-10 rounded-lg md:rounded-xl bg-gradient-to-br from-purple-500 to-pink-600 flex items-center justify-center shadow-lg shadow-purple-500/20">
+                        <svg class="w-4 h-4 md:w-5 md:h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"/>
+                        </svg>
+                    </div>
+                    <div>
+                        <h2 class="text-white font-bold text-base md:text-lg">Join ForgeForth Africa</h2>
+                        <p class="text-slate-500 text-[10px] md:text-xs">Create your account</p>
+                    </div>
+                </div>
+
+                <!-- Type Toggle -->
+                <div class="flex bg-white/5 rounded-lg md:rounded-xl p-1 border border-white/5 self-start md:self-auto">
+                    <button type="button" id="toggle-individual"
+                            class="reg-type-btn active px-3 md:px-4 py-1.5 md:py-2 rounded-md md:rounded-lg text-[10px] md:text-xs font-semibold transition-all duration-200
+                                   text-white bg-gradient-to-r from-purple-500/80 to-pink-500/80 shadow-md">
+                        <span class="flex items-center gap-1.5 md:gap-2">
+                            <svg class="w-3.5 h-3.5 md:w-4 md:h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
+                            </svg>
+                            Individual
+                        </span>
+                    </button>
+                    <button type="button" id="toggle-partner"
+                            class="reg-type-btn px-3 md:px-4 py-1.5 md:py-2 rounded-md md:rounded-lg text-[10px] md:text-xs font-semibold transition-all duration-200
+                                   text-slate-400 hover:text-slate-200">
+                        <span class="flex items-center gap-1.5 md:gap-2">
+                            <svg class="w-3.5 h-3.5 md:w-4 md:h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/>
+                            </svg>
+                            Organization
+                        </span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- ══════════════════════════════════════════════════════
+             BODY - Scrollable Content
+        ══════════════════════════════════════════════════════ -->
+        <div class="flex-1 overflow-y-auto px-4 md:px-5 py-3 md:py-4 [scrollbar-width:thin] [scrollbar-color:rgba(139,92,246,0.3)_transparent]">
+
+            <!-- Success Message (shared) -->
+            <div id="reg-success-message" class="hidden text-center py-12">
+                <div class="relative inline-flex items-center justify-center w-16 h-16 mb-5">
+                    <div class="absolute inset-0 rounded-2xl bg-emerald-500/20 blur-xl"></div>
+                    <div class="relative w-16 h-16 rounded-2xl bg-emerald-500/10 border border-emerald-400/30 flex items-center justify-center">
+                        <svg class="w-8 h-8 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/>
+                        </svg>
+                    </div>
+                </div>
+                <h3 class="font-bold text-xl text-white mb-2" id="success-title">Welcome aboard!</h3>
+                <p class="text-slate-400 text-sm max-w-sm mx-auto" id="success-message">Your account has been created. Check your email for next steps.</p>
+            </div>
+
+            <!-- ════════════════════════════════════════════════
+                 INDIVIDUAL FORM
+            ════════════════════════════════════════════════ -->
+            <form id="individual-form" class="reg-form">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-x-5 gap-y-4">
+
+                    <!-- LEFT COLUMN -->
+                    <div class="space-y-4">
+                        <div class="pb-2 border-b border-white/5">
+                            <p class="text-purple-400 text-[10px] font-bold uppercase tracking-widest flex items-center gap-2">
+                                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
+                                </svg>
+                                Personal Details
+                            </p>
+                        </div>
+
+                        <!-- Name Row -->
+                        <div class="grid grid-cols-2 gap-3">
+                            <div>
+                                <label class="block text-slate-500 text-[10px] font-semibold uppercase tracking-wider mb-1">First Name *</label>
+                                <input type="text" name="first_name" required placeholder="Daniel"
+                                       class="w-full px-3 py-2 rounded-lg bg-white/5 border border-white/10 text-white placeholder-slate-600 text-sm focus:outline-none focus:border-purple-400/50 focus:bg-white/8 transition-all"/>
+                            </div>
+                            <div>
+                                <label class="block text-slate-500 text-[10px] font-semibold uppercase tracking-wider mb-1">Last Name *</label>
+                                <input type="text" name="last_name" required placeholder="DK"
+                                       class="w-full px-3 py-2 rounded-lg bg-white/5 border border-white/10 text-white placeholder-slate-600 text-sm focus:outline-none focus:border-purple-400/50 focus:bg-white/8 transition-all"/>
+                            </div>
+                        </div>
+
+                        <!-- Email -->
+                        <div>
+                            <label class="block text-slate-500 text-[10px] font-semibold uppercase tracking-wider mb-1">Email Address *</label>
+                            <input type="email" name="email" required placeholder="user@example.com"
+                                   class="w-full px-3 py-2 rounded-lg bg-white/5 border border-white/10 text-white placeholder-slate-600 text-sm focus:outline-none focus:border-purple-400/50 focus:bg-white/8 transition-all"/>
+                        </div>
+
+                        <!-- Password with Show/Hide Toggle -->
+                        <div class="grid grid-cols-2 gap-3">
+                            <div>
+                                <label class="block text-slate-500 text-[10px] font-semibold uppercase tracking-wider mb-1">Password *</label>
+                                <div class="relative">
+                                    <input type="password" name="password" id="ind-password" required placeholder="Min 8 characters"
+                                           minlength="8"
+                                           class="w-full px-3 py-2 pr-10 rounded-lg bg-white/5 border border-white/10 text-white placeholder-slate-600 text-sm focus:outline-none focus:border-purple-400/50 focus:bg-white/8 transition-all"/>
+                                    <button type="button" onclick="togglePassword('ind-password', this)"
+                                            class="absolute right-2 top-1/2 -translate-y-1/2 p-1 text-slate-500 hover:text-purple-400 transition-colors"
+                                            title="Show password">
+                                        <svg class="w-4 h-4 eye-open" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+                                        </svg>
+                                        <svg class="w-4 h-4 eye-closed hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21"/>
+                                        </svg>
+                                    </button>
+                                </div>
+                            </div>
+                            <div>
+                                <label class="block text-slate-500 text-[10px] font-semibold uppercase tracking-wider mb-1">Confirm Password *</label>
+                                <div class="relative">
+                                    <input type="password" name="confirm_password" id="ind-confirm-password" required placeholder="Re-enter password"
+                                           minlength="8"
+                                           class="w-full px-3 py-2 pr-10 rounded-lg bg-white/5 border border-white/10 text-white placeholder-slate-600 text-sm focus:outline-none focus:border-purple-400/50 focus:bg-white/8 transition-all"/>
+                                    <button type="button" onclick="togglePassword('ind-confirm-password', this)"
+                                            class="absolute right-2 top-1/2 -translate-y-1/2 p-1 text-slate-500 hover:text-purple-400 transition-colors"
+                                            title="Show password">
+                                        <svg class="w-4 h-4 eye-open" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+                                        </svg>
+                                        <svg class="w-4 h-4 eye-closed hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21"/>
+                                        </svg>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <p class="text-slate-600 text-[10px] -mt-2">Must be 8+ characters with letters and numbers</p>
+
+                        <!-- Country & Phone -->
+                        <div class="grid grid-cols-5 gap-3">
+                            <div class="relative col-span-2">
+                                <label class="block text-slate-500 text-[10px] font-semibold uppercase tracking-wider mb-1">Country *</label>
+                                <input type="text" name="country" id="country-input" required placeholder="Type country..."
+                                       autocomplete="off"
+                                       class="w-full px-3 py-2 rounded-lg bg-white/5 border border-white/10 text-white placeholder-slate-600 text-sm focus:outline-none focus:border-purple-400/50 transition-all"/>
+                                <!-- Autocomplete dropdown -->
+                                <div id="country-autocomplete" class="hidden absolute z-50 left-0 right-0 mt-1 max-h-40 overflow-y-auto rounded-lg bg-slate-900/95 backdrop-blur-xl border border-white/10 shadow-2xl">
+                                </div>
+                            </div>
+                            <div class="col-span-3">
+                                <label class="block text-slate-500 text-[10px] font-semibold uppercase tracking-wider mb-1">Phone *</label>
+                                <div class="flex rounded-lg border border-white/10 focus-within:border-purple-400/50 transition-all overflow-hidden">
+                                    <!-- Country Code (Read-only, auto-filled) -->
+                                    <span id="phone-code-display" class="px-2 py-2 bg-white/10 border-r border-white/10 text-slate-400 text-xs flex items-center min-w-[75px] whitespace-nowrap">
+                                        +--
+                                    </span>
+                                    <input type="hidden" name="phone_code" id="phone-code-input" value="">
+                                    <!-- Phone Number Input -->
+                                    <input type="tel" name="phone" required placeholder="712345678"
+                                           class="flex-1 px-3 py-2 bg-white/5 text-white placeholder-slate-600 text-sm focus:outline-none"/>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Date of Birth & Gender (Analytics Essential) -->
+                        <div class="grid grid-cols-2 gap-3">
+                            <div>
+                                <label class="block text-slate-500 text-[10px] font-semibold uppercase tracking-wider mb-1">Date of Birth * <span class="text-slate-600 font-normal">(18+)</span></label>
+                                <input type="date" name="date_of_birth" id="ind-date-of-birth" required
+                                       class="w-full px-3 py-2 rounded-lg bg-white/5 border border-white/10 text-white text-sm focus:outline-none focus:border-purple-400/50 focus:bg-white/8 transition-all [color-scheme:dark]"/>
+                                <p class="text-slate-600 text-[9px] mt-0.5">You must be 18 years or older</p>
+                            </div>
+                            <div>
+                                <label class="block text-slate-500 text-[10px] font-semibold uppercase tracking-wider mb-1">Gender *</label>
+                                <select name="gender" required
+                                        class="w-full px-3 py-2 rounded-lg bg-white/5 border border-white/10 text-slate-300 text-sm focus:outline-none focus:border-purple-400/50 transition-all [&>option]:bg-slate-900 [&>option]:text-white">
+                                    <option value="">Select</option>
+                                    <option value="male">Male</option>
+                                    <option value="female">Female</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Education Level -->
+                        <div>
+                            <label class="block text-slate-500 text-[10px] font-semibold uppercase tracking-wider mb-1">Highest Education Level</label>
+                            <select name="education_level"
+                                    class="w-full px-3 py-2 rounded-lg bg-white/5 border border-white/10 text-slate-300 text-sm focus:outline-none focus:border-purple-400/50 transition-all [&>option]:bg-slate-900 [&>option]:text-white">
+                                <option value="">Select</option>
+                                <option value="high_school">High School / Matric</option>
+                                <option value="certificate">Certificate / Diploma</option>
+                                <option value="bachelors">Bachelor's Degree</option>
+                                <option value="masters">Master's Degree</option>
+                                <option value="doctorate">Doctorate / PhD</option>
+                                <option value="self_taught">Self-taught / Bootcamp</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+
+                        <!-- What are you looking for -->
+                        <div>
+                            <label class="block text-slate-500 text-[10px] font-semibold uppercase tracking-wider mb-2">What are you looking for? *</label>
+                            <div class="grid grid-cols-2 gap-2">
+                                {% for val, emoji, lbl in [('volunteer','🤝','Volunteer'),('internship','🎓','Internship'),('job','💼','Employment'),('skillup','📈','SkillUp')] %}
+                                <label class="cursor-pointer">
+                                    <input type="checkbox" name="opportunity_type" value="{{ val }}" class="peer sr-only">
+                                    <div class="flex items-center gap-2 px-3 py-2 rounded-lg
+                                                bg-white/5 border border-white/10 text-slate-400
+                                                hover:bg-white/8 hover:border-white/15
+                                                peer-checked:bg-purple-500/15 peer-checked:border-purple-400/40 peer-checked:text-purple-300
+                                                transition-all duration-200 select-none text-xs font-medium">
+                                        <span>{{ emoji }}</span>
+                                        <span>{{ lbl }}</span>
+                                    </div>
+                                </label>
+                                {% endfor %}
+                            </div>
+                        </div>
+
+                        <!-- Referral Source -->
+                        <div>
+                            <label class="block text-slate-500 text-[10px] font-semibold uppercase tracking-wider mb-1">How did you hear about us?</label>
+                            <select name="referral_source"
+                                    class="w-full px-3 py-2 rounded-lg bg-white/5 border border-white/10 text-slate-300 text-sm focus:outline-none focus:border-purple-400/50 transition-all [&>option]:bg-slate-900 [&>option]:text-white">
+                                <option value="">Select one</option>
+                                <option value="social_media">Social Media</option>
+                                <option value="friend">Friend / Colleague</option>
+                                <option value="google">Google Search</option>
+                                <option value="linkedin">LinkedIn</option>
+                                <option value="event">Event / Meetup</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- RIGHT COLUMN -->
+                    <div class="flex flex-col">
+                        <!-- Brief Bio -->
+                        <div class="mb-3">
+                            <label class="block text-slate-500 text-[10px] font-semibold uppercase tracking-wider mb-1">Brief Bio <span class="text-slate-600 font-normal">(optional)</span></label>
+                            <textarea name="bio" rows="3" placeholder="Tell us a bit about yourself, your experience, and what you're passionate about..."
+                                      class="w-full px-3 py-2 rounded-lg bg-white/5 border border-white/10 text-white placeholder-slate-600 text-xs focus:outline-none focus:border-purple-400/50 focus:bg-white/8 transition-all resize-none"></textarea>
+                        </div>
+
+                        <!-- Skills & Fields - Stacked vertically with fixed heights -->
+                        <div class="space-y-3">
+                            <!-- Your Skills -->
+                            <div>
+                                <div class="flex items-center justify-between mb-1.5">
+                                    <label class="text-purple-400 text-[10px] font-semibold uppercase tracking-wider">Your Skills *</label>
+                                    <span id="ind-skills-count" class="text-[9px] text-purple-300 font-semibold px-1.5 py-0.5 rounded-full bg-purple-500/15 border border-purple-400/25 hidden"></span>
+                                </div>
+                                <div id="ind-skills-hidden"></div>
+                                <div class="h-[120px] md:h-[200px] flex flex-wrap content-start gap-1 overflow-y-auto [scrollbar-width:thin] [scrollbar-color:rgba(139,92,246,0.3)_transparent] pr-1 p-2 rounded-lg bg-white/[0.02] border border-white/5">
+                                    {% for skill in ['Software Development','Data Science','AI / Machine Learning','Cybersecurity','Cloud Computing','DevOps','UI/UX Design','Graphic Design','Product Management','Project Management','Marketing','Digital Marketing','Content Writing','Copywriting','SEO/SEM','Social Media','Finance','Accounting','Healthcare','Nursing','Medicine','Teaching','Tutoring','Legal','Law','HR','Recruitment','Engineering','Mechanical Eng','Electrical Eng','Civil Eng','Chemical Eng','Agriculture','Farming','Sales','Business Dev','Research','Analytics','Customer Service','Support','Administration','Operations','Logistics','Supply Chain','Photography','Videography','Animation','3D Modeling','Game Dev','Mobile Dev','Web Dev','Backend Dev','Frontend Dev','Full Stack','Database Admin','Network Admin','Quality Assurance','Testing','Technical Writing','Translation','Event Planning','Public Relations','Journalism','Broadcasting','Music','Audio Production','Fashion','Interior Design','Architecture','Real Estate','Insurance','Banking','Investment','Consulting','Entrepreneurship','Nonprofit','Volunteering','Other'] %}
+                                    <button type="button" data-skill="{{ skill }}"
+                                            class="ind-skill-pill h-fit px-2 py-0.5 rounded text-[9px] font-medium
+                                                   bg-white/5 border border-white/10 text-slate-500
+                                                   hover:border-purple-400/40 hover:text-slate-300 hover:bg-purple-500/10
+                                                   transition-all duration-150 select-none">{{ skill }}</button>
+                                    {% endfor %}
+                                </div>
+                                <div id="ind-skill-other-wrap" class="hidden mt-1.5">
+                                    <input type="text" id="ind-skill-other-input" placeholder="Your skill..."
+                                           class="w-full px-2 py-1.5 rounded bg-purple-500/10 border border-purple-400/30 text-white placeholder-slate-500 text-[10px] focus:outline-none focus:border-purple-400/50 transition-all"/>
+                                </div>
+                            </div>
+
+                            <!-- Preferred Fields -->
+                            <div>
+                                <div class="flex items-center justify-between mb-1.5">
+                                    <label class="text-pink-400 text-[10px] font-semibold uppercase tracking-wider">Preferred Fields *</label>
+                                    <span id="ind-fields-count" class="text-[9px] text-pink-300 font-semibold px-1.5 py-0.5 rounded-full bg-pink-500/15 border border-pink-400/25 hidden"></span>
+                                </div>
+                                <div id="ind-fields-hidden"></div>
+                                <div class="h-[120px] md:h-[200px] flex flex-wrap content-start gap-1 overflow-y-auto [scrollbar-width:thin] [scrollbar-color:rgba(236,72,153,0.3)_transparent] pr-1 p-2 rounded-lg bg-white/[0.02] border border-white/5">
+                                    {% for field, lbl in [('technology','Technology'),('software','Software'),('fintech','FinTech'),('edtech','EdTech'),('healthtech','HealthTech'),('agritech','AgriTech'),('ecommerce','E-Commerce'),('healthcare','Healthcare'),('pharmaceuticals','Pharmaceuticals'),('biotechnology','Biotechnology'),('education','Education'),('finance','Finance'),('banking','Banking'),('insurance','Insurance'),('investment','Investment'),('marketing','Marketing'),('advertising','Advertising'),('media','Media'),('entertainment','Entertainment'),('design','Design'),('fashion','Fashion'),('beauty','Beauty'),('engineering','Engineering'),('construction','Construction'),('architecture','Architecture'),('real_estate','Real Estate'),('legal','Legal'),('law','Law Firms'),('hr','Human Resources'),('recruitment','Recruitment'),('agriculture','Agriculture'),('farming','Farming'),('food','Food & Beverage'),('hospitality','Hospitality'),('tourism','Tourism'),('travel','Travel'),('transportation','Transportation'),('logistics','Logistics'),('shipping','Shipping'),('automotive','Automotive'),('aerospace','Aerospace'),('energy','Energy'),('oil_gas','Oil & Gas'),('renewable','Renewable Energy'),('mining','Mining'),('manufacturing','Manufacturing'),('retail','Retail'),('wholesale','Wholesale'),('telecommunications','Telecommunications'),('internet','Internet Services'),('gaming','Gaming'),('sports','Sports'),('fitness','Fitness'),('nonprofit','Non-Profit'),('government','Government'),('public_sector','Public Sector'),('consulting','Consulting'),('research','Research'),('science','Science'),('environment','Environment'),('sustainability','Sustainability'),('arts','Arts & Culture'),('music','Music'),('film','Film & Video'),('publishing','Publishing'),('journalism','Journalism'),('security','Security'),('defense','Defense'),('other','Other')] %}
+                                    <button type="button" data-field="{{ field }}"
+                                            class="ind-field-pill h-fit px-2 py-0.5 rounded text-[9px] font-medium
+                                                   bg-white/5 border border-white/10 text-slate-500
+                                                   hover:border-pink-400/40 hover:text-slate-300 hover:bg-pink-500/10
+                                                   transition-all duration-150 select-none">{{ lbl }}</button>
+                                    {% endfor %}
+                                </div>
+                                <div id="ind-field-other-wrap" class="hidden mt-1.5">
+                                    <input type="text" id="ind-field-other-input" placeholder="Your field..."
+                                           class="w-full px-2 py-1.5 rounded bg-pink-500/10 border border-pink-400/30 text-white placeholder-slate-500 text-[10px] focus:outline-none focus:border-pink-400/50 transition-all"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ════════════════════════════════════════════════
+                     CONSENT & LEGAL SECTION
+                ════════════════════════════════════════════════ -->
+                <div class="mt-4 md:mt-5 pt-3 md:pt-4 border-t border-white/5">
+                    <div class="pb-2 mb-2 md:mb-3">
+                        <p class="text-amber-400 text-[10px] font-bold uppercase tracking-widest flex items-center gap-2">
+                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
+                            </svg>
+                            Consent & Agreement
+                        </p>
+                    </div>
+
+                    <div class="space-y-2 md:space-y-3">
+                        <!-- Age Confirmation -->
+                        <label class="flex items-start gap-2 md:gap-3 cursor-pointer group">
+                            <input type="checkbox" name="consent_age" required
+                                   class="mt-0.5 w-3.5 h-3.5 md:w-4 md:h-4 rounded border-white/20 bg-white/5 text-purple-500 focus:ring-purple-500/30 focus:ring-offset-0">
+                            <span class="text-slate-400 text-[11px] md:text-xs leading-relaxed group-hover:text-slate-300 transition-colors">
+                                I confirm that I am <span class="text-white font-semibold">18 years or older</span>, or I have parental/guardian consent to create this account.
+                            </span>
+                        </label>
+
+                        <!-- Data Processing Consent -->
+                        <label class="flex items-start gap-2 md:gap-3 cursor-pointer group">
+                            <input type="checkbox" name="consent_data" required
+                                   class="mt-0.5 w-3.5 h-3.5 md:w-4 md:h-4 rounded border-white/20 bg-white/5 text-purple-500 focus:ring-purple-500/30 focus:ring-offset-0">
+                            <span class="text-slate-400 text-[11px] md:text-xs leading-relaxed group-hover:text-slate-300 transition-colors">
+                                I consent to ForgeForth Africa <span class="text-white font-semibold">collecting, storing, processing, and transmitting</span> my personal data for the purposes of operating this platform and connecting me with opportunities.
+                            </span>
+                        </label>
+
+                        <!-- Privacy & Terms -->
+                        <label class="flex items-start gap-2 md:gap-3 cursor-pointer group">
+                            <input type="checkbox" name="consent_terms" required
+                                   class="mt-0.5 w-3.5 h-3.5 md:w-4 md:h-4 rounded border-white/20 bg-white/5 text-purple-500 focus:ring-purple-500/30 focus:ring-offset-0">
+                            <span class="text-slate-400 text-[11px] md:text-xs leading-relaxed group-hover:text-slate-300 transition-colors">
+                                I have read and understood the
+                                <a href="/privacy-policy/" target="_blank" class="text-purple-400 hover:text-purple-300 underline underline-offset-2">Privacy Policy</a>,
+                                <a href="/terms-of-service/" target="_blank" class="text-purple-400 hover:text-purple-300 underline underline-offset-2">Terms of Service</a>, and
+                                <a href="/cookie-policy/" target="_blank" class="text-purple-400 hover:text-purple-300 underline underline-offset-2">Cookie Policy</a>.
+                            </span>
+                        </label>
+
+                        <!-- Accuracy Notice -->
+                        <div class="mt-2 md:mt-3 p-2 md:p-3 rounded-lg bg-amber-500/10 border border-amber-400/20">
+                            <p class="text-amber-300/90 text-[9px] md:text-[10px] leading-relaxed flex items-start gap-2">
+                                <svg class="w-4 h-4 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                </svg>
+                                <span>
+                                    <strong class="text-amber-200">For best results:</strong> Please provide accurate and truthful information. Our AI models use your data to find the best matches and opportunities for you. Inaccurate data may result in poor recommendations.
+                                </span>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </form>
+
+            <!-- ════════════════════════════════════════════════
+                 ORGANIZATION/PARTNER FORM
+            ════════════════════════════════════════════════ -->
+            <form id="partner-form" class="reg-form hidden">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-x-5 gap-y-4">
+
+                    <!-- LEFT COLUMN - Organization Info -->
+                    <div class="space-y-4">
+                        <div class="pb-2 border-b border-white/5">
+                            <p class="text-indigo-400 text-[10px] font-bold uppercase tracking-widest flex items-center gap-2">
+                                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/>
+                                </svg>
+                                Organization Details
+                            </p>
+                        </div>
+
+                        <!-- Org Name -->
+                        <div>
+                            <label class="block text-slate-500 text-[10px] font-semibold uppercase tracking-wider mb-1">Organization Name *</label>
+                            <input type="text" name="organization_name" required placeholder="Acme Corporation"
+                                   class="w-full px-3 py-2 rounded-lg bg-white/5 border border-white/10 text-white placeholder-slate-600 text-sm focus:outline-none focus:border-indigo-400/50 focus:bg-white/8 transition-all"/>
+                        </div>
+
+                        <!-- Industry & Size -->
+                        <div class="grid grid-cols-2 gap-3">
+                            <div>
+                                <label class="block text-slate-500 text-[10px] font-semibold uppercase tracking-wider mb-1">Industry *</label>
+                                <select name="industry" id="org-industry" required
+                                        class="w-full px-3 py-2 rounded-lg bg-white/5 border border-white/10 text-slate-300 text-sm focus:outline-none focus:border-indigo-400/50 transition-all [&>option]:bg-slate-900 [&>option]:text-white">
+                                    <option value="">Select</option>
+                                    <option value="technology">Technology</option>
+                                    <option value="finance">Finance & Banking</option>
+                                    <option value="healthcare">Healthcare</option>
+                                    <option value="education">Education</option>
+                                    <option value="manufacturing">Manufacturing</option>
+                                    <option value="consulting">Consulting</option>
+                                    <option value="retail">Retail & E-commerce</option>
+                                    <option value="media">Media & Entertainment</option>
+                                    <option value="agriculture">Agriculture</option>
+                                    <option value="energy">Energy & Utilities</option>
+                                    <option value="transportation">Transportation</option>
+                                    <option value="hospitality">Hospitality</option>
+                                    <option value="legal">Legal Services</option>
+                                    <option value="ngo">NGO / Non-Profit</option>
+                                    <option value="government">Government</option>
+                                    <option value="other">Other</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-slate-500 text-[10px] font-semibold uppercase tracking-wider mb-1">Company Size *</label>
+                                <select name="company_size" required
+                                        class="w-full px-3 py-2 rounded-lg bg-white/5 border border-white/10 text-slate-300 text-sm focus:outline-none focus:border-indigo-400/50 transition-all [&>option]:bg-slate-900 [&>option]:text-white">
+                                    <option value="">Select</option>
+                                    <option value="1-10">1-10 employees</option>
+                                    <option value="11-50">11-50 employees</option>
+                                    <option value="51-200">51-200 employees</option>
+                                    <option value="201-500">201-500 employees</option>
+                                    <option value="500+">500+ employees</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Industry Other -->
+                        <div id="org-industry-other-wrap" class="hidden">
+                            <input type="text" name="industry_other" id="org-industry-other" placeholder="Specify your industry"
+                                   class="w-full px-3 py-2 rounded-lg bg-indigo-500/10 border border-indigo-400/30 text-white placeholder-slate-500 text-sm focus:outline-none focus:border-indigo-400/50 transition-all"/>
+                        </div>
+
+                        <!-- Website & Country -->
+                        <div class="grid grid-cols-2 gap-3">
+                            <div>
+                                <label class="block text-slate-500 text-[10px] font-semibold uppercase tracking-wider mb-1">Website</label>
+                                <input type="url" name="website" placeholder="https://example.com"
+                                       class="w-full px-3 py-2 rounded-lg bg-white/5 border border-white/10 text-white placeholder-slate-600 text-sm focus:outline-none focus:border-indigo-400/50 focus:bg-white/8 transition-all"/>
+                            </div>
+                            <div>
+                                <label class="block text-slate-500 text-[10px] font-semibold uppercase tracking-wider mb-1">Country *</label>
+                                <input type="text" name="country" required placeholder="South Africa"
+                                       class="w-full px-3 py-2 rounded-lg bg-white/5 border border-white/10 text-white placeholder-slate-600 text-sm focus:outline-none focus:border-indigo-400/50 focus:bg-white/8 transition-all"/>
+                            </div>
+                        </div>
+
+                        <!-- What are you looking for -->
+                        <div>
+                            <label class="block text-slate-500 text-[10px] font-semibold uppercase tracking-wider mb-2">What are you looking for? *</label>
+                            <div class="grid grid-cols-2 gap-2">
+                                {% for val, emoji, lbl in [('hire_talent','💼','Hire Talent'),('internships','🎓','Offer Internships'),('volunteer','🤝','Volunteer Programs'),('partnership','🤲','Partnership')] %}
+                                <label class="cursor-pointer">
+                                    <input type="checkbox" name="interest_type" value="{{ val }}" class="peer sr-only">
+                                    <div class="flex items-center gap-2 px-3 py-2 rounded-lg
+                                                bg-white/5 border border-white/10 text-slate-400
+                                                hover:bg-white/8 hover:border-white/15
+                                                peer-checked:bg-indigo-500/15 peer-checked:border-indigo-400/40 peer-checked:text-indigo-300
+                                                transition-all duration-200 select-none text-xs font-medium">
+                                        <span>{{ emoji }}</span>
+                                        <span>{{ lbl }}</span>
+                                    </div>
+                                </label>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- RIGHT COLUMN - Contact Person -->
+                    <div class="space-y-4">
+                        <div class="pb-2 border-b border-white/5">
+                            <p class="text-violet-400 text-[10px] font-bold uppercase tracking-widest flex items-center gap-2">
+                                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
+                                </svg>
+                                Contact Person
+                            </p>
+                        </div>
+
+                        <!-- Contact Name -->
+                        <div class="grid grid-cols-2 gap-3">
+                            <div>
+                                <label class="block text-slate-500 text-[10px] font-semibold uppercase tracking-wider mb-1">First Name *</label>
+                                <input type="text" name="first_name" required placeholder="Jane"
+                                       class="w-full px-3 py-2 rounded-lg bg-white/5 border border-white/10 text-white placeholder-slate-600 text-sm focus:outline-none focus:border-violet-400/50 focus:bg-white/8 transition-all"/>
+                            </div>
+                            <div>
+                                <label class="block text-slate-500 text-[10px] font-semibold uppercase tracking-wider mb-1">Last Name *</label>
+                                <input type="text" name="last_name" required placeholder="Smith"
+                                       class="w-full px-3 py-2 rounded-lg bg-white/5 border border-white/10 text-white placeholder-slate-600 text-sm focus:outline-none focus:border-violet-400/50 focus:bg-white/8 transition-all"/>
+                            </div>
+                        </div>
+
+                        <!-- Job Title -->
+                        <div>
+                            <label class="block text-slate-500 text-[10px] font-semibold uppercase tracking-wider mb-1">Job Title *</label>
+                            <input type="text" name="job_title" required placeholder="HR Manager, CEO, Founder..."
+                                   class="w-full px-3 py-2 rounded-lg bg-white/5 border border-white/10 text-white placeholder-slate-600 text-sm focus:outline-none focus:border-violet-400/50 focus:bg-white/8 transition-all"/>
+                        </div>
+
+                        <!-- Email & Phone -->
+                        <div class="grid grid-cols-2 gap-3">
+                            <div>
+                                <label class="block text-slate-500 text-[10px] font-semibold uppercase tracking-wider mb-1">Work Email *</label>
+                                <input type="email" name="email" required placeholder="yourmail@company.com"
+                                       class="w-full px-3 py-2 rounded-lg bg-white/5 border border-white/10 text-white placeholder-slate-600 text-sm focus:outline-none focus:border-violet-400/50 focus:bg-white/8 transition-all"/>
+                            </div>
+                            <div>
+                                <label class="block text-slate-500 text-[10px] font-semibold uppercase tracking-wider mb-1">Phone</label>
+                                <input type="tel" name="phone" placeholder="+27 000 0000"
+                                       class="w-full px-3 py-2 rounded-lg bg-white/5 border border-white/10 text-white placeholder-slate-600 text-sm focus:outline-none focus:border-violet-400/50 focus:bg-white/8 transition-all"/>
+                            </div>
+                        </div>
+
+                        <!-- Message -->
+                        <div>
+                            <label class="block text-slate-500 text-[10px] font-semibold uppercase tracking-wider mb-1">Tell us about your needs</label>
+                            <textarea name="message" rows="3" placeholder="What kind of talent are you looking for? Any specific requirements?"
+                                      class="w-full px-3 py-2 rounded-lg bg-white/5 border border-white/10 text-white placeholder-slate-600 text-sm focus:outline-none focus:border-violet-400/50 focus:bg-white/8 transition-all resize-none"></textarea>
+                        </div>
+
+                        <!-- How did you hear -->
+                        <div>
+                            <label class="block text-slate-500 text-[10px] font-semibold uppercase tracking-wider mb-1">How did you hear about us?</label>
+                            <select name="referral_source"
+                                    class="w-full px-3 py-2 rounded-lg bg-white/5 border border-white/10 text-slate-300 text-sm focus:outline-none focus:border-violet-400/50 transition-all [&>option]:bg-slate-900 [&>option]:text-white">
+                                <option value="">Select one</option>
+                                <option value="social_media">Social Media</option>
+                                <option value="referral">Referral</option>
+                                <option value="google">Google Search</option>
+                                <option value="linkedin">LinkedIn</option>
+                                <option value="event">Conference / Event</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ════════════════════════════════════════════════
+                     CONSENT & LEGAL SECTION (Partner)
+                ════════════════════════════════════════════════ -->
+                <div class="mt-5 pt-4 border-t border-white/5">
+                    <div class="pb-2 mb-3">
+                        <p class="text-amber-400 text-[10px] font-bold uppercase tracking-widest flex items-center gap-2">
+                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
+                            </svg>
+                            Consent & Agreement
+                        </p>
+                    </div>
+
+                    <div class="space-y-3">
+                        <!-- Authorization Confirmation -->
+                        <label class="flex items-start gap-3 cursor-pointer group">
+                            <input type="checkbox" name="consent_authorized" required
+                                   class="mt-0.5 w-4 h-4 rounded border-white/20 bg-white/5 text-indigo-500 focus:ring-indigo-500/30 focus:ring-offset-0">
+                            <span class="text-slate-400 text-xs leading-relaxed group-hover:text-slate-300 transition-colors">
+                                I confirm that I am <span class="text-white font-semibold">authorized to act on behalf of this organization</span> and create this partnership account.
+                            </span>
+                        </label>
+
+                        <!-- Data Processing Consent -->
+                        <label class="flex items-start gap-3 cursor-pointer group">
+                            <input type="checkbox" name="consent_data" required
+                                   class="mt-0.5 w-4 h-4 rounded border-white/20 bg-white/5 text-indigo-500 focus:ring-indigo-500/30 focus:ring-offset-0">
+                            <span class="text-slate-400 text-xs leading-relaxed group-hover:text-slate-300 transition-colors">
+                                I consent to ForgeForth Africa <span class="text-white font-semibold">collecting, storing, processing, and transmitting</span> the provided data for partnership operations and talent matching services.
+                            </span>
+                        </label>
+
+                        <!-- Privacy & Terms -->
+                        <label class="flex items-start gap-3 cursor-pointer group">
+                            <input type="checkbox" name="consent_terms" required
+                                   class="mt-0.5 w-4 h-4 rounded border-white/20 bg-white/5 text-indigo-500 focus:ring-indigo-500/30 focus:ring-offset-0">
+                            <span class="text-slate-400 text-xs leading-relaxed group-hover:text-slate-300 transition-colors">
+                                I have read and understood the
+                                <a href="/privacy-policy/" target="_blank" class="text-indigo-400 hover:text-indigo-300 underline underline-offset-2">Privacy Policy</a>,
+                                <a href="/terms-of-service/" target="_blank" class="text-indigo-400 hover:text-indigo-300 underline underline-offset-2">Terms of Service</a>, and
+                                <a href="/cookie-policy/" target="_blank" class="text-indigo-400 hover:text-indigo-300 underline underline-offset-2">Cookie Policy</a>.
+                            </span>
+                        </label>
+
+                        <!-- Accuracy Notice -->
+                        <div class="mt-3 p-3 rounded-lg bg-amber-500/10 border border-amber-400/20">
+                            <p class="text-amber-300/90 text-[10px] leading-relaxed flex items-start gap-2">
+                                <svg class="w-4 h-4 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                </svg>
+                                <span>
+                                    <strong class="text-amber-200">For best results:</strong> Please provide accurate organization information. This helps our platform match you with the right talent and ensures a smooth partnership experience.
+                                </span>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <!-- ══════════════════════════════════════════════════════
+             FOOTER
+        ══════════════════════════════════════════════════════ -->
+        <div class="relative px-4 md:px-5 py-2.5 md:py-3 border-t border-white/5 flex-shrink-0 bg-slate-900/30">
+            <div class="flex items-center justify-between gap-3">
+                <p class="hidden sm:flex text-slate-600 text-[9px] md:text-[10px] items-center gap-1.5">
+                    <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
+                    </svg>
+                    Your data is secure. We never share or sell your information.
+                </p>
+                <button type="submit" id="reg-submit-btn"
+                        class="group relative flex items-center justify-center gap-2 px-4 md:px-5 py-2 rounded-lg md:rounded-xl
+                               bg-gradient-to-r from-purple-500 to-pink-500
+                               text-white font-semibold text-[11px] md:text-xs
+                               hover:shadow-lg hover:shadow-purple-500/25 hover:-translate-y-0.5
+                               active:translate-y-0 transition-all duration-200
+                               disabled:opacity-50 disabled:cursor-not-allowed overflow-hidden
+                               w-full sm:w-auto">
+                    <span class="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-500"></span>
+                    <svg class="relative w-3.5 h-3.5 md:w-4 md:h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"/>
+                    </svg>
+                    <span id="reg-btn-text" class="relative">Create Account</span>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- jQuery for AJAX requests -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+<!-- Phone Input Component -->
+<script src="{{ static('js/phone.js') }}"></script>
+
+<!-- ═══════════════════════════════════════════════════════════════════════════════
+     REGISTRATION MODAL JAVASCRIPT
+═══════════════════════════════════════════════════════════════════════════════ -->
+<script>
+
+// ─────────────────────────────────────────────────────────
+// CONFIGURATION - Injected from Django Settings
+// ─────────────────────────────────────────────────────────
+window.API_SERVICE_URL = '{{ api_service_url|default("http://localhost:9001") }}';
+window.AUTH_ENDPOINT = '{{ AUTH_SERVICE_URL|default("/api/v1/auth") }}';
+window.WEBSITE_AUTH_SECRET = '{{ WEBSITE_AUTH_SECRET|default("") }}';
+window.SITE_URL = '{{ SITE_URL|default("") }}';
+
+// ─────────────────────────────────────────────────────────
+// COUNTRY AUTOCOMPLETE - Fetch countries and auto-fill phone code
+// ─────────────────────────────────────────────────────────
+(function() {
+    const CACHE_KEY = 'forgeforth_countries';
+    const CACHE_EXPIRY = 'forgeforth_countries_expiry';
+    const CACHE_DURATION = 24 * 60 * 60 * 1000;
+
+    let countries = [];
+
+    const input = document.getElementById('country-input');
+    const dropdown = document.getElementById('country-autocomplete');
+    const codeDisplay = document.getElementById('phone-code-display');
+    const codeInput = document.getElementById('phone-code-input');
+
+    // Fetch countries
+    async function loadCountries() {
+        try {
+            const expiry = localStorage.getItem(CACHE_EXPIRY);
+            if (expiry && Date.now() < parseInt(expiry)) {
+                const cached = localStorage.getItem(CACHE_KEY);
+                if (cached) {
+                    countries = JSON.parse(cached);
+                    return;
+                }
+            }
+        } catch (e) {}
+
+        try {
+            const apiUrl = window.API_SERVICE_URL || 'http://localhost:9001';
+            const res = await fetch(`${apiUrl}/api/country-codes/`);
+            const data = await res.json();
+            if (data.success && data.countries?.length) {
+                countries = data.countries;
+                localStorage.setItem(CACHE_KEY, JSON.stringify(countries));
+                localStorage.setItem(CACHE_EXPIRY, (Date.now() + CACHE_DURATION).toString());
+            }
+        } catch (e) {}
+    }
+
+    // Show dropdown with filtered results
+    function showDropdown(filtered) {
+        if (!dropdown || !filtered.length) {
+            hideDropdown();
+            return;
+        }
+        dropdown.innerHTML = filtered.slice(0, 8).map(c => `
+            <div class="country-option px-3 py-2 cursor-pointer hover:bg-white/10 text-sm flex items-center gap-2"
+                 data-name="${c.name}" data-code="${c.dial_code}" data-flag="${c.flag}">
+                <span>${c.flag}</span>
+                <span class="text-white">${c.name}</span>
+                <span class="text-slate-500 text-xs ml-auto">${c.dial_code}</span>
+            </div>
+        `).join('');
+        dropdown.classList.remove('hidden');
+
+        dropdown.querySelectorAll('.country-option').forEach(opt => {
+            opt.addEventListener('click', () => selectCountry(opt));
+        });
+    }
+
+    function hideDropdown() {
+        if (dropdown) dropdown.classList.add('hidden');
+    }
+
+    function selectCountry(opt) {
+        if (input) input.value = opt.dataset.name;
+        if (codeDisplay) codeDisplay.textContent = `${opt.dataset.flag} ${opt.dataset.code}`;
+        if (codeInput) codeInput.value = opt.dataset.code;
+        hideDropdown();
+    }
+
+    // Input event
+    if (input) {
+        input.addEventListener('input', function() {
+            const val = this.value.toLowerCase().trim();
+            if (val.length < 1) {
+                hideDropdown();
+                return;
+            }
+            const filtered = countries.filter(c =>
+                c.name.toLowerCase().includes(val)
+            );
+            showDropdown(filtered);
+        });
+
+        input.addEventListener('focus', function() {
+            if (this.value.length >= 1) {
+                const val = this.value.toLowerCase().trim();
+                const filtered = countries.filter(c => c.name.toLowerCase().includes(val));
+                showDropdown(filtered);
+            }
+        });
+    }
+
+    // Close on outside click
+    document.addEventListener('click', (e) => {
+        if (input && dropdown && !input.contains(e.target) && !dropdown.contains(e.target)) {
+            hideDropdown();
+        }
+    });
+
+    // Load on init
+    loadCountries();
+})();
+
+// ─────────────────────────────────────────────────────────
+// PASSWORD SHOW/HIDE TOGGLE
+// ─────────────────────────────────────────────────────────
+window.togglePassword = function(inputId, btn) {
+    const input = document.getElementById(inputId);
+    if (!input) return;
+
+    const eyeOpen = btn.querySelector('.eye-open');
+    const eyeClosed = btn.querySelector('.eye-closed');
+
+    if (input.type === 'password') {
+        input.type = 'text';
+        eyeOpen?.classList.add('hidden');
+        eyeClosed?.classList.remove('hidden');
+        btn.title = 'Hide password';
+    } else {
+        input.type = 'password';
+        eyeOpen?.classList.remove('hidden');
+        eyeClosed?.classList.add('hidden');
+        btn.title = 'Show password';
+    }
+};
+
+// ─────────────────────────────────────────────────────────
+// DATE OF BIRTH - 18+ VALIDATION
+// Sets max date to 18 years ago from today
+// ─────────────────────────────────────────────────────────
+(function initializeDateOfBirth() {
+    const today = new Date();
+    const minAge = {{ min_age }};
+
+    // Calculate the date 18 years ago
+    const maxDate = new Date(today.getFullYear() - minAge, today.getMonth(), today.getDate());
+    const maxDateStr = maxDate.toISOString().split('T')[0];
+
+    // Also set a reasonable minimum (e.g., 120 years ago)
+    const minDate = new Date(today.getFullYear() - 120, today.getMonth(), today.getDate());
+    const minDateStr = minDate.toISOString().split('T')[0];
+
+    // Apply to all date of birth inputs
+    const dobInputs = document.querySelectorAll('input[name="date_of_birth"]');
+    dobInputs.forEach(input => {
+        input.setAttribute('max', maxDateStr);
+        input.setAttribute('min', minDateStr);
+
+        // Add validation on change
+        input.addEventListener('change', function() {
+            const selectedDate = new Date(this.value);
+            if (selectedDate > maxDate) {
+                this.setCustomValidity('You must be at least 18 years old to register.');
+                this.reportValidity();
+            } else if (selectedDate < minDate) {
+                this.setCustomValidity('Please enter a valid date of birth.');
+                this.reportValidity();
+            } else {
+                this.setCustomValidity('');
+            }
+        });
+    });
+})();
+
+(function() {
+    const modal = document.getElementById('registration-modal');
+    const modalContent = document.getElementById('reg-modal-content');
+    const backdrop = document.getElementById('reg-modal-backdrop');
+    const individualForm = document.getElementById('individual-form');
+    const partnerForm = document.getElementById('partner-form');
+    const toggleIndividual = document.getElementById('toggle-individual');
+    const togglePartner = document.getElementById('toggle-partner');
+    const submitBtn = document.getElementById('reg-submit-btn');
+    const btnText = document.getElementById('reg-btn-text');
+    const successMessage = document.getElementById('reg-success-message');
+    const successTitle = document.getElementById('success-title');
+    const successMsg = document.getElementById('success-message');
+
+
+    let currentType = 'individual';
+
+    // Type toggle handlers
+    function setActiveType(type) {
+        currentType = type;
+        const isIndividual = type === 'individual';
+
+        // Toggle button styles
+        toggleIndividual.classList.toggle('active', isIndividual);
+        toggleIndividual.classList.toggle('text-white', isIndividual);
+        toggleIndividual.classList.toggle('bg-gradient-to-r', isIndividual);
+        toggleIndividual.classList.toggle('from-purple-500/80', isIndividual);
+        toggleIndividual.classList.toggle('to-pink-500/80', isIndividual);
+        toggleIndividual.classList.toggle('shadow-md', isIndividual);
+        toggleIndividual.classList.toggle('text-slate-400', !isIndividual);
+
+        togglePartner.classList.toggle('active', !isIndividual);
+        togglePartner.classList.toggle('text-white', !isIndividual);
+        togglePartner.classList.toggle('bg-gradient-to-r', !isIndividual);
+        togglePartner.classList.toggle('from-indigo-500/80', !isIndividual);
+        togglePartner.classList.toggle('to-violet-500/80', !isIndividual);
+        togglePartner.classList.toggle('shadow-md', !isIndividual);
+        togglePartner.classList.toggle('text-slate-400', isIndividual);
+
+        // Toggle forms
+        individualForm.classList.toggle('hidden', !isIndividual);
+        partnerForm.classList.toggle('hidden', isIndividual);
+
+        // Update submit button style
+        submitBtn.classList.toggle('from-purple-500', isIndividual);
+        submitBtn.classList.toggle('to-pink-500', isIndividual);
+        submitBtn.classList.toggle('from-indigo-500', !isIndividual);
+        submitBtn.classList.toggle('to-violet-500', !isIndividual);
+    }
+
+    toggleIndividual?.addEventListener('click', () => setActiveType('individual'));
+    togglePartner?.addEventListener('click', () => setActiveType('partner'));
+
+    // Open modal
+    window.openRegistrationModal = function(type = 'individual') {
+        if (!modal) return;
+        setActiveType(type);
+        modal.classList.remove('hidden');
+        modal.classList.add('flex');
+        document.body.style.overflow = 'hidden';
+
+        requestAnimationFrame(() => {
+            modal.classList.remove('opacity-0');
+            modalContent.classList.remove('scale-95', 'opacity-0');
+            modalContent.classList.add('scale-100', 'opacity-100');
+        });
+    };
+
+    // Alias for backwards compatibility
+    window.openWaitlistModal = function() { openRegistrationModal('individual'); };
+    window.openPartnerModal = function() { openRegistrationModal('partner'); };
+
+    // Close modal
+    window.closeRegistrationModal = function() {
+        if (!modal) return;
+        modal.classList.add('opacity-0');
+        modalContent.classList.remove('scale-100', 'opacity-100');
+        modalContent.classList.add('scale-95', 'opacity-0');
+
+        setTimeout(() => {
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+            document.body.style.overflow = '';
+            // Reset forms
+            individualForm?.reset();
+            partnerForm?.reset();
+            successMessage?.classList.add('hidden');
+            individualForm?.classList.remove('hidden');
+            partnerForm?.classList.add('hidden');
+            setActiveType('individual');
+            // Reset skill/field selections
+            resetSelections();
+        }, 300);
+    };
+
+    // Alias for backwards compatibility
+    window.closeWaitlistModal = closeRegistrationModal;
+    window.closePartnerModal = closeRegistrationModal;
+
+    // Click outside to close - but NOT for this modal (as per requirements)
+    // backdrop?.addEventListener('click', closeRegistrationModal);
+
+    // ESC key to close
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && !modal.classList.contains('hidden')) {
+            closeRegistrationModal();
+        }
+    });
+
+    // ─────────────────────────────────────────────────────────
+    // INDIVIDUAL FORM: Skills & Fields Selection
+    // ─────────────────────────────────────────────────────────
+    const selectedSkills = new Set();
+    const selectedFields = new Set();
+
+    function resetSelections() {
+        selectedSkills.clear();
+        selectedFields.clear();
+        document.querySelectorAll('.ind-skill-pill').forEach(pill => {
+            pill.classList.remove('bg-purple-500/20', 'border-purple-400/50', 'text-purple-300');
+            pill.classList.add('bg-white/5', 'border-white/10', 'text-slate-500');
+        });
+        document.querySelectorAll('.ind-field-pill').forEach(pill => {
+            pill.classList.remove('bg-pink-500/20', 'border-pink-400/50', 'text-pink-300');
+            pill.classList.add('bg-white/5', 'border-white/10', 'text-slate-500');
+        });
+        updateCounts();
+        document.getElementById('ind-skill-other-wrap')?.classList.add('hidden');
+        document.getElementById('ind-field-other-wrap')?.classList.add('hidden');
+    }
+
+    function updateCounts() {
+        const skillCount = document.getElementById('ind-skills-count');
+        const fieldCount = document.getElementById('ind-fields-count');
+
+        if (skillCount) {
+            skillCount.textContent = selectedSkills.size + ' selected';
+            skillCount.classList.toggle('hidden', selectedSkills.size === 0);
+        }
+        if (fieldCount) {
+            fieldCount.textContent = selectedFields.size + ' selected';
+            fieldCount.classList.toggle('hidden', selectedFields.size === 0);
+        }
+    }
+
+    // Skill pills
+    document.querySelectorAll('.ind-skill-pill').forEach(pill => {
+        pill.addEventListener('click', function() {
+            const skill = this.dataset.skill;
+            const isSelected = selectedSkills.has(skill);
+
+            if (isSelected) {
+                selectedSkills.delete(skill);
+                this.classList.remove('bg-purple-500/20', 'border-purple-400/50', 'text-purple-300');
+                this.classList.add('bg-white/5', 'border-white/10', 'text-slate-500');
+            } else {
+                selectedSkills.add(skill);
+                this.classList.add('bg-purple-500/20', 'border-purple-400/50', 'text-purple-300');
+                this.classList.remove('bg-white/5', 'border-white/10', 'text-slate-500');
+            }
+
+            // Show/hide other input
+            const otherWrap = document.getElementById('ind-skill-other-wrap');
+            if (skill === 'Other') {
+                otherWrap?.classList.toggle('hidden', !selectedSkills.has('Other'));
+            }
+
+            updateCounts();
+            updateHiddenInputs();
+        });
+    });
+
+    // Field pills
+    document.querySelectorAll('.ind-field-pill').forEach(pill => {
+        pill.addEventListener('click', function() {
+            const field = this.dataset.field;
+            const isSelected = selectedFields.has(field);
+
+            if (isSelected) {
+                selectedFields.delete(field);
+                this.classList.remove('bg-pink-500/20', 'border-pink-400/50', 'text-pink-300');
+                this.classList.add('bg-white/5', 'border-white/10', 'text-slate-500');
+            } else {
+                selectedFields.add(field);
+                this.classList.add('bg-pink-500/20', 'border-pink-400/50', 'text-pink-300');
+                this.classList.remove('bg-white/5', 'border-white/10', 'text-slate-500');
+            }
+
+            // Show/hide other input
+            const otherWrap = document.getElementById('ind-field-other-wrap');
+            if (field === 'other') {
+                otherWrap?.classList.toggle('hidden', !selectedFields.has('other'));
+            }
+
+            updateCounts();
+            updateHiddenInputs();
+        });
+    });
+
+    function updateHiddenInputs() {
+        const skillsContainer = document.getElementById('ind-skills-hidden');
+        const fieldsContainer = document.getElementById('ind-fields-hidden');
+
+        if (skillsContainer) {
+            skillsContainer.innerHTML = '';
+            selectedSkills.forEach(skill => {
+                const input = document.createElement('input');
+                input.type = 'hidden';
+                input.name = 'skills';
+                input.value = skill;
+                skillsContainer.appendChild(input);
+            });
+        }
+
+        if (fieldsContainer) {
+            fieldsContainer.innerHTML = '';
+            selectedFields.forEach(field => {
+                const input = document.createElement('input');
+                input.type = 'hidden';
+                input.name = 'preferred_fields';
+                input.value = field;
+                fieldsContainer.appendChild(input);
+            });
+        }
+    }
+
+    // ─────────────────────────────────────────────────────────
+    // PARTNER FORM: Industry "Other"
+    // ─────────────────────────────────────────────────────────
+    const orgIndustry = document.getElementById('org-industry');
+    const orgIndustryOtherWrap = document.getElementById('org-industry-other-wrap');
+    const orgIndustryOther = document.getElementById('org-industry-other');
+
+    orgIndustry?.addEventListener('change', function() {
+        const isOther = this.value === 'other';
+        orgIndustryOtherWrap?.classList.toggle('hidden', !isOther);
+        if (orgIndustryOther) orgIndustryOther.required = isOther;
+    });
+
+    // ─────────────────────────────────────────────────────────
+    // FORM SUBMISSION
+    // ─────────────────────────────────────────────────────────
+    submitBtn?.addEventListener('click', async function(e) {
+        e.preventDefault();
+
+        const form = currentType === 'individual' ? individualForm : partnerForm;
+        if (!form) return;
+
+        // Validate required fields
+        if (!form.checkValidity()) {
+            form.reportValidity();
+            return;
+        }
+
+        // Additional validation for individual users
+        if (currentType === 'individual') {
+            // Password validation
+            const password = form.querySelector('input[name="password"]')?.value;
+            const confirmPassword = form.querySelector('input[name="confirm_password"]')?.value;
+
+            if (!password || password.length < 8) {
+                alert('Password must be at least 8 characters long.');
+                return;
+            }
+
+            // Check password has letters and numbers
+            const hasLetter = /[a-zA-Z]/.test(password);
+            const hasNumber = /[0-9]/.test(password);
+            if (!hasLetter || !hasNumber) {
+                alert('Password must contain both letters and numbers.');
+                return;
+            }
+
+            if (password !== confirmPassword) {
+                alert('Passwords do not match.');
+                return;
+            }
+
+            const opportunities = form.querySelectorAll('input[name="opportunity_type"]:checked');
+            if (opportunities.length === 0) {
+                alert('Please select at least one opportunity type.');
+                return;
+            }
+            if (selectedSkills.size === 0) {
+                alert('Please select at least one skill.');
+                return;
+            }
+            if (selectedFields.size === 0) {
+                alert('Please select at least one preferred field.');
+                return;
+            }
+        } else {
+            const interests = form.querySelectorAll('input[name="interest_type"]:checked');
+            if (interests.length === 0) {
+                alert('Please select at least one option for what you are looking for.');
+                return;
+            }
+        }
+
+        // Validate consent checkboxes for individual registration
+        if (currentType === 'individual') {
+            const consentAge = form.querySelector('input[name="consent_age"]');
+            const consentData = form.querySelector('input[name="consent_data"]');
+            const consentTerms = form.querySelector('input[name="consent_terms"]');
+
+            if (!consentAge?.checked || !consentData?.checked || !consentTerms?.checked) {
+                alert('Please accept all required consent agreements.');
+                return;
+            }
+        }
+
+        // Disable button and show loading state
+        submitBtn.disabled = true;
+        btnText.textContent = 'Creating Account...';
+
+        // Collect form data
+        const formData = new FormData(form);
+
+        // API Service URL - configurable via settings or window global
+        // In development: http://localhost:9001, in production: https://api.forgeforthafrica.com
+        const API_BASE_URL = window.API_SERVICE_URL || 'http://localhost:9001';
+
+        // Determine endpoint based on user type
+        const isIndividual = currentType === 'individual';
+        const endpoint = isIndividual
+            ? `${API_BASE_URL}/api/v1/auth/register/`
+            : '/api/partner-waitlist/';  // Partner registration still uses local endpoint
+
+        // Build request data object
+        let requestData = {};
+
+        if (isIndividual) {
+            // Build skills array - replace "Other" with custom value if provided
+            let skillsArray = Array.from(selectedSkills);
+            if (selectedSkills.has('Other')) {
+                const otherSkill = document.getElementById('ind-skill-other-input')?.value;
+                if (otherSkill) {
+                    skillsArray = skillsArray.filter(s => s !== 'Other');
+                    skillsArray.push(otherSkill);
+                }
+            }
+
+            // Build fields array - replace "other" with custom value if provided
+            let fieldsArray = Array.from(selectedFields);
+            if (selectedFields.has('other')) {
+                const otherField = document.getElementById('ind-field-other-input')?.value;
+                if (otherField) {
+                    fieldsArray = fieldsArray.filter(f => f !== 'other');
+                    fieldsArray.push(otherField);
+                }
+            }
+
+            // Get form values with proper null handling
+            const firstName = formData.get('first_name')?.trim();
+            const lastName = formData.get('last_name')?.trim();
+            const email = formData.get('email')?.trim().toLowerCase();
+            const password = formData.get('password');
+            const confirmPassword = formData.get('confirm_password');
+            const phoneCode = formData.get('phone_code') || '+27';
+            const phoneNumber = formData.get('phone')?.trim();
+            const country = formData.get('country')?.trim();
+            const dateOfBirth = formData.get('date_of_birth'); // Already in YYYY-MM-DD format from input[type=date]
+            const gender = formData.get('gender');
+            const educationLevel = formData.get('education_level');
+            const referralSource = formData.get('referral_source');
+            const bio = formData.get('bio')?.trim();
+
+            // Build phone number with country code
+            let phone = '';
+            if (phoneNumber) {
+                phone = phoneNumber.startsWith('+') ? phoneNumber : (phoneCode + phoneNumber);
+            }
+
+            requestData = {
+                first_name: firstName || '',
+                last_name: lastName || '',
+                email: email || '',
+                password: password || '',
+                confirm_password: confirmPassword || '',
+                phone_code: phoneCode || '+27',
+                phone: phoneNumber || '',
+                country: country || '',
+                role: 'talent'
+            };
+
+            // Only include optional fields if they have values
+            if (dateOfBirth) requestData.date_of_birth = dateOfBirth;
+            if (gender) requestData.gender = gender;
+            if (educationLevel) requestData.education_level = educationLevel;
+            if (referralSource) requestData.referral_source = referralSource;
+            if (bio) requestData.bio = bio;
+
+            // Include arrays
+            const opportunityTypes = Array.from(form.querySelectorAll('input[name="opportunity_type"]:checked')).map(i => i.value);
+            if (opportunityTypes.length > 0) requestData.opportunity_types = opportunityTypes;
+            if (skillsArray.length > 0) requestData.skills = skillsArray;
+            if (fieldsArray.length > 0) requestData.preferred_fields = fieldsArray;
+
+            // Include consent fields (required)
+            requestData.consent_age = consentAge?.checked || false;
+            requestData.consent_data = consentData?.checked || false;
+            requestData.consent_terms = consentTerms?.checked || false;
+
+        } else {
+            // Partner registration data
+            let industry = formData.get('industry');
+            if (industry === 'other') {
+                industry = formData.get('industry_other') || 'Other';
+            }
+            requestData = {
+                organization_name: formData.get('organization_name'),
+                industry: industry,
+                company_size: formData.get('company_size'),
+                website: formData.get('website') || '',
+                country: formData.get('country'),
+                first_name: formData.get('first_name'),
+                last_name: formData.get('last_name'),
+                job_title: formData.get('job_title'),
+                email: formData.get('email'),
+                phone: formData.get('phone') || '',
+                interest_types: Array.from(form.querySelectorAll('input[name="interest_type"]:checked')).map(i => i.value),
+                message: formData.get('message') || '',
+                referral_source: formData.get('referral_source') || ''
+            };
+        }
+
+        // Prepare AJAX request with signing
+        const CLIENT_ID = 'website_portal';
+        const CLIENT_SECRET = window.WEBSITE_AUTH_SECRET || '';
+        const timestamp = Math.floor(Date.now() / 1000).toString();
+        const nonce = generateNonce();
+        const bodyStr = JSON.stringify(requestData);
+
+        // Debug: Log what we're sending
+        console.log('=== Registration Request Debug ===');
+        console.log('Endpoint:', endpoint);
+        console.log('Request Data:', requestData);
+        console.log('Body String:', bodyStr);
+
+        // Build headers
+        const ajaxHeaders = {
+            'Content-Type': 'application/json'
+        };
+
+        // Add CSRF token (not needed for cross-origin API calls, but keep for local endpoints)
+        if (!isIndividual) {
+            const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]')?.value ||
+                              document.querySelector('meta[name="csrf-token"]')?.content ||
+                              getCookie('csrftoken') || '';
+            if (csrfToken) {
+                ajaxHeaders['X-CSRFToken'] = csrfToken;
+            }
+        }
+
+        // Add request signing headers for individual registration
+        if (isIndividual && CLIENT_SECRET) {
+            try {
+                // For signing, use just the path portion
+                const urlPath = new URL(endpoint).pathname;
+                const signature = await signRequest('POST', urlPath, bodyStr, timestamp, nonce, CLIENT_SECRET);
+                ajaxHeaders['X-Client-ID'] = CLIENT_ID;
+                ajaxHeaders['X-Timestamp'] = timestamp;
+                ajaxHeaders['X-Nonce'] = nonce;
+                ajaxHeaders['X-Signature'] = signature;
+                console.log('Request signed with Client ID:', CLIENT_ID);
+            } catch (signError) {
+                console.warn('Request signing failed:', signError);
+            }
+        }
+
+        // Helper function to handle successful registration
+        function handleRegistrationSuccess(result, xhr) {
+            console.log('Registration success - Status:', xhr.status);
+            console.log('Registration success - Response:', result);
+
+            // Verify response signature if available
+            const responseSignature = xhr.getResponseHeader('X-Response-Signature');
+            const responseId = xhr.getResponseHeader('X-Response-ID');
+
+            if (responseSignature && responseId && CLIENT_SECRET) {
+                verifyResponseSignature(result, responseId, responseSignature, CLIENT_SECRET)
+                    .then(isValid => {
+                        if (!isValid) {
+                            console.warn('Response signature verification failed');
+                        }
+                    });
+            }
+
+            if (result.success) {
+                showSuccess(result);
+            } else {
+                let errorMsg = 'Registration failed. Please try again.';
+                if (result.error) {
+                    if (typeof result.error === 'object') {
+                        errorMsg = result.error.message || result.error.code || errorMsg;
+                        if (result.error.details) {
+                            const details = result.error.details;
+                            const fieldErrors = Object.entries(details)
+                                .map(([field, errors]) => `${field}: ${Array.isArray(errors) ? errors.join(', ') : errors}`)
+                                .join('\n');
+                            if (fieldErrors) errorMsg = fieldErrors;
+                        }
+                    } else {
+                        errorMsg = result.error;
+                    }
+                }
+                showError(errorMsg);
+            }
+
+            submitBtn.disabled = false;
+            btnText.textContent = 'Create Account';
+        }
+
+        // Make AJAX request
+        $.ajax({
+            url: endpoint,
+            type: 'POST',
+            data: bodyStr,
+            contentType: 'application/json',
+            headers: ajaxHeaders,
+            dataType: 'json',
+            timeout: 30000, // 30 second timeout
+            crossDomain: isIndividual, // Enable CORS for API service calls
+            xhrFields: {
+                withCredentials: false // Don't send cookies for cross-origin
+            },
+
+            // Handle all 2xx status codes as success
+            statusCode: {
+                200: function(result, textStatus, xhr) {
+                    handleRegistrationSuccess(result, xhr);
+                },
+                201: function(result, textStatus, xhr) {
+                    handleRegistrationSuccess(result, xhr);
+                }
+            },
+
+            success: function(result, textStatus, xhr) {
+                // This may not fire for 201 in some jQuery versions
+                if (xhr.status >= 200 && xhr.status < 300) {
+                    handleRegistrationSuccess(result, xhr);
+                }
+            },
+
+            error: function(xhr, textStatus, errorThrown) {
+                console.error('AJAX Registration error:', textStatus, errorThrown);
+                console.error('Response status:', xhr.status);
+                console.error('Response:', xhr.responseText);
+
+                // Check if the response is actually successful (201 Created)
+                if (xhr.status === 201 || xhr.status === 200) {
+                    try {
+                        const result = JSON.parse(xhr.responseText);
+                        if (result.success) {
+                            console.log('Request succeeded with status', xhr.status, '- showing success');
+                            handleRegistrationSuccess(result, xhr);
+                            return;
+                        }
+                    } catch (e) {
+                        console.error('Failed to parse success response:', e);
+                    }
+                }
+
+                let errorMsg = 'Registration failed. Please try again.';
+
+                if (xhr.status === 0) {
+                    errorMsg = 'Network error. Please check your connection.';
+                } else if (xhr.status === 400) {
+                    try {
+                        const response = JSON.parse(xhr.responseText);
+                        if (response.error) {
+                            if (typeof response.error === 'object') {
+                                errorMsg = response.error.message || 'Validation error';
+                                if (response.error.details) {
+                                    const details = response.error.details;
+                                    const fieldErrors = Object.entries(details)
+                                        .map(([field, errors]) => `${field}: ${Array.isArray(errors) ? errors.join(', ') : errors}`)
+                                        .join('\n');
+                                    if (fieldErrors) errorMsg = fieldErrors;
+                                }
+                            } else {
+                                errorMsg = response.error;
+                            }
+                        } else if (response.detail) {
+                            errorMsg = response.detail;
+                        }
+                    } catch (e) {
+                        errorMsg = 'Invalid request. Please check your information.';
+                    }
+                } else if (xhr.status === 409) {
+                    errorMsg = 'An account with this email already exists.';
+                } else if (xhr.status === 429) {
+                    errorMsg = 'Too many requests. Please wait a moment and try again.';
+                } else if (xhr.status >= 500) {
+                    errorMsg = 'Server error. Please try again later.';
+                } else if (textStatus === 'timeout') {
+                    errorMsg = 'Request timed out. Please try again.';
+                }
+
+                showError(errorMsg);
+                submitBtn.disabled = false;
+                btnText.textContent = 'Create Account';
+            }
+        });
+    });
+
+    // ─────────────────────────────────────────────────────────
+    // UTILITY FUNCTIONS
+    // ─────────────────────────────────────────────────────────
+
+    // Get cookie by name
+    function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            const cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i].trim();
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+
+    // Show error message
+    function showError(message) {
+        // Create a nice error toast/alert
+        const errorDiv = document.createElement('div');
+        errorDiv.className = 'fixed top-4 right-4 z-[10001] max-w-md p-4 rounded-xl bg-red-500/90 backdrop-blur-sm border border-red-400/50 text-white shadow-2xl transform transition-all duration-300 translate-x-full';
+        errorDiv.innerHTML = `
+            <div class="flex items-start gap-3">
+                <svg class="w-5 h-5 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                </svg>
+                <div class="flex-1">
+                    <p class="font-medium text-sm">${message}</p>
+                </div>
+                <button onclick="this.parentElement.parentElement.remove()" class="text-white/70 hover:text-white">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                    </svg>
+                </button>
+            </div>
+        `;
+        document.body.appendChild(errorDiv);
+
+        // Animate in
+        requestAnimationFrame(() => {
+            errorDiv.classList.remove('translate-x-full');
+        });
+
+        // Auto remove after 5 seconds
+        setTimeout(() => {
+            errorDiv.classList.add('translate-x-full');
+            setTimeout(() => errorDiv.remove(), 300);
+        }, 5000);
+    }
+
+    // ─────────────────────────────────────────────────────────
+    // REQUEST SIGNING UTILITIES (HMAC-SHA256)
+    // ─────────────────────────────────────────────────────────
+
+    // HMAC-SHA256 signing function using Web Crypto API
+    async function hmacSha256(key, message) {
+        const encoder = new TextEncoder();
+        const keyData = encoder.encode(key);
+        const messageData = encoder.encode(message);
+
+        const cryptoKey = await crypto.subtle.importKey(
+            'raw',
+            keyData,
+            { name: 'HMAC', hash: 'SHA-256' },
+            false,
+            ['sign']
+        );
+
+        const signature = await crypto.subtle.sign('HMAC', cryptoKey, messageData);
+        return btoa(String.fromCharCode(...new Uint8Array(signature)));
+    }
+
+    // Generate cryptographic nonce
+    function generateNonce() {
+        const array = new Uint8Array(16);
+        crypto.getRandomValues(array);
+        return Array.from(array, b => b.toString(16).padStart(2, '0')).join('');
+    }
+
+    // Sign request with HMAC-SHA256
+    async function signRequest(method, path, body, timestamp, nonce, secret) {
+        const bodyStr = typeof body === 'string' ? body : JSON.stringify(body);
+        const signatureData = `${method}:${path}:${bodyStr}:${timestamp}:${nonce}`;
+        return await hmacSha256(secret, signatureData);
+    }
+
+    // Verify response signature
+    async function verifyResponseSignature(responseBody, responseId, signature, secret) {
+        if (!signature || !responseId) return false;
+        const signatureData = `${JSON.stringify(responseBody)}:${responseId}`;
+        const expectedSig = await hmacSha256(secret, signatureData);
+        return signature === expectedSig;
+    }
+
+    function showSuccess(result) {
+        if (currentType === 'individual') {
+            successTitle.textContent = "Account Created! 🎉";
+            successMsg.textContent = "Welcome to ForgeForth Africa! Please check your email to verify your account before logging in.";
+        } else {
+            successTitle.textContent = "Welcome Partner! 🤝";
+            successMsg.textContent = "Thank you for your interest. Our team will reach out within 24-48 hours.";
+        }
+
+        individualForm?.classList.add('hidden');
+        partnerForm?.classList.add('hidden');
+        successMessage?.classList.remove('hidden');
+    }
+})();
+
+</script>
+
